@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-DAVOuIkimz7KYK6YWMx18ZxYZw5ThwnboPpkhFVhK/s=' 'wasm-unsafe-eval'; connect-src 'self' https://storage.googleapis.com/mediapipe-models/pose_landmarker/ https://0.peerjs.com wss://0.peerjs.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; media-src 'self' blob: mediastream:; worker-src 'self' blob:; manifest-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-PyeOTRKZpaAH9Fa6LNlxiN9keUDzM507akWn9D/phmc=' 'wasm-unsafe-eval'; connect-src 'self' https://storage.googleapis.com/mediapipe-models/pose_landmarker/ https://0.peerjs.com wss://0.peerjs.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; media-src 'self' blob: mediastream:; worker-src 'self' blob:; manifest-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="robots" content="noindex,nofollow">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -348,7 +348,7 @@ const act=()=>P.filter(p=>p.on&&!p.pending),NP=()=>act().length;
 /* each player's area on the TV: whole field for one player, equal columns for several */
 function VP(p){const n=NP();if(n<=1)return F;const k=Math.max(0,act().indexOf(p)),cw=W/n;return{x:k*cw,y:0,w:cw,h:H}}
 /* each player's fixed spot: hip line and body size are set by the layout, not by where they stand */
-function refOf(p){const V=VP(p),multi=NP()>1,sw=multi?Math.min(V.h*.12,V.w*.15):F.h*.16;return{x:V.x+V.w/2,y:(multi?V.y+V.h:F.y+F.h)-sw*3.4,sw}}
+function refOf(p){const V=VP(p),multi=NP()>1;if(gname==='blast'&&['intro','count','play','pause','result'].includes(state)){const sw=Math.min(H*.1,V.w*.17);return{x:V.x+V.w/2,y:H+sw*.35,sw}}const sw=multi?Math.min(V.h*.12,V.w*.15):F.h*.16;return{x:V.x+V.w/2,y:(multi?V.y+V.h:F.y+F.h)-sw*3.4,sw}}
 function mapN(V,a,x,y){const sc=V.h*.96,wv=a*sc;return{x:V.x+(V.w-wv)/2+x*wv,y:V.y+V.h*.02+y*sc}}
 const cxp=p=>(p[11].x+p[12].x)/2,szp=p=>Math.hypot(p[11].x-p[12].x,p[11].y-p[12].y);
 function updatePose(now){
@@ -684,42 +684,48 @@ function drawBoss(b,t){const r=b.r,x=b.x,y=b.y+Math.sin(t*2)*8;g.save();g.transl
  g.fillStyle='#1d1d1f';g.beginPath();g.ellipse(0,r*.42,r*.3,r*.16+Math.max(0,Math.sin(t*5))*r*.1,0,0,TAU);g.fill();g.restore();
  const bw=Math.min(W*.5,420),bx=W/2-bw/2,by=Math.max(150,H*.2);g.fillStyle='rgba(0,0,0,.55)';g.fillRect(bx-4,by-4,bw+8,22);g.fillStyle='#ff5252';g.fillRect(bx,by,bw*b.hp/b.max,14);txt('BOSS — KING GRUMBLE',W/2,by-16,20,'#ffd23f',.14)}
 G.blast={title:'Monster Blaster',th:[1500,3000,4500],
- cfg(){const n=Math.max(1,NP()),b={kids:{rate:.8,hp:.8,lives:8},family:{rate:1.15,hp:1,lives:6},pro:{rate:1.6,hp:1.3,lives:5}}[S.level];return{...b,rate:b.rate*(1+.55*(n-1)),bossHp:Math.round(45*b.hp*(1+.7*(n-1))),lives:b.lives+(n-1)*2,dur:80}},
- init(){this.c=this.cfg();this.t=0;this.done=false;this.mons=[];this.shots=[];this.fb=[];this.next=1.2;this.lives=this.c.lives;this.boss=null;this.bossAt=[28,60];this.bi=0;this.endT=0;this.over=false;this.cool=[[0,0],[0,0],[0,0],[0,0]];P.forEach(p=>p.dmg=0);$('#runpads').hidden=true},
- hy(){return H*.3},rowY(){const ps=act();return ps.length?Math.min(...ps.map(p=>refOf(p).y-refOf(p).sw*1.6)):H*.62},
+ cfg(){const n=Math.max(1,NP()),b={kids:{rate:.8,hp:.8},family:{rate:1.15,hp:1},pro:{rate:1.6,hp:1.3}}[S.level];return{...b,rate:b.rate*(1+.55*(n-1)),bossHp:Math.round(45*b.hp*(1+.7*(n-1))),lives:5,dur:80}},
+ init(){this.c=this.cfg();this.t=0;this.done=false;this.mons=[];this.shots=[];this.fb=[];this.next=1.2;this.life=[5,5,5,5];P.forEach(p=>p.ko=false);this.boss=null;this.bossAt=[28,60];this.bi=0;this.endT=0;this.over=false;this.cool=[[0,0],[0,0],[0,0],[0,0]];P.forEach(p=>p.dmg=0);$('#runpads').hidden=true},
+ hy(){return H*.2},rowY(){const ps=act();return ps.length?Math.min(...ps.map(p=>{const R=refOf(p);return R.y-R.sw*3.9})):H*.62},
+ alive(){return act().filter(p=>!p.ko)},
+ near(x){const a=this.alive();return a.length?a.reduce((b,p)=>Math.abs(refOf(p).x-x)<Math.abs(refOf(b).x-x)?p:b):null},
  proj(m){if(m.pf===this.fr)return m.pq;const q=1-m.z,s=lerp(.32,1.25,q*q),y=lerp(this.hy(),this.ry??this.rowY(),q),x=W/2+m.u*W*.46*lerp(.45,1,q);m.pf=this.fr;m.pq={x,y,r:H*.055*s*m.T.r};return m.pq},
  spawn(){const T=MON[Math.floor(Math.random()*(this.t<12?2:4))],hp=Math.max(1,Math.round(T.hp*this.c.hp));this.mons.push({T,hp,max:hp,z:1,u:rnd(-.95,.95),ph:rnd(0,6),hit:0,wob:rnd(.2,.6)})},
  fire(p,k,ox,oy,dx,dy){const n=Math.hypot(dx,dy)||1,sp=H*1.7;this.shots.push({x:ox,y:oy,vx:dx/n*sp,vy:dy/n*sp,pi:p.i,life:0});if(this.shots.length>160)this.shots.shift();if(Math.random()<.35)tone(900+k*200,.04,'square',.03)},
- hurt(x,y){if(this.lives<=0)return;this.lives--;shake=12;flashA=.45;flashC='#ff3b30';SFX.oops();floatT(x,y,'OUCH!','#ff5252',46);if(this.lives<=0){this.over=true;this.done=true}},
+ hurt(x,y,tp){const p=tp&&!tp.ko?tp:this.near(x);if(!p)return;this.life[p.i]=Math.max(0,this.life[p.i]-1);shake=12;flashA=.35;flashC='#ff3b30';SFX.oops();const R=refOf(p);floatT(R.x,R.y-R.sw*3,'OUCH!','#ff5252',40);
+  if(this.life[p.i]<=0){p.ko=true;floatT(R.x,R.y-R.sw*3.6,`${NP()>1?PNAME[p.i]+' ':''}K.O.!`,'#ffd23f',56);say(NP()>1?`${PNAME[p.i]} is out!`:'Game over');if(!this.alive().length){this.over=true;this.endT=1.6}}},
  update(dt){this.t+=dt;const c=this.c;this.fr=(this.fr||0)+1;this.ry=this.rowY();
-  for(const p of act()){const cl=this.cool[p.i];cl[0]-=dt;cl[1]-=dt;
+  if(this.over){this.endT-=dt;if(this.endT<=0)this.done=true;this.shots.length=0;return}
+  for(const p of act()){if(p.ko)continue;const cl=this.cool[p.i];cl[0]-=dt;cl[1]-=dt;
    if(motion){if(!p.seen||!p.lm)continue;const l=p.lm,sw=p.sw||40;[[11,15],[12,16]].forEach(([si,wi],k)=>{const s0=l[si],w=l[wi];if(w.v<.4||cl[k]>0)return;cl[k]=.17*(1+.25*(NP()-1));let dx=w.x-s0.x,dy=w.y-s0.y;if(Math.hypot(dx,dy)<sw*.55){dx=(w.x-s0.x)*.3;dy=-sw}if(dy>sw*.3)return;const h=p.hands[k];this.fire(p,k,h.x,h.y,dx,dy)})}
    else{const h=p.hands.find(q=>q.ok);if(h&&cl[0]<=0){cl[0]=.12;const R=refOf(p),ox=R.x,oy=R.y-R.sw*2.2;this.fire(p,0,ox,oy,h.x-ox,h.y-oy)}}}
   const busy=this.boss?.45:1;this.next-=dt*c.rate*busy*(1+this.t/70);if(this.next<=0&&this.mons.length<28){this.next=rnd(.6,1.3);this.spawn()}
   if(!this.boss&&this.bi<this.bossAt.length&&this.t>=this.bossAt[this.bi]){this.bi++;this.boss={x:W/2,y:this.hy()+H*.06,r:H*.12,hp:c.bossHp,max:c.bossHp,dir:1,atk:2,hit:0,t:0};say('Boss incoming!');SFX.rumble();shake=10}
-  for(const m of this.mons){m.z-=dt*.085*m.T.sp*(1+this.t/140);m.u+=Math.sin(this.t*m.wob*3+m.ph)*dt*.12;m.u=clamp(m.u,-1,1);m.hit=Math.max(0,m.hit-dt*6);if(m.z<=0){m.dead=true;const q=this.proj({...m,z:0});this.hurt(q.x,q.y)}}
+  for(const m of this.mons){m.z-=dt*.085*m.T.sp*(1+this.t/140);m.u+=Math.sin(this.t*m.wob*3+m.ph)*dt*.12;m.u=clamp(m.u,-1,1);m.hit=Math.max(0,m.hit-dt*6);if(m.z<=0){m.dead=true;const q=this.proj({...m,z:0,pf:-1});burst(q.x,q.y,[m.T.c,'#fff'],10,H*.2,{gr:300});this.hurt(q.x,q.y)}}
   const B=this.boss;if(B){B.t+=dt;B.hit=Math.max(0,B.hit-dt*6);B.x+=B.dir*W*.12*dt;if(B.x>W*.8||B.x<W*.2)B.dir*=-1;B.atk-=dt;
-   if(B.atk<=0){B.atk=rnd(1.4,2.2)/Math.sqrt(Math.max(1,NP()*.7));const ps=act(),tg=refOf(ps[Math.floor(Math.random()*ps.length)]),ty=tg.y-tg.sw*1.8,n=Math.hypot(tg.x-B.x,ty-B.y)||1;this.fb.push({x:B.x,y:B.y+B.r*.5,vx:(tg.x-B.x)/n*H*.32,vy:(ty-B.y)/n*H*.32,r:H*.028})}
+   if(B.atk<=0){B.atk=rnd(1.4,2.2)/Math.sqrt(Math.max(1,NP()*.7));const ps=this.alive();if(ps.length){const tp=ps[Math.floor(Math.random()*ps.length)],tg=refOf(tp),ty=tg.y-tg.sw*3.9,n=Math.hypot(tg.x-B.x,ty-B.y)||1;this.fb.push({x:B.x,y:B.y+B.r*.5,vx:(tg.x-B.x)/n*H*.3,vy:(ty-B.y)/n*H*.3,r:H*.028,tp})}}
    if(B.t>26){this.boss=null;floatT(W/2,H*.3,'The boss ran away!','#fff',40)}}
-  for(const f of this.fb){f.x+=f.vx*dt;f.y+=f.vy*dt;if(f.y>this.rowY()){f.dead=true;this.hurt(f.x,f.y)}}
+  for(const f of this.fb){f.x+=f.vx*dt;f.y+=f.vy*dt;if(f.y>this.ry){f.dead=true;this.hurt(f.x,f.y,f.tp)}}
   for(const s of this.shots){s.life+=dt;let tgt=null,bd=1e9;for(const m of this.mons){if(m.dead)continue;const q=this.proj(m),d=Math.hypot(q.x-s.x,q.y-s.y);if(d<bd){bd=d;tgt=q}}
-   if(tgt&&bd<H*.35){const sp=Math.hypot(s.vx,s.vy),ax=(tgt.x-s.x)/bd,ay=(tgt.y-s.y)/bd,dot=(s.vx*ax+s.vy*ay)/sp;if(dot>.85){s.vx=lerp(s.vx,ax*sp,dt*4);s.vy=lerp(s.vy,ay*sp,dt*4)}}
+   if(tgt&&bd<H*.5){const sp=Math.hypot(s.vx,s.vy),ax=(tgt.x-s.x)/bd,ay=(tgt.y-s.y)/bd,dot=(s.vx*ax+s.vy*ay)/sp;const cone=S.level==='kids'?.55:S.level==='pro'?.85:.7,turn=S.level==='pro'?4:7;if(dot>cone){s.vx=lerp(s.vx,ax*sp,Math.min(1,dt*turn));s.vy=lerp(s.vy,ay*sp,Math.min(1,dt*turn))}}
    s.x+=s.vx*dt;s.y+=s.vy*dt;if(s.life>1.2||s.y<-20||s.x<-20||s.x>W+20){s.dead=true;continue}
    const p=P[s.pi];for(const m of this.mons){if(m.dead)continue;const q=this.proj(m);if(Math.hypot(q.x-s.x,q.y-s.y)<q.r+6){s.dead=true;m.hp--;m.hit=1;if(m.hp<=0){m.dead=true;p.score+=m.T.pts;floatT(q.x,q.y,'+'+m.T.pts,PCOL[p.i],30);burst(q.x,q.y,[m.T.c,'#fff','#ffd23f'],16,H*.35,{gr:300,sq:true,r:6});noise(.12,.35,1400,1,'bandpass',400)}break}}
    if(!s.dead)for(const f of this.fb){if(!f.dead&&Math.hypot(f.x-s.x,f.y-s.y)<f.r+6){f.dead=true;s.dead=true;p.score+=20;burst(f.x,f.y,['#ff9f1c','#ffd23f'],10,H*.2,{gr:200});break}}
-   const BB=this.boss;if(!s.dead&&BB&&Math.hypot(BB.x-s.x,BB.y-s.y)<BB.r){const B=BB;s.dead=true;B.hp--;B.hit=1;p.score+=15;p.dmg++;if(B.hp<=0){this.boss=null;burst(B.x,B.y,['#ffd23f','#ff7a1a','#fff','#5d4037'],80,H*.8,{gr:250,sq:true,r:9,life:1.6});shake=20;SFX.fanfare();say('Boss defeated!');floatT(W/2,H*.35,'BOSS DEFEATED! +500','#ffd23f',58);act().forEach(q=>q.score+=500)}}}
+   const BB=this.boss;if(!s.dead&&BB&&Math.hypot(BB.x-s.x,BB.y-s.y)<BB.r){const B=BB;s.dead=true;B.hp--;B.hit=1;p.score+=15;p.dmg++;if(B.hp<=0){this.boss=null;burst(B.x,B.y,['#ffd23f','#ff7a1a','#fff','#5d4037'],80,H*.8,{gr:250,sq:true,r:9,life:1.6});shake=20;SFX.fanfare();say('Boss defeated!');floatT(W/2,H*.35,'BOSS DEFEATED! +500','#ffd23f',58);this.alive().forEach(q=>q.score+=500)}}}
   this.mons=this.mons.filter(m=>!m.dead);this.shots=this.shots.filter(s=>!s.dead);this.fb=this.fb.filter(f=>!f.dead);
-  if(this.t>=c.dur){act().forEach(q=>q.score+=300);floatT(W/2,H*.4,'YOU SURVIVED! +300','#7ed957',58);this.done=true}},
+  if(this.t>=c.dur){this.alive().forEach(q=>q.score+=300);floatT(W/2,H*.4,'YOU SURVIVED! +300','#7ed957',58);this.done=true}},
  draw(){g.drawImage(bg('night'),0,0,W,H);const ms=[...this.mons].sort((a,b)=>b.z-a.z);
   for(const m of ms){const q=this.proj(m);g.fillStyle='rgba(0,0,0,.25)';g.beginPath();g.ellipse(q.x,q.y+q.r*1.1,q.r*.9,q.r*.22,0,0,TAU);g.fill();drawMon(m,q.x,q.y,q.r,this.t)}
   if(this.boss)drawBoss(this.boss,this.t);
   for(const f of this.fb){g.fillStyle='#ff7a1a';g.beginPath();g.arc(f.x,f.y,f.r,0,TAU);g.fill();g.fillStyle='#ffd23f';g.beginPath();g.arc(f.x,f.y,f.r*.55,0,TAU);g.fill()}
-  drawPlayers(.95);
+  {const y=this.ry??this.rowY();g.strokeStyle='rgba(255,82,82,.35)';g.setLineDash([16,12]);g.lineWidth=3;g.beginPath();g.moveTo(0,y);g.lineTo(W,y);g.stroke();g.setLineDash([])}
+  for(const p of act()){if(p.ko){const R=refOf(p);g.save();g.globalAlpha=.35;drawPuppet(p,.35);g.restore();txt('K.O.',R.x,R.y-R.sw*2.4,clamp(R.sw*.7,22,48),'#ffd23f',.16)}else if(motion&&!p.seen)drawGhost(p);else drawPuppet(p,.95)}
+  for(const p of act()){const R=refOf(p),n=this.life[p.i];for(let i=0;i<5;i++){const x=R.x-2*22+i*22,y=H-16;g.fillStyle=i<n?'#ff3b5c':'rgba(0,0,0,.45)';g.beginPath();g.moveTo(x,y+7);g.bezierCurveTo(x-11,y-1,x-6,y-11,x,y-5);g.bezierCurveTo(x+6,y-11,x+11,y-1,x,y+7);g.fill()}}
   g.lineCap='round';for(const s of this.shots){g.strokeStyle=PCOL[s.pi];g.lineWidth=7;g.beginPath();g.moveTo(s.x,s.y);g.lineTo(s.x-s.vx*.025,s.y-s.vy*.025);g.stroke();g.fillStyle='#fff';g.beginPath();g.arc(s.x,s.y,4,0,TAU);g.fill()}
   if(motion)for(const p of act()){if(!p.seen)continue;for(const h of p.hands){if(!h.ok)continue;g.strokeStyle=PCOL[p.i];g.lineWidth=4;g.beginPath();g.arc(h.x,h.y,(p.sw||40)*.28,0,TAU);g.stroke()}}
-  const n=this.c.lives,hw=Math.min(30,W*.6/n);for(let i=0;i<n;i++){const x=W/2-(n-1)*hw/2+i*hw,y=Math.max(118,H*.155);g.fillStyle=i<this.lives?'#ff3b5c':'rgba(0,0,0,.4)';g.beginPath();g.moveTo(x,y+8);g.bezierCurveTo(x-14,y-2,x-8,y-14,x,y-6);g.bezierCurveTo(x+8,y-14,x+14,y-2,x,y+8);g.fill()}},
+  if(this.over)txt('GAME OVER',W/2,H*.42,Math.min(96,W*.1),'#ff5252',.12)},
  sc(i){return P[i].score},
- note(){return this.over?'The monsters got through — try again as a team!':'You survived the monster attack!'},
+ note(){return this.over?'GAME OVER — everyone was knocked out. Try again as a team!':`You survived! Hearts left: ${act().map(p=>(NP()>1?PNAME[p.i]+' ':'')+this.life[p.i]).join(', ')}`},
  hud(){return Math.max(0,Math.ceil(this.c.dur-this.t))}};
 
 /* ---------- mini-game: Beat Punch (rhythm boxing) ---------- */
@@ -817,7 +823,7 @@ const HOWTO={
  fruit:{uses:['Hands','Head'],m:['Stand in your spot facing the TV. Your character copies your arms.','<b>Swing your hands fast</b> through the fruit to slice it. Slice 3 in one swing for a <b>combo</b>.','A spinning <b>star</b> comes to your head: <b>head-butt it for +5</b>. Never touch a <b>bomb</b>.'],t:['Swipe your finger fast across the fruit to slice it.','Slice 3 in one swipe for a combo bonus.','Don’t swipe the bombs!']},
  run:{uses:['Legs','Jump'],m:['Face the TV and stand in your spot — <b>don’t walk forward</b>.','<b>Run in place</b>: lift your knees high, left-right-left-right. <b>Faster knees = faster runner.</b> Pumping your arms also works.','When <b>JUMP!</b> flashes, <b>jump with both feet</b> to clear the hurdle. Hit it and you slow down.'],t:['Tap L and R one after the other to run — faster taps, faster runner.','Tap JUMP when JUMP! flashes to clear the hurdle.','First to the finish line wins!']},
  swim:{uses:['Arms'],m:['Face the TV and stand in your spot — <b>your arms do the swimming</b>.','<b>Freestyle</b> ×1.0: one arm over your head, then the other. <b>Breaststroke</b> ×1.1: hands together at your chest, then push out wide. <b>Butterfly</b> ×1.2: both arms over your head together. Stop and you just float.','The pool has <b>zones</b> — the matching stroke is <b>35% faster</b> there. Read the zone sign and switch strokes!'],t:['Tap FREE again and again to swim freestyle.','FROG = breaststroke ×1.1, FLY = butterfly ×1.2.','Each zone makes one stroke 35% faster — switch buttons when the zone changes!']},
- blast:{uses:['Hands (aim)','Upper body is enough'],m:['Stand in your spot. <b>Your hands are blasters</b> — they fire on their own.','<b>Point your arm</b> at a monster to aim; hand straight up shoots forward. Both hands shoot at once.','Stop the naughty animals before they reach you — each one that gets through costs a heart. <b>Bosses</b> appear twice: team up!'],t:['Touch and hold where you want to shoot.','Monsters that reach the bottom cost a heart.','Defeat the boss for +500!']},
+ blast:{uses:['Hands (aim)','Upper body is enough'],m:['Stand in your spot. <b>Your hands are blasters</b> — they fire on their own.','<b>Point your arm</b> at a monster to aim; hand straight up shoots forward. Both hands shoot at once.','Stop the naughty animals before they cross the red line. Each one that gets through — or a boss fireball — costs <b>1 of your 5 hearts</b>. 5 hits = <b>K.O.</b>; everyone K.O. = <b>GAME OVER</b>. Survive 80 seconds to win!'],t:['Touch and hold where you want to shoot.','Monsters that reach the bottom cost a heart.','Defeat the boss for +500!']},
  beat:{uses:['Hands','Squat'],m:['Four targets sit around your body: high left, high right, low left, low right.','When the <b>shrinking ring</b> reaches a target, <b>punch it</b>. Right on the beat = <b>PERFECT</b>. Keeping your hand there does not count.','When the purple bar drops, <b>squat down (DUCK!)</b> under it.'],t:['Tap each target when the shrinking ring reaches it.','Tap the purple bar when it reaches the line to duck.','Keep the combo going for bonus points!']}};
 /* animated stick figure that shows the move for each game */
 function drawDemo(dt){const c=$('#iDemo');if(!c||c.offsetParent===null)return;const x=c.getContext('2d'),W2=c.width,H2=c.height;demoT+=dt;const t=demoT,col=PCOL[0];
