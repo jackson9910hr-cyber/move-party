@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-b5918H4rny5KPksXO5h8tGpm9+pkoYNNyN7LEoA19I8=' 'wasm-unsafe-eval'; connect-src 'self' https://storage.googleapis.com/mediapipe-models/pose_landmarker/ https://0.peerjs.com wss://0.peerjs.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; media-src 'self' blob: mediastream:; worker-src 'self' blob:; frame-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-7EXZ1xk6vUFytz/tpGjoGe4xgaUm3KMDqPZhb3fRz5s=' 'wasm-unsafe-eval'; connect-src 'self' https://storage.googleapis.com/mediapipe-models/pose_landmarker/ https://0.peerjs.com wss://0.peerjs.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; media-src 'self' blob: mediastream:; worker-src 'self' blob:; frame-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="robots" content="noindex,nofollow">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -65,6 +65,8 @@ html,body{margin:0;height:100%;overflow:hidden;background:#e8432f;color:var(--cr
 .mgrid{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.35fr);gap:clamp(12px,2vw,24px)}
 @media (max-width:720px){.mgrid{grid-template-columns:minmax(0,1fr)}}
 .lbl{font:800 14px var(--fb);color:var(--mut);margin:10px 0 6px}
+.lv10{grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}.lv10 .opt{min-height:44px;padding:0;font-size:20px;border-color:hsl(var(--h) 60% 45%)}.lv10 .opt[aria-pressed=true]{background:hsl(var(--h) 65% 42%);color:#fff;border-color:hsl(var(--h) 65% 32%)}
+.lvcap{font:800 14px var(--fb);color:var(--ink);margin-top:6px}
 .opts{display:grid;gap:8px}.two{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(3,minmax(0,1fr))}
 .opt{font:800 19px var(--fh);min-height:clamp(52px,8.5vh,70px);border-radius:18px;border:3px solid var(--line);background:#fff;color:var(--ink);cursor:pointer;padding:0 6px}
 .opt[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:var(--cream)}
@@ -221,7 +223,7 @@ button:focus-visible{outline:4px solid var(--sky);outline-offset:3px}
     <div id="lobby" class="lobby"></div>
     <button id="bAdd" class="db opt add" type="button" hidden>+ Add players with QR</button>
     <div class="lbl">Level</div>
-    <div class="opts three" data-k="level"><button class="db opt" type="button" data-v="kids">Kids</button><button class="db opt" type="button" data-v="family">Family</button><button class="db opt" type="button" data-v="pro">Pro</button></div>
+    <div class="opts lv10" data-k="lv"><button class="db opt" type="button" data-v="1" style="--h:117">1</button><button class="db opt" type="button" data-v="2" style="--h:104">2</button><button class="db opt" type="button" data-v="3" style="--h:91">3</button><button class="db opt" type="button" data-v="4" style="--h:78">4</button><button class="db opt" type="button" data-v="5" style="--h:65">5</button><button class="db opt" type="button" data-v="6" style="--h:52">6</button><button class="db opt" type="button" data-v="7" style="--h:39">7</button><button class="db opt" type="button" data-v="8" style="--h:26">8</button><button class="db opt" type="button" data-v="9" style="--h:13">9</button><button class="db opt" type="button" data-v="10" style="--h:0">10</button></div><div class="lvcap" id="lvCap"></div>
     <div class="lbl">Options</div>
     <div class="opts three"><button id="tMus" class="db opt" type="button">Music</button><button id="tSfx" class="db opt" type="button">Effects</button><button id="tFace" class="db opt" type="button">Face photos</button></div>
    </div>
@@ -327,14 +329,26 @@ const cv=$('#cv'),g=cv.getContext('2d'),video=$('#vid');
 const TAU=Math.PI*2,rnd=(a,b)=>a+Math.random()*(b-a),clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v)),lerp=(a,b,t)=>a+(b-a)*t;
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 const store={get(k,d){try{const v=localStorage.getItem('mp_'+k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem('mp_'+k,JSON.stringify(v))}catch(e){}}};
-const DEF={mode:'party',level:'family',music:true,sfx:true,faces:true};
+const DEF={mode:'party',level:'family',lv:5,music:true,sfx:true,faces:true};
 const saved=store.get('set',{}),S={...DEF};
 for(const k in DEF)if(saved&&typeof saved[k]===typeof DEF[k])S[k]=saved[k];
 if(!['party','fruit','run','swim','beat','blast'].includes(S.mode))S.mode='party';if(!['kids','family','pro'].includes(S.level))S.level='family';
+if(!(Number.isInteger(S.lv)&&S.lv>=1&&S.lv<=10))S.lv={kids:2,family:5,pro:8}[S.level]||5;
+const tierOf=v=>v<=3?'kids':v<=7?'family':'pro';S.level=tierOf(S.lv);
+const LVNAME=v=>v<=3?'쉬움':v<=6?'보통':v<=8?'어려움':'매우 어려움';
+/* difficulty 1..10 from the three tuned anchors: Kids = 2, Family = 5, Pro = 8; 9–10 push past Pro (extra steep) */
+const LVC=new Map();function mixLv(o){const v=S.lv,key=v+':'+JSON.stringify(Object.keys(o.kids||{}))+(o.kids&&o.kids.dist)+(o.kids&&o.kids.thr)+(o.kids&&o.kids.bpm)+(o.kids&&o.kids.rate);if(LVC.has(key))return LVC.get(key);
+ const A=[2,5,8],T=[o.kids,o.family,o.pro],near=T[v<=3?0:v<=6?1:2],out={};
+ const seg=v<=5?0:1,a=T[seg],b=T[seg+1];let u=(v-A[seg])/3;if(v>8)u=1+(v-8)/3*1.35;
+ const one=(x,y)=>{const r=x+(y-x)*u,lo=Math.min(x,y);return lo>0?Math.max(r,lo*.3):r};
+ for(const k of new Set([...Object.keys(a),...Object.keys(b),...Object.keys(near)])){const x=a[k],y=b[k];
+  if(['dist','hur','lim','dur','lives'].includes(k)||x==null||y==null){if(near[k]!=null)out[k]=near[k];continue}
+  if(typeof x==='number'&&typeof y==='number')out[k]=one(x,y);else if(Array.isArray(x)&&Array.isArray(y)&&x.length===y.length&&x.every(n=>typeof n==='number'))out[k]=x.map((n,i)=>one(n,y[i]));else out[k]=near[k]}
+ LVC.set(key,out);return out}
 const LV={kids:{thr:.5,grav:.72,bomb:0,poseT:5.6,pass:.5,hole:.85,size:1.25,rise:.8,cloud:0,mult:.7,tol:78},
  family:{thr:.8,grav:1,bomb:.1,poseT:4.5,pass:.6,hole:.68,size:1,rise:1,cloud:.08,mult:1,tol:62},
  pro:{thr:1.1,grav:1.2,bomb:.18,poseT:3.4,pass:.7,hole:.56,size:.86,rise:1.25,cloud:.14,mult:1.3,tol:50}};
-const L=()=>LV[S.level];
+const L=()=>mixLv(LV);
 const PCOL=['#1e88ff','#ff3d7f','#18b85a','#ff8a00'],PNAME=['Blue','Pink','Green','Orange'];
 let W=innerWidth,H=innerHeight,DPR=1,bgc={},F={x:0,y:0,w:W,h:H},M={s:1,ox:0,oy:0};
 function resize(){DPR=Math.min(1.25,devicePixelRatio||1);W=innerWidth;H=innerHeight;cv.width=Math.round(W*DPR);cv.height=Math.round(H*DPR);g.setTransform(DPR,0,0,DPR,0,0);bgc={}}
@@ -619,7 +633,7 @@ function drawRunner(r,x,y,s){const h=H*.3*s;if(h<7){g.fillStyle=r.c;g.beginPath(
   const fc=P[r.pi].face;if(fc&&S.faces){const fr=Math.max(16,h*.11),fy=ty-13-fr-3;g.save();g.beginPath();g.arc(x,fy,fr,0,TAU);g.clip();g.drawImage(fc,x-fr,fy-fr,fr*2,fr*2);g.restore();g.lineWidth=3;g.strokeStyle=r.c;g.beginPath();g.arc(x,fy,fr,0,TAU);g.stroke()}}
  r.sx=x;r.sy=y-air-h}
 G.run={title:'스프린트 대시',how:'제자리에서 팔을 힘차게 흔들며 달려요! 두 손을 번쩍 들면 점프!',howK:'제자리에서 힘차게 달려요! 두 손을 번쩍 들면 점프!',howT:'왼발·오른발 버튼을 번갈아 눌러 달려요. 점프 버튼으로 허들을 넘어요!',th:[150,230,300],
- cfg(){return{kids:{dist:60,hur:[25,45],cpu:[2.6,3.7],vmax:7,lim:40,eng:[.3,1.7]},family:{dist:100,hur:[30,55,80],cpu:[4.1,5.4],vmax:8.6,lim:40,eng:[.35,2.1]},pro:{dist:100,hur:[20,40,60,80],cpu:[5.8,7.1],vmax:9.6,lim:35,eng:[.4,2.5]}}[S.level]},
+ cfg(){return{...mixLv({kids:{dist:60,hur:[25,45],cpu:[2.6,3.7],vmax:7,lim:40,eng:[.3,1.7]},family:{dist:100,hur:[30,55,80],cpu:[4.1,5.4],vmax:8.6,lim:40,eng:[.35,2.1]},pro:{dist:100,hur:[20,40,60,80],cpu:[5.8,7.1],vmax:9.6,lim:35,eng:[.4,2.5]}})}},
  init(){const c=this.cfg();this.c=c;this.t=0;this.done=false;this.places=0;this.endT=0;const hs=act(),hl=[[2],[1,3],[1,2,3],[0,1,3,4]][hs.length-1];this.r=[];let ci=0;
   for(let ln=0;ln<5;ln++){const k=hl.indexOf(ln),hi=k>=0?hs[k].i:-1;if(hi>=0)this.r.push({lane:ln,human:true,pi:hi,n:PNAME[hi],c:PCOL[hi],d:0,v:0,ph:0,air:0,stum:0,fin:false,time:0,place:0,hi:0});
    else{const R=RUNNERS[ci++%4];this.r.push({lane:ln,human:false,n:R.n,c:R.c,d:0,v:0,ph:rnd(0,6),air:0,stum:0,fin:false,time:0,place:0,hi:0,vt:rnd(c.cpu[0],c.cpu[1]),skill:rnd(.8,.96)})}}
@@ -676,7 +690,7 @@ function swimInput(p,now){const Q=p.swim,l=p.lm,out=[];if(!Q||!motion||!p.seen||
   if(mid&&d<.95){Q.br=1;Q.brT=now}else if(Q.br===1&&mid&&d>2.3&&now-Q.brT<800&&Math.abs(a.y-b.y)<sw*.8&&!Q.top[0]&&!Q.top[1]){Q.br=0;out.push('breast')}else if(Q.br===1&&now-Q.brT>=800)Q.br=0}
  return out}
 G.swim={title:'수영 대회',th:[150,230,300],
- cfg(){return{kids:{dist:25,cpu:[1.2,1.7],lim:45},family:{dist:50,cpu:[1.9,2.5],lim:50},pro:{dist:50,cpu:[2.4,3]},}[S.level]},
+ cfg(){return{...mixLv({kids:{dist:25,cpu:[1.2,1.7],lim:45},family:{dist:50,cpu:[1.9,2.5],lim:50},pro:{dist:50,cpu:[2.4,3],lim:50}})}},
  init(){const c=this.cfg();c.lim=c.lim||45;c.zl=c.dist/4;this.c=c;this.t=0;this.done=false;this.places=0;this.endT=0;this.zi=-1;this.ban=0;
   const z=shuffle(['free','fly','breast']);this.zones=[...z,shuffle(['free','fly','breast'])[0]];
   const hs=act(),hl=[[2],[1,3],[1,2,3],[0,1,3,4]][hs.length-1];this.r=[];let ci=0;
@@ -803,9 +817,9 @@ function drawBoss(b,t){const r=b.r,x=b.x,y=b.y+Math.sin(t*2)*8;g.save();g.transl
  if(b.rage){g.strokeStyle='rgba(255,40,40,.5)';g.lineWidth=r*.06;g.beginPath();g.arc(0,0,r*1.25+Math.sin(t*10)*r*.05,0,TAU);g.stroke()}g.restore();
  const bw=Math.min(W*.5,420),bx=W/2-bw/2,by=Math.max(150,H*.2);g.fillStyle='rgba(0,0,0,.55)';g.fillRect(bx-4,by-4,bw+8,22);g.fillStyle='#ff5252';g.fillRect(bx,by,bw*b.hp/b.max,14);txt(b.rage?'BOSS — KING GRUMBLE IS ANGRY!':'BOSS — KING GRUMBLE',W/2,by-16,20,b.rage?'#ff5252':'#ffd23f',.14)}
 G.blast={title:'Monster Blaster',th:[1500,3000,4500],
- cfg(){const n=Math.max(1,NP()),b={kids:{rate:.75,hp:.8,spd:.8,bossHp:.7,atk:2.8,fb:.19,shots:1,step:.05,cone:.55,turn:7,charge:1,elite:0},
+ cfg(){const n=Math.max(1,NP()),b0={kids:{rate:.75,hp:.8,spd:.8,bossHp:.7,atk:2.8,fb:.19,shots:1,step:.05,cone:.55,turn:7,charge:1,elite:0},
   family:{rate:1.15,hp:1,spd:1,bossHp:1,atk:2,fb:.25,shots:1,step:.07,cone:.7,turn:7,charge:1.2,elite:.06},
-  pro:{rate:1.6,hp:1.3,spd:1.2,bossHp:1.45,atk:1.5,fb:.29,shots:2,step:.09,cone:.85,turn:4,charge:1.4,elite:.14}}[S.level];
+  pro:{rate:1.6,hp:1.3,spd:1.2,bossHp:1.45,atk:1.5,fb:.29,shots:2,step:.09,cone:.85,turn:4,charge:1.4,elite:.14}};const bb=mixLv(b0);const b={...bb,shots:Math.max(1,Math.round(bb.shots)),cone:Math.min(.97,bb.cone),elite:Math.min(.4,Math.max(0,bb.elite))};
   return{...b,rate:b.rate*(1+.55*(n-1)),bossHp:Math.round(60*b.bossHp*(1+.7*(n-1))),lives:5,dur:90}},
  init(){this.c=this.cfg();this.t=0;this.done=false;this.mons=[];this.shots=[];this.fb=[];this.next=1.2;this.life=[5,5,5,5];P.forEach(p=>p.ko=false);this.boss=null;this.bossAt=[24,58];this.bi=0;this.endT=0;this.over=false;this.cool=[[0,0],[0,0],[0,0],[0,0]];
   this.ch=[0,1,2,3].map(()=>({v:0,on:false,x:0,y:0,cd:0}));P.forEach(p=>p.dmg=0);$('#runpads').hidden=true},
@@ -897,7 +911,7 @@ G.blast={title:'Monster Blaster',th:[1500,3000,4500],
 /* ---------- mini-game: Beat Punch (rhythm boxing) ---------- */
 const ZONES=[{x:-1.55,y:-1.15},{x:1.55,y:-1.15},{x:-2,y:.35},{x:2,y:.35}],ZC=['#ff3d7f','#29b6f6','#ffd23f','#7ed957'];
 G.beat={title:'Beat Punch',how:'Punch each target right when the shrinking ring reaches it. Perfect timing scores big — keep the combo going!',howK:'Punch the targets when the ring gets small! Follow the beat!',howT:'Tap each target right when the shrinking ring reaches it!',
- cfg(){return{kids:{bpm:92,ap:1.8,win:.27,per:.11,r:.78},family:{bpm:108,ap:1.4,win:.2,per:.085,r:.64},pro:{bpm:124,ap:1.1,win:.16,per:.065,r:.54}}[S.level]},
+ cfg(){const c={...mixLv({kids:{bpm:92,ap:1.8,win:.27,per:.11,r:.78},family:{bpm:108,ap:1.4,win:.2,per:.085,r:.64},pro:{bpm:124,ap:1.1,win:.16,per:.065,r:.54}})};c.bpm=Math.round(c.bpm);c.r=clamp(c.r,.42,.9);return c},
  init(){const c=this.cfg();this.c=c;this.done=false;this.started=false;this.t0=0;this.paused=null;this.useAC=false;this.lat=0;this.notes=this.chart(c);this.end=this.notes[this.notes.length-1].t+2;
   this.st=[0,1,2,3].map(()=>({hit:0,per:0,combo:0,best:0}));this.pulse=0;this.lastBeat=-1;this.glow=[];P.forEach(p=>{p.zin=[[0,0,0,0],[0,0,0,0]];p.bz=null;p.zs=null;p.zblk=[0,0,0,0]});$('#runpads').hidden=true},
  chart(c){const sp=60/c.bpm,N=[],pat={kids:[[0,null,1,null],[2,null,3,null],[0,null,2,null],[1,null,3,null],[0,null,null,1]],
@@ -968,8 +982,8 @@ function syncFs(){const t=isApp()?'App mode':fsEl()?'Exit full screen':'Full scr
 $('#bFs').onclick=$('#bFs2').onclick=()=>{SFX.select();toggleFs()};
 document.addEventListener('fullscreenchange',syncFs);document.addEventListener('webkitfullscreenchange',syncFs);
 let tT=null;function toast(m,ms=4000){const t=$('#toast');t.textContent=m;t.hidden=false;clearTimeout(tT);tT=setTimeout(()=>t.hidden=true,ms)}
-function syncMenu(){$$('[data-k]').forEach(gp=>{const k=gp.dataset.k;gp.querySelectorAll('[data-v]').forEach(b=>b.setAttribute('aria-pressed',String(String(S[k])===b.dataset.v)))});$('#tMus').setAttribute('aria-pressed',String(S.music));$('#tFace').setAttribute('aria-pressed',String(S.faces));$('#tSfx').setAttribute('aria-pressed',String(S.sfx))}
-$$('[data-k]').forEach(gp=>gp.addEventListener('click',e=>{const b=e.target.closest('[data-v]');if(!b)return;const k=gp.dataset.k,v=b.dataset.v;S[k]=k==='players'?Number(v):v;store.set('set',S);syncMenu();SFX.select()}));
+function syncMenu(){const lc=$('#lvCap');if(lc)lc.textContent=`Level ${S.lv} · ${LVNAME(S.lv)}${S.lv<=3?' — 아이도 쉽게':S.lv>=9?' — 진짜 어려워요!':''}`;$$('[data-k]').forEach(gp=>{const k=gp.dataset.k;gp.querySelectorAll('[data-v]').forEach(b=>b.setAttribute('aria-pressed',String(String(S[k])===b.dataset.v)))});$('#tMus').setAttribute('aria-pressed',String(S.music));$('#tFace').setAttribute('aria-pressed',String(S.faces));$('#tSfx').setAttribute('aria-pressed',String(S.sfx))}
+$$('[data-k]').forEach(gp=>gp.addEventListener('click',e=>{const b=e.target.closest('[data-v]');if(!b)return;const k=gp.dataset.k,v=b.dataset.v;S[k]=k==='players'||k==='lv'?Number(v):v;if(k==='lv'){S.level=tierOf(S.lv);LVC.clear()};store.set('set',S);syncMenu();SFX.select()}));
 $('#tMus').onclick=()=>{S.music=!S.music;applyVol();store.set('set',S);syncMenu();SFX.select()};
 $('#tFace').onclick=()=>{S.faces=!S.faces;P.forEach(p=>p.face=null);bcast();store.set('set',S);syncMenu();SFX.select();toast(S.faces?'Face photos on: a photo is taken when each player steps in.':'Face photos off: cartoon faces, no photos taken.',4500)};
 $('#tSfx').onclick=()=>{S.sfx=!S.sfx;applyVol();store.set('set',S);syncMenu();SFX.select()};
@@ -1027,11 +1041,11 @@ addEventListener('keydown',e=>{if(e.key==='Escape')pauseGame()});
 $('#bResume').onclick=()=>{bcast();if(AC&&AC.state!=='running')AC.resume().catch(()=>{});SFX.select();show(null);state='count';ct=2.999;lastN=4;if(gname==='run'&&!motion)$('#runpads').hidden=false};
 $('#bRestart').onclick=()=>{SFX.select();startIntro()};
 $('#bQuit').onclick=()=>{SFX.select();goMenu()};
-function endGame(){state='result';$('#hud').hidden=true;$('#runpads').hidden=true;const m=L().mult,ps=act(),two=ps.length>1,bestKey=`best_${gname}_${S.level}`,best=store.get(bestKey,0);let top=0;
+function endGame(){state='result';$('#hud').hidden=true;$('#runpads').hidden=true;const m=L().mult,ps=act(),two=ps.length>1,bestKey=`best_${gname}_L${S.lv}`,best=store.get(bestKey,0);let top=0;
  const rows=act().map(p=>{const st=game.starsFor?game.starsFor(p):game.th.filter(v=>p.score>=Math.round(v*m)).length;p.stars+=st;p.total+=p.score;p.hist.push({g:game.title,s:p.score,st});top=Math.max(top,p.score);return{p,st}});
  let head;if(two){const mx=Math.max(...ps.map(p=>p.score)),tops=ps.filter(p=>p.score===mx);if(tops.length>1)head='It’s a tie!';else{const w=tops[0];w.stars+=1;w.hist[w.hist.length-1].win=1;head=`${PNAME[w.i]} wins!`}}else{const st=rows[0].st;head=['Nice try!','Good job!','Great moves!','Superstar!'][st]}
  const isNew=top>best;if(isNew)store.set(bestKey,top);
- $('#rKick').textContent=`${game.title} · ${S.level[0].toUpperCase()+S.level.slice(1)}`;$('#rTitle').textContent=head;
+ $('#rKick').textContent=`${game.title} · Level ${S.lv} (${LVNAME(S.lv)})`;$('#rTitle').textContent=head;
  $('#rRows').innerHTML=rows.map(({p,st})=>`<div class="rr"><span class="who" style="background:${PCOL[p.i]}">${two?PNAME[p.i]:'You'}</span><span class="pts">${p.score|0}${isNew&&p.score===top&&top>0?'<span class="newb">NEW BEST</span>':''}</span><span class="stars">${'<u>★</u>'.repeat(st)}${'★'.repeat(3-st)}</span></div>`).join('');
  $('#rNote').textContent=(game.note?game.note()+' · ':'')+`Best on this iPad: ${Math.max(best,top)}${two?' · Game winner gets +1 bonus star':''}`;
  const party=queue.length>1,stand=$('#rStand');stand.hidden=!party;if(party){const mx=Math.max(3,...act().map(p=>p.stars));stand.innerHTML=`<b>Tournament standings · after round ${gi+1} of ${queue.length}</b>`+act().map(p=>`<div class="sb"><span style="color:${PCOL[p.i]}">${two?PNAME[p.i]:'You'}</span><i><u style="width:0;background:${PCOL[p.i]}" data-w="${Math.round(Math.min(1,p.stars/(queue.length*(two?4:3)))*100)}"></u></i><span>${p.stars}★</span></div>`).join('');requestAnimationFrame(()=>requestAnimationFrame(()=>stand.querySelectorAll('u').forEach(u=>u.style.width=u.dataset.w+'%')))}
@@ -1144,7 +1158,7 @@ window.__mpRace={ready(api){const fr=$('#rfr');if(RACE.ph!=='drive'||!fr||!api||
  audio(){return AC}};
 const raceOK=p=>!!(p&&p.on&&!p.gone&&p.conn&&p.conn.open);
 const racers=()=>P.filter(p=>p.i>0&&p.on&&!p.pending&&raceOK(p));
-function raceConf(){return{track:RACE.track,diff:{kids:1,family:3,pro:5}[S.level]||3,cars:RACE.k.map((pi,j)=>({ty:RACE.sel[j].ty,co:RACE.sel[j].co,nm:PNAME[pi],pc:PCOL[pi],face:P[pi].face&&S.faces?fu(P[pi].face):''}))}}
+function raceConf(){return{track:RACE.track,diff:S.lv,cars:RACE.k.map((pi,j)=>({ty:RACE.sel[j].ty,co:RACE.sel[j].co,nm:PNAME[pi],pc:PCOL[pi],face:P[pi].face&&S.faces?fu(P[pi].face):''}))}}
 function raceGo(){const ph=racers();
  if(!ph.length){openRace(false);return}
  if(ph.length<2){toast('Turbo Circuit for 2 needs 2 joined phones — add one more with + Add players. (With no phones joined, it’s a 1-player race on this iPad.)',7000);return}
