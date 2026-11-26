@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-PsRtixoli5l5oK9s67UIeG8hUsYeXqA8Ryd+d9uI8GM=' 'wasm-unsafe-eval'; connect-src 'self' https://storage.googleapis.com/mediapipe-models/pose_landmarker/; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; media-src 'self' blob: mediastream:; worker-src 'self' blob:; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-pXNJervGTEe5XXSKMGTFTb8eQ7OIiPT4S79rFFyqdsQ=' 'wasm-unsafe-eval'; connect-src 'self' https://storage.googleapis.com/mediapipe-models/pose_landmarker/; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; media-src 'self' blob: mediastream:; worker-src 'self' blob:; manifest-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="robots" content="noindex,nofollow">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#e8432f">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
 <title>Move Party</title>
 <style>@font-face{font-family:'Baloo 2';font-weight:600;font-display:swap;src:url(fonts/baloo-2-latin-600-normal.woff2) format('woff2')}@font-face{font-family:'Baloo 2';font-weight:800;font-display:swap;src:url(fonts/baloo-2-latin-800-normal.woff2) format('woff2')}@font-face{font-family:'Nunito';font-weight:600;font-display:swap;src:url(fonts/nunito-latin-600-normal.woff2) format('woff2')}@font-face{font-family:'Nunito';font-weight:800;font-display:swap;src:url(fonts/nunito-latin-800-normal.woff2) format('woff2')}</style>
 <style>
@@ -37,7 +40,10 @@ html,body{margin:0;height:100%;overflow:hidden;background:#e8432f;color:var(--cr
 @keyframes fade{from{opacity:0}to{opacity:1}}
 @keyframes bob{50%{transform:translateY(-6px)}}
 @keyframes pulse{50%{transform:scale(1.08)}}
-.card{background:var(--cream);color:var(--ink);border-radius:28px;box-shadow:0 12px 0 rgba(0,0,0,.18),0 30px 60px rgba(0,0,0,.3);padding:clamp(14px,2.3vw,26px);width:min(980px,100%);max-height:100%;overflow:auto}
+.card{background:var(--cream);color:var(--ink);border-radius:28px;box-shadow:0 12px 0 rgba(0,0,0,.18),0 30px 60px rgba(0,0,0,.3);padding:clamp(14px,2.3vw,26px);width:min(980px,100%);flex:none;transform-origin:center center}
+.scr{overflow:hidden}
+.mtools{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.fs{font:800 14px var(--fb);background:var(--ink);color:var(--cream);border:0;border-radius:99px;min-height:40px;padding:0 16px;cursor:pointer}
 .mhead{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
 .mlogo{font:800 34px/1 var(--fh);color:var(--red);transform:rotate(-3deg)}.mlogo b{color:var(--ink)}
 .mode{font:800 14px var(--fb);background:#f1e6d4;border-radius:99px;padding:6px 14px;display:flex;align-items:center;gap:8px}
@@ -108,7 +114,7 @@ button:focus-visible{outline:4px solid var(--sky);outline-offset:3px}
 .ftab td,.ftab th{padding:7px 8px;border-bottom:2px solid var(--line);text-align:left}
 .ftab th{font-size:13px;color:var(--mut)}.ftab td.n{text-align:right;font:800 18px var(--fh);font-variant-numeric:tabular-nums;white-space:nowrap}
 #toast{position:absolute;left:50%;bottom:calc(18px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--ink);color:var(--cream);font:700 15px var(--fb);border-radius:16px;padding:10px 18px;width:max-content;max-width:min(640px,92vw);text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.35)}
-#camBadge{position:absolute;right:calc(14px + env(safe-area-inset-right));top:calc(70px + env(safe-area-inset-top));font:800 12px var(--fb);background:rgba(0,0,0,.55);color:#fff;border-radius:99px;padding:4px 10px;display:flex;align-items:center;gap:6px;pointer-events:none}
+#camBadge{position:absolute;right:calc(14px + env(safe-area-inset-right));bottom:calc(12px + env(safe-area-inset-bottom));z-index:5;font:800 12px var(--fb);background:rgba(0,0,0,.55);color:#fff;border-radius:99px;padding:4px 10px;display:flex;align-items:center;gap:6px;pointer-events:none}
 #camBadge::before{content:"";width:8px;height:8px;border-radius:50%;background:#25d366}
 #rot{position:absolute;inset:0;background:var(--red);display:none;align-items:center;justify-content:center;text-align:center;font:800 30px/1.2 var(--fh);padding:30px;z-index:30}
 @media (orientation:portrait) and (pointer:coarse){#rot{display:flex}}
@@ -127,7 +133,7 @@ button:focus-visible{outline:4px solid var(--sky);outline-offset:3px}
 
 <section id="menu" class="scr" hidden>
  <div class="card">
-  <div class="mhead"><div class="mlogo">MOVE <b>PARTY!</b></div><div id="mode" class="mode">Starting camera…</div></div>
+  <div class="mhead"><div class="mlogo">MOVE <b>PARTY!</b></div><div class="mtools"><button id="bFs" class="fs" type="button">Full screen</button><div id="mode" class="mode">Starting camera…</div></div></div>
   <div class="mgrid">
    <div>
     <div class="lbl">Players</div>
@@ -171,7 +177,7 @@ button:focus-visible{outline:4px solid var(--sky);outline-offset:3px}
 </div>
 
 <section id="pause" class="scr dim" hidden>
-  <div class="card icard"><h2>Paused</h2><div class="row"><button id="bResume" class="db go" type="button">Resume</button></div><div class="row"><button id="bRestart" class="db btn" type="button">Restart</button><button id="bQuit" class="db btn" type="button">Menu</button></div></div>
+  <div class="card icard"><h2>Paused</h2><div class="row"><button id="bResume" class="db go" type="button">Resume</button></div><div class="row"><button id="bFs2" class="btn" type="button">Full screen</button></div><div class="row"><button id="bRestart" class="db btn" type="button">Restart</button><button id="bQuit" class="db btn" type="button">Menu</button></div></div>
 </section>
 
 <section id="result" class="scr dim" hidden>
@@ -351,7 +357,7 @@ function drawPuppet(p,alpha=1){const l=p.lm;if(!motion||!l||!p.seen)return;const
 const drawPlayers=(a=.96)=>act().forEach(p=>drawPuppet(p,a));
 function drawTrails(){for(const p of act())for(const h of p.hands){const tr=h.trail;if(!h.ok||tr.length<2)continue;const fast=h.sp>L().thr*F.h;g.lineCap='round';for(let i=1;i<tr.length;i++){const k=i/tr.length;g.strokeStyle=fast?`rgba(255,255,255,${k*.95})`:`rgba(255,255,255,${k*.3})`;g.lineWidth=(fast?F.h*.022:F.h*.01)*k+1;g.beginPath();g.moveTo(tr[i-1].x,tr[i-1].y);g.lineTo(tr[i].x,tr[i].y);g.stroke()}}}
 function drawCursors(){if(!motion)return;for(const p of act()){if(!p.seen)continue;for(const h of p.hands){if(!h.ok)continue;g.fillStyle=PCOL[p.i]+'aa';g.strokeStyle='#fff';g.lineWidth=5;g.beginPath();g.arc(h.x,h.y,24,0,TAU);g.fill();g.stroke();g.fillStyle='#fff';g.beginPath();g.arc(h.x,h.y,6,0,TAU);g.fill()}}}
-function drawPIP(){if(!motion||!stream||!video.videoWidth)return;const w=Math.min(W*.16,210),h=w*video.videoHeight/video.videoWidth,x=W-w-14,y=H-h-14;g.save();g.beginPath();g.roundRect?g.roundRect(x,y,w,h,14):g.rect(x,y,w,h);g.clip();g.translate(x+w,y);g.scale(-1,1);g.drawImage(video,0,0,w,h);g.restore();g.strokeStyle='#fff';g.lineWidth=3;g.beginPath();g.roundRect?g.roundRect(x,y,w,h,14):g.rect(x,y,w,h);g.stroke()}
+function drawPIP(){if(!motion||!stream||!video.videoWidth)return;const w=Math.min(W*.16,210),h=w*video.videoHeight/video.videoWidth,x=W-w-14,y=H-h-48;g.save();g.beginPath();g.roundRect?g.roundRect(x,y,w,h,14):g.rect(x,y,w,h);g.clip();g.translate(x+w,y);g.scale(-1,1);g.drawImage(video,0,0,w,h);g.restore();g.strokeStyle='#fff';g.lineWidth=3;g.beginPath();g.roundRect?g.roundRect(x,y,w,h,14):g.rect(x,y,w,h);g.stroke()}
 
 /* ---------- dwell-to-click menus (hover a hand on a button) ---------- */
 const dw={el:null,t:0,block:null};
@@ -478,13 +484,24 @@ G.balloon={title:'Balloon Pop',dur:40,how:'Pop balloons with your hands or head.
 /* ---------- flow ---------- */
 let state='title',queue=[],gi=0,game=null,gname='',ct=0,lastN=0,introT=0,lastClock=-1;
 const SCR=['title','menu','calib','intro','pause','result','final'];
-function show(n){SCR.forEach(k=>$('#'+k).hidden=k!==n)}
+function show(n){SCR.forEach(k=>$('#'+k).hidden=k!==n);fitCards()}
+/* shrink a menu card to fit the screen instead of scrolling (Safari bars, short landscape screens) */
+function fitCards(){for(const c of $$('.scr:not([hidden]) .card')){c.style.transform='';const sh=c.offsetHeight,sw=c.offsetWidth,ah=innerHeight-24,aw=innerWidth-24,k=Math.min(1,ah/sh,aw/sw);if(k<1)c.style.transform=`scale(${k})`}}
+addEventListener('resize',()=>setTimeout(fitCards,60));
+/* full screen: Fullscreen API on iPad Safari; Home Screen app runs without Safari bars */
+const isApp=()=>matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
+const fsEl=()=>document.fullscreenElement||document.webkitFullscreenElement;
+function enterFs(){if(isApp()||fsEl())return;const e=document.documentElement,f=e.requestFullscreen||e.webkitRequestFullscreen;if(f){try{const r=f.call(e);if(r&&r.catch)r.catch(()=>{})}catch(err){}}}
+function toggleFs(){if(fsEl()){(document.exitFullscreen||document.webkitExitFullscreen)?.call(document)}else{enterFs();setTimeout(()=>{if(!fsEl()&&!isApp())toast('If full screen doesn’t start: Share → Add to Home Screen, then open Move Party from the icon.',7000)},700)}}
+function syncFs(){const t=isApp()?'App mode':fsEl()?'Exit full screen':'Full screen';$('#bFs').textContent=t;$('#bFs2').textContent=t;$('#bFs').disabled=$('#bFs2').disabled=isApp();setTimeout(fitCards,120)}
+$('#bFs').onclick=$('#bFs2').onclick=()=>{SFX.select();toggleFs()};
+document.addEventListener('fullscreenchange',syncFs);document.addEventListener('webkitfullscreenchange',syncFs);
 let tT=null;function toast(m,ms=4000){const t=$('#toast');t.textContent=m;t.hidden=false;clearTimeout(tT);tT=setTimeout(()=>t.hidden=true,ms)}
 function syncMenu(){$$('[data-k]').forEach(gp=>{const k=gp.dataset.k;gp.querySelectorAll('[data-v]').forEach(b=>b.setAttribute('aria-pressed',String(String(S[k])===b.dataset.v)))});$('#tMus').setAttribute('aria-pressed',String(S.music));$('#tSfx').setAttribute('aria-pressed',String(S.sfx))}
 $$('[data-k]').forEach(gp=>gp.addEventListener('click',e=>{const b=e.target.closest('[data-v]');if(!b)return;const k=gp.dataset.k,v=b.dataset.v;S[k]=k==='players'?Number(v):v;store.set('set',S);syncMenu();SFX.select()}));
 $('#tMus').onclick=()=>{S.music=!S.music;applyVol();store.set('set',S);syncMenu();SFX.select()};
 $('#tSfx').onclick=()=>{S.sfx=!S.sfx;applyVol();store.set('set',S);syncMenu();SFX.select()};
-$('#bStart').onclick=$('#title').onclick=e=>{if(state!=='title')return;e.stopPropagation();initAudio();if(AC&&AC.state==='suspended')AC.resume();SFX.select();playSong('menu');try{navigator.wakeLock?.request('screen').catch(()=>{})}catch(e){}
+$('#bStart').onclick=$('#title').onclick=e=>{if(state!=='title')return;e.stopPropagation();enterFs();initAudio();if(AC&&AC.state==='suspended')AC.resume();SFX.select();playSong('menu');try{navigator.wakeLock?.request('screen').catch(()=>{})}catch(e){}
  $('#bGo').disabled=true;$('#bGo').textContent='Starting camera…';goMenu();initCamera()};
 function goMenu(){state='menu';show('menu');$('#hud').hidden=true;$('#choices').hidden=true;playSong('menu');syncMenu()}
 $('#bGo').onclick=()=>{if(!camReady)return;queue=S.mode==='party'?['fruit','wall','balloon']:[S.mode];gi=0;P.forEach(p=>{p.stars=0;p.total=0;p.hist=[]});SFX.select();
@@ -554,7 +571,7 @@ function loop(now){const dt=Math.min(.05,(now-last)/1000);last=now;
   if(state==='intro'){introT+=dt;if(introT>9)startCount()}
  }catch(err){console.error(err)}
  requestAnimationFrame(loop)}
-resize();syncMenu();requestAnimationFrame(loop);
+resize();syncMenu();syncFs();requestAnimationFrame(loop);
 }
 </script>
 </body></html>
