@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-PyeOTRKZpaAH9Fa6LNlxiN9keUDzM507akWn9D/phmc=' 'wasm-unsafe-eval'; connect-src 'self' https://storage.googleapis.com/mediapipe-models/pose_landmarker/ https://0.peerjs.com wss://0.peerjs.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; media-src 'self' blob: mediastream:; worker-src 'self' blob:; manifest-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-ZHv1r3OS71LkntAOBpnNx0okyYdLgzURE23Mj/mgriw=' 'wasm-unsafe-eval'; connect-src 'self' https://storage.googleapis.com/mediapipe-models/pose_landmarker/ https://0.peerjs.com wss://0.peerjs.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; media-src 'self' blob: mediastream:; worker-src 'self' blob:; frame-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="robots" content="noindex,nofollow">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -153,6 +153,53 @@ button:focus-visible{outline:4px solid var(--sky);outline-offset:3px}
 #rot{position:absolute;inset:0;background:var(--red);display:none;align-items:center;justify-content:center;text-align:center;font:800 30px/1.2 var(--fh);padding:30px;z-index:30}
 @media (orientation:portrait) and (pointer:coarse){#rot{display:flex}}
 @media (prefers-reduced-motion:reduce){.l1,.l2,.tag,.pill,#clock.hot{animation:none!important}}
+
+/* Turbo Circuit */
+#rwrap{position:fixed;inset:0;z-index:60;background:#14171c}
+#rwrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
+#rwrap.two #rExit{left:auto;top:calc(10px + env(safe-area-inset-top));right:calc(10px + env(safe-area-inset-right));transform:none}
+#rExit{position:absolute;left:calc(8px + env(safe-area-inset-left));top:50%;transform:translateY(-50%);z-index:2;width:46px;height:46px;border-radius:50%;border:2px solid rgba(255,255,255,.55);background:rgba(0,0,0,.45);color:#fff;font:800 20px var(--fb);cursor:pointer}
+.rcard{width:min(860px,100%)}
+.rps{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0}
+.rp{border-radius:20px;padding:12px;border:4px solid var(--line);background:#fff;text-align:center;display:flex;flex-direction:column;align-items:center;gap:4px}
+.rp.rd{border-color:#1fa34a;background:#effaf1}
+.rpn{display:inline-flex;align-items:center;gap:8px;color:#fff;font:800 17px var(--fb);border-radius:99px;padding:4px 14px 4px 6px}
+.rpn img{width:30px;height:30px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 2px #fff}
+.rp svg{width:100%;max-width:230px;height:auto}
+.rp b{font:800 24px var(--fh);line-height:1}
+.rp .st{font:800 15px var(--fb);color:var(--mut)}.rp.rd .st{color:#1fa34a}
+.trks{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.trks button{font:800 16px var(--fb);min-height:48px;border-radius:14px;border:3px solid var(--line);background:#fff;color:var(--ink);cursor:pointer}
+.trks button[aria-pressed=true]{border-color:var(--ink);background:#ffd23f}
+.rrl{display:flex;flex-direction:column;gap:10px;margin:12px 0}
+.rrow{display:grid;grid-template-columns:76px minmax(0,1fr) auto;align-items:center;gap:12px;background:#fff;border:3px solid var(--line);border-radius:18px;padding:10px 14px}
+.rrow.win{border-color:#ffb300;background:#fff7d6}
+.rrow .pl{font:800 34px var(--fh);line-height:1}.rrow .tm{font:800 22px var(--fh)}.rrow small{display:block;color:var(--mut);font:700 14px var(--fb)}
+#jpad{position:absolute;inset:0;z-index:6;background:#14171c;color:#fff;display:flex;flex-direction:column;padding:calc(10px + env(safe-area-inset-top)) calc(10px + env(safe-area-inset-right)) calc(10px + env(safe-area-inset-bottom)) calc(10px + env(safe-area-inset-left));touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;overscroll-behavior:none}
+#jpad .jbadge{font-size:clamp(16px,4.5vw,24px);padding:6px 14px;border-radius:14px;box-shadow:none}
+#jpick{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:safe center;gap:6px;text-align:center;min-height:0;overflow:auto}
+.jpt{display:flex;align-items:center;gap:10px;font:800 20px var(--fb)}
+.jpcar{display:flex;align-items:center;gap:8px;width:min(560px,100%)}
+.jpcar button{flex:none;width:64px;height:64px;border-radius:50%;border:3px solid rgba(255,255,255,.35);background:#262b33;color:#fff;font-size:26px;cursor:pointer}
+#jpsv{flex:1;min-width:0}#jpsv svg{width:100%;height:auto;max-height:24vh}
+.jpn{font:800 30px var(--fh);line-height:1}.jpd{color:#b9c0c8;font:700 15px var(--fb)}
+.jpst{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;width:min(320px,90%);font:800 13px var(--fb);align-items:center;text-align:left}
+.jpst i{height:8px;border-radius:9px;background:rgba(255,255,255,.15);overflow:hidden}.jpst u{display:block;height:100%;background:#ffd23f}
+.jpc{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:4px 0}
+.jpc button{width:42px;height:42px;border-radius:50%;border:3px solid rgba(255,255,255,.3);cursor:pointer}
+.jpc button[aria-pressed=true]{border-color:#fff;transform:scale(1.18)}
+.jpgo{font:900 26px var(--fh);padding:12px 48px;border-radius:99px;border:0;background:#ffd23f;color:#1d1d1f;cursor:pointer;box-shadow:0 6px 0 rgba(0,0,0,.35)}
+.jpgo.rd{background:#1fa34a;color:#fff}
+#jdrive{flex:1;display:grid;grid-template-columns:1fr 1fr .8fr;grid-template-rows:auto minmax(0,1fr);gap:10px;min-height:0}
+#jdst{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;gap:10px;font:800 17px var(--fb)}
+.jb{border:3px solid rgba(255,255,255,.28);background:#262b33;color:#fff;border-radius:22px;font:900 22px var(--fh);display:flex;align-items:center;justify-content:center;min-height:0;padding:0;touch-action:none;transition:transform .05s,background .05s}
+.jb.big{font-size:clamp(44px,12vw,80px)}
+.jb.on{background:#fff;color:#14171c;transform:scale(.97)}
+.jsm{display:flex;flex-direction:column;gap:10px;min-height:0}.jsm .jb{flex:1;font-size:clamp(14px,3.6vw,20px)}
+.jb.nit{border-color:#3aa6ff}.jb.dri{border-color:#ffd23f}.jb.brk{border-color:#ff5a4e}
+.jb.nit.on{background:#3aa6ff;color:#fff}.jb.dri.on{background:#ffd23f}.jb.brk.on{background:#ff5a4e;color:#fff}
+@media (max-height:460px){.jpst,.jpd{display:none!important}#jpsv svg{max-height:26vh}.jpgo{padding:10px 44px}}
+#jwatch{flex:1;display:flex;align-items:center;justify-content:center;text-align:center;font:800 26px/1.3 var(--fb);padding:20px}
 </style></head><body>
 <div id="app">
 <canvas id="cv" aria-label="Game stage"></canvas>
@@ -187,6 +234,7 @@ button:focus-visible{outline:4px solid var(--sky);outline-offset:3px}
      <button class="db game" type="button" data-v="swim"><svg viewBox="0 0 100 100"><rect x="4" y="30" width="92" height="64" rx="10" fill="#29b6f6"/><path d="M4 52h92M4 72h92" stroke="#fff8ec" stroke-width="4" stroke-dasharray="6 6"/><circle cx="62" cy="62" r="9" fill="#1d1d1f"/><path d="M28 62h26M48 52l14 10M48 72l14-10" stroke="#1d1d1f" stroke-width="8" stroke-linecap="round"/><path d="M10 20q10-10 20 0t20 0t20 0t20 0" stroke="#29b6f6" stroke-width="5" fill="none"/></svg><b>Swim Race</b><span>Swim with your arms · zones</span></button>
      <button class="db game" type="button" data-v="blast"><svg viewBox="0 0 100 100"><circle cx="66" cy="36" r="22" fill="#7e57c2"/><circle cx="58" cy="32" r="6" fill="#fff"/><circle cx="74" cy="32" r="6" fill="#fff"/><circle cx="58" cy="33" r="3" fill="#d81b1b"/><circle cx="74" cy="33" r="3" fill="#d81b1b"/><path d="M14 86l30-30" stroke="#1d1d1f" stroke-width="10" stroke-linecap="round"/><path d="M48 52l8-8" stroke="#ffd23f" stroke-width="6" stroke-linecap="round"/></svg><b>Monster Blaster</b><span>Your hands are blasters</span></button>
      <button class="db game" type="button" data-v="beat"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" fill="none" stroke="#ff3d7f" stroke-width="6"/><circle cx="50" cy="50" r="27" fill="#ff3d7f"/><path d="M37 41h21a8 8 0 0 1 0 16h-5v8H37z" fill="#fff8ec"/></svg><b>Beat Punch</b><span>Punch the targets on the beat</span></button>
+     <button class="db game" type="button" data-v="race"><svg viewBox="0 0 100 100"><path d="M8 66l8-18q4-6 12-7l12-2q8-12 22-12l14 1q8 2 14 10l2 8q3 2 3 8v12H8z" fill="#e8392c" stroke="#1d1d1f" stroke-width="5" stroke-linejoin="round"/><path d="M42 39q6-7 16-7l12 1q5 1 9 6z" fill="#9fd8ff" stroke="#1d1d1f" stroke-width="4"/><circle cx="28" cy="70" r="10" fill="#1d1d1f"/><circle cx="76" cy="70" r="10" fill="#1d1d1f"/><circle cx="28" cy="70" r="4" fill="#fff"/><circle cx="76" cy="70" r="4" fill="#fff"/></svg><b>Turbo Circuit</b><span>3D racing · phones are the wheel</span></button>
     </div>
    </div>
   </div>
@@ -210,6 +258,16 @@ button:focus-visible{outline:4px solid var(--sky);outline-offset:3px}
   <div class="jph" id="jph" hidden><h3 id="jphT">Your character photo</h3><p id="jphP">Your face goes on your character on the TV. It is sent only to the TV iPad, never saved, and gone when the game closes.</p><canvas id="jphC" width="112" height="112" hidden></canvas>
    <div class="row"><button id="jphA" class="go" type="button">Take photo</button><button id="jphB" class="btn" type="button">No photo</button></div></div>
   <p class="jprv">Your camera picture stays on this device. Only body points are sent to the TV iPad.</p>
+  <div id="jpad" hidden>
+   <div id="jpick" hidden><div class="jpt"><span id="jpb" class="jbadge">Car 1</span><span>Pick your car</span></div>
+    <div class="jpcar"><button id="jpl" type="button" aria-label="Previous car">◀</button><div id="jpsv"></div><button id="jpr" type="button" aria-label="Next car">▶</button></div>
+    <b id="jpn" class="jpn"></b><span id="jpd" class="jpd"></span><div id="jpst" class="jpst"></div>
+    <div id="jpc" class="jpc"></div><button id="jpgo" class="jpgo" type="button">READY!</button></div>
+   <div id="jdrive" hidden><div id="jdst"><span id="jdb" class="jbadge">Car 1</span><span id="jdp">Gas is automatic · steer with ◀ ▶</span></div>
+    <button class="jb big" data-b="1" type="button" aria-label="Steer left">◀</button><button class="jb big" data-b="2" type="button" aria-label="Steer right">▶</button>
+    <div class="jsm"><button class="jb nit" data-b="16" type="button">NITRO</button><button class="jb dri" data-b="8" type="button">DRIFT</button><button class="jb brk" data-b="4" type="button">BRAKE</button></div></div>
+   <div id="jwatch" hidden></div>
+  </div>
 </section>
 
 <section id="calib" class="ovl" hidden>
@@ -245,6 +303,18 @@ button:focus-visible{outline:4px solid var(--sky);outline-offset:3px}
 
 <canvas id="pip" aria-label="Camera preview" hidden></canvas>
 <div id="camBadge" hidden>Camera on · this iPad only</div>
+<section id="rlob" class="scr dim" hidden>
+ <div class="card rcard"><div class="rk">Turbo Circuit · 2 players</div><h2>Pick your cars on your phones</h2>
+  <div class="rps" id="rps"></div>
+  <div class="lbl">Track</div><div class="trks" id="rtrk"></div>
+  <p class="small" id="rhint">Each phone becomes a steering wheel. The TV shows Car 1 on top and Car 2 below. Gas is automatic.</p>
+  <div class="row"><button id="bRBack" class="db btn" type="button">Back</button><button id="bRGo" class="db go" type="button" disabled>Waiting for READY…</button></div></div>
+</section>
+<section id="rres" class="scr dim" hidden>
+ <div class="card rcard"><div class="rk">Turbo Circuit · results</div><h2 id="rrT">Race over!</h2><div id="rrL" class="rrl"></div>
+  <div class="row"><button id="bRMenu" class="db btn" type="button">Menu</button><button id="bRAgain" class="db go" type="button">Race again</button></div></div>
+</section>
+<div id="rwrap" hidden><button id="rExit" type="button" aria-label="Exit the race">✕</button></div>
 <div id="toast" hidden></div>
 <div id="rot">Turn the iPad sideways<br>to play</div>
 </div>
@@ -317,11 +387,11 @@ function step(st,t){const s=mus.song,b=st%16,ch=s.ch[Math.floor(st/16)%4];
 
 /* ---------- camera + pose (all processing stays on this device) ---------- */
 /* Privacy: frames go camera -> <video> -> pose model in this tab. No frame, image or landmark is ever sent, stored or recorded. */
-let landmarker=null,motion=false,camReady=false,stream=null,lastVT=-1,camWanted=false,opening=null,curPoses=2;
+let camHold=false,landmarker=null,motion=false,camReady=false,stream=null,lastVT=-1,camWanted=false,opening=null,curPoses=2;
 const MP='./mp',MODEL_LOCAL='./mp/pose_landmarker_lite.task';
 const MODEL_REMOTE='https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task';
 function openCam(){if(opening)return opening;stopCam();opening=(async()=>{try{const s=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user',width:{ideal:960},height:{ideal:540},frameRate:{ideal:30,max:30}},audio:false});
- if(document.hidden){s.getTracks().forEach(t=>t.stop());return}stream=s;video.srcObject=s;await video.play();$('#camBadge').hidden=false}finally{opening=null}})();return opening}
+ if(document.hidden||camHold||(!JM&&state==='race')){s.getTracks().forEach(t=>t.stop());return}stream=s;video.srcObject=s;await video.play();$('#camBadge').hidden=false}finally{opening=null}})();return opening}
 function stopCam(){if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}video.srcObject=null;$('#camBadge').hidden=true}
 async function pickModel(){if(MODEL_LOCAL&&!MODEL_LOCAL.startsWith('%%')){try{const r=await fetch(MODEL_LOCAL,{method:'HEAD',cache:'no-store'});if(r.ok)return MODEL_LOCAL}catch(e){}}return MODEL_REMOTE}
 async function loadPose(){const {PoseLandmarker,FilesetResolver}=await import(MP+'/vision_bundle.mjs');
@@ -338,7 +408,7 @@ async function initCamera(){camWanted=true;
  camReady=true;$('#bGo').disabled=false;$('#bGo').textContent='Start'}
 function setPoses(){}
 document.addEventListener('visibilitychange',async()=>{if(JM)return;if(document.hidden){stopCam();pauseGame()}else{if(AC&&AC.state!=='running')AC.resume().catch(()=>{});try{navigator.wakeLock?.request('screen').catch(()=>{})}catch(e){}
- if(motion&&camWanted&&!stream){try{await openCam()}catch(e){motion=false;setMode('Touch mode')}}}});
+ if(motion&&camWanted&&!stream&&state!=='race'){try{await openCam()}catch(e){motion=false;setMode('Touch mode')}}}});
 addEventListener('pagehide',stopCam);
 function setMode(t,on){const m=$('#mode');m.textContent=t;m.classList.toggle('on',!!on)}
 function updField(){if(NP()>1){F={x:0,y:0,w:W,h:H};const vw=video.videoWidth||16,vh=video.videoHeight||9;M.s=W/vw;M.ox=0;M.oy=(H-vh*M.s)/2;return}if(motion&&video.videoWidth){const vw=video.videoWidth,vh=video.videoHeight;let s=W/vw;if(vh*s<H*.62)s=H*.62/vh;M.s=s;M.ox=(W-vw*s)/2;M.oy=(H-vh*s)/2;F={x:Math.max(0,M.ox),y:Math.max(0,M.oy),w:Math.min(W,vw*s),h:Math.min(H,vh*s)}}else F={x:0,y:0,w:W,h:H}}
@@ -788,7 +858,7 @@ G.beat={title:'Beat Punch',how:'Punch each target right when the shrinking ring 
 
 /* ---------- flow ---------- */
 let state='title',queue=[],gi=0,game=null,gname='',ct=0,lastN=0,introT=0,lastClock=-1;
-const SCR=['title','menu','qr','calib','intro','pause','result','final'];
+const SCR=['title','menu','qr','calib','intro','pause','result','final','rlob','rres'];
 function show(n){SCR.forEach(k=>$('#'+k).hidden=k!==n);fitCards();bcast()}
 /* shrink a menu card to fit the screen instead of scrolling (Safari bars, short landscape screens) */
 function fitCards(){for(const c of $$('.scr:not([hidden]) .card')){c.style.transform='';const sh=c.offsetHeight,sw=c.offsetWidth,ah=innerHeight-24,aw=innerWidth-24,k=Math.min(1,ah/sh,aw/sw);if(k<1)c.style.transform=`scale(${k})`}}
@@ -809,8 +879,8 @@ $('#tFace').onclick=()=>{S.faces=!S.faces;P.forEach(p=>p.face=null);bcast();stor
 $('#tSfx').onclick=()=>{S.sfx=!S.sfx;applyVol();store.set('set',S);syncMenu();SFX.select()};
 $('#bStart').onclick=$('#title').onclick=e=>{if(state!=='title')return;e.stopPropagation();enterFs();initAudio();if(AC&&AC.state==='suspended')AC.resume();SFX.select();playSong('menu');try{navigator.wakeLock?.request('screen').catch(()=>{})}catch(e){}
  $('#bGo').disabled=true;$('#bGo').textContent='Starting camera…';goMenu();initCamera()};
-function goMenu(){state='menu';P.forEach(p=>{if(p.gone)dropP(p);p.pending=false});renderLobby();show('menu');$('#hud').hidden=true;$('#runpads').hidden=true;playSong('menu');syncMenu()}
-$('#bGo').onclick=()=>{if(!camReady)return;P.forEach(p=>{p.lk=null});P.forEach(p=>{if(p.gone)dropP(p)});queue=S.mode==='party'?['fruit','run','swim','beat','blast']:[S.mode];gi=0;P.forEach(p=>{p.stars=0;p.total=0;p.hist=[]});SFX.select();
+function goMenu(){if(typeof closeRace==='function')closeRace();RACE.ph='';if(motion&&camWanted&&!stream&&!document.hidden)openCam().catch(()=>{});state='menu';P.forEach(p=>{if(p.gone)dropP(p);p.pending=false});renderLobby();show('menu');$('#hud').hidden=true;$('#runpads').hidden=true;playSong('menu');syncMenu()}
+$('#bGo').onclick=()=>{if(S.mode==='race'){SFX.select();raceGo();return}if(!camReady)return;P.forEach(p=>{p.lk=null});P.forEach(p=>{if(p.gone)dropP(p)});queue=S.mode==='party'?['fruit','run','swim','beat','blast']:[S.mode];gi=0;P.forEach(p=>{p.stars=0;p.total=0;p.hist=[]});SFX.select();
  if(motion){state='calib';show('calib');P.forEach(p=>{p.ready=0;p.ok=false;p.calY=null;p.snap=null;p.snapN=0})}else startIntro()};
 $('#bSkip').onclick=()=>{SFX.select();P.forEach(p=>{if(p.seen&&p.calY==null){p.calY=p.ay;if(p.lm){const R=refOf(p);p.noseRel=clamp((p.lm[0].y-R.y)/R.sw,-3.6,-1.4)}}});startIntro()};
 function startIntro(){setPoses();gname=queue[gi];game=G[gname];P.forEach(p=>{p.score=0;p.match=0;p.hands.forEach(h=>{h.trail=[];if(!motion)h.ok=false})});ptrs.clear();parts=[];floats=[];stains=[];game.init();
@@ -932,7 +1002,9 @@ function onConn(conn){if(unauth>=4){try{conn.close()}catch(e){}return}unauth++;l
    const slot=back||[1,2,3].find(i=>!P[i].on&&!reserved.has(i))||[1,2,3].find(i=>!P[i].on);if(!slot){try{conn.send({t:'full'})}catch(e){}setTimeout(()=>{try{conn.close()}catch(e){}},300);return}
    ok=true;clearTimeout(kill);const p=P[slot],rejoin=back&&p.gone&&p.on;if(!rejoin){resetP(p);p.face=null;p.on=true;p.pending=!['title','menu'].includes(state)}else{p.gone=false}p.dev=dev;if(dev)devSlot.set(dev,slot);p.conn=conn;p.last=performance.now();
    try{conn.send({t:'ok',slot,f:!!S.faces})}catch(e){}bcast();SFX.ready();toast(`${PNAME[slot]} joined${p.pending?' (plays from the next game)':''}!`);renderLobby();return}
-  const p=P.find(q=>q.conn===conn);if(!p)return;if(d.t==='face'){takeFace(p,d.d);return}if(d.t!=='p'||(d.l!==null&&!Array.isArray(d.l))){try{conn.close()}catch(e){}return}ingest(p,d)});
+  const p=P.find(q=>q.conn===conn);if(!p)return;if(d.t==='face'){takeFace(p,d.d);return}
+  if(d.t==='car'||d.t==='pad'||d.t==='hb'){const I=(v,a,b)=>Number.isInteger(v)&&v>=a&&v<=b;if(d.t==='car'&&!(I(d.ty,0,6)&&I(d.co,0,7)&&typeof d.rd==='boolean')||d.t==='pad'&&!I(d.s,0,31)){try{conn.close()}catch(e){}return}
+   const now=performance.now();if(d.t==='pad'&&now-(p.padT||0)<15&&p.padS===d.s)return;if(d.t==='car'){if(now-(p.carT||0)<80)return;p.carT=now}if(d.t==='hb'&&now-(p.hbT||0)<200)return;if(d.t==='hb')p.hbT=now;if(d.t==='pad')p.padT=now;p.last=now;if(d.t==='car')raceCar(p,d);else if(d.t==='pad'){p.padS=d.s;racePad(p,d)}return}if(d.t!=='p'||(d.l!==null&&!Array.isArray(d.l))){try{conn.close()}catch(e){}return}ingest(p,d)});
  const gone=()=>{clearTimeout(kill);unc();const p=P.find(q=>q.conn===conn);if(p)dropP(p,true)};conn.on('close',gone);conn.on('error',gone)}
 function dropP(p,disc){if(!p||p.i===0)return;
  if(disc&&!p.pending&&!['title','menu'].includes(state)){p.conn=null;p.seen=false;p.gone=true;p.hands.forEach(h=>h.ok=false);renderLobby();toast(`${PNAME[p.i]} disconnected`);return}
@@ -949,8 +1021,8 @@ function ingest(p,d){const now=performance.now();if(now-p.last<12)return;
  for(let i=0;i<33;i++){const x=+l[i*3],y=+l[i*3+1],v=+l[i*3+2];if(!Number.isFinite(x)||!Number.isFinite(y)||!Number.isFinite(v))return;const m=mapN(V,a,clamp(x,-.5,1.5),clamp(y,-.5,1.5));pts[i]={x:m.x,y:m.y,v:clamp(v)}}
  p.last=now;applyPose(p,pts,now)}
 function remoteWatch(){const now=performance.now();for(const p of P){if(!p.i||!p.on)continue;if(p.seen&&now-p.last>900){p.seen=false;p.hands.forEach(h=>h.ok=false)}if(!p.gone&&now-p.last>8000){if(p.conn){try{p.conn.close()}catch(e){}}dropP(p,true)}}}
-const ST_OK=['title','menu','qr','calib','intro','count','play','pause','result','final'];
-function bcast(){const m={t:'st',c:state,g:G[gname]?gname:'',f:!!S.faces};for(const p of P)if(p.conn&&p.conn.open)try{p.conn.send(m)}catch(e){}}
+const ST_OK=['title','menu','qr','calib','intro','count','play','pause','result','final','race'];
+function bcast(){const m={t:'st',c:state,g:G[gname]?gname:'',f:!!S.faces};for(const p of P)if(p.conn&&p.conn.open){let x=m;if(state==='race'){const j=RACE.k.indexOf(p.i),rc=j>=0&&RACE.ph!=='solo'&&!p.pending;x={...m,r:{k:rc?j+1:0,ph:RACE.ph,rd:rc?!!RACE.sel[j].rd:false,ty:rc?RACE.sel[j].ty:0,co:rc?RACE.sel[j].co:0}}}try{p.conn.send(x)}catch(e){}}}
 let lobbyT=0;
 const FU=new WeakMap(),fu=c=>{if(!FU.has(c))FU.set(c,c.toDataURL('image/jpeg',.6));return FU.get(c)};
 function renderLobby(){const html=P.filter(p=>p.on).map(p=>`<span class="pch" style="background:${PCOL[p.i]}">${p.face&&S.faces?`<img src="${fu(p.face)}" alt="" style="width:32px;height:32px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 2px #fff">`:''}${PNAME[p.i]} <small>${p.i===0?'this iPad':p.gone?'disconnected':p.pending?'joins next game':p.seen?'ready':'connected'}</small>${p.i?`<button type="button" class="kick" data-kick="${p.i}" aria-label="Remove ${PNAME[p.i]}">×</button>`:(S.faces&&motion?`<button type="button" class="kick" data-photo="1" aria-label="New photo" title="New photo">↺</button>`:'')}</span>`).join('');
@@ -959,6 +1031,54 @@ document.addEventListener('click',e=>{if(e.target.closest('[data-photo]')){P[0].
 $('#bAdd').onclick=async()=>{SFX.select();show('qr');drawQR();await hostNet();drawQR()};
 $('#bQrNew').onclick=async()=>{SFX.select();secret=hex(16);drawQR();if(!peer)await hostNet();drawQR();toast('New code made. Phones already in the game stay connected.',4000)};
 $('#bQrDone').onclick=()=>{SFX.select();show('menu')};
+
+
+/* ---------- Turbo Circuit: phones are controllers, the race runs in race/ (same site) ---------- */
+const RCAR=[{n:'Balanced GT',d:'Good at everything',v:50,a:19,t:2.1},{n:'Speed R',d:'King of the straights',v:54,a:16.5,t:1.85},{n:'Corner King',d:'Grips the corners',v:47.5,a:22,t:2.45},{n:'Muscle V8',d:'Explosive acceleration',v:51.5,a:22.5,t:1.8},{n:'Hyper X',d:'Top speed, twitchy steering',v:55.5,a:20,t:1.9},{n:'Roadster',d:'Light and nimble',v:48,a:20.5,t:2.6},{n:'Trophy Truck',d:'Fast even on the grass',v:47,a:18.5,t:1.95}];
+const RCOL=['#e8392c','#1f6fe0','#ffc21a','#1fae6b','#f2f2f2','#8a3ffc','#ff7a1a','#1a1c20'],RTRK=['Green Valley','Sunset Coast','Snow Peak','Neon City'];
+const ordn=n=>n+(n%100>=11&&n%100<=13?'th':['th','st','nd','rd'][n%10]||'th');
+const rfmt=t=>{if(!Number.isFinite(t))return'--';const m=Math.floor(t/60),x=t-m*60;return m+':'+(x<10?'0':'')+x.toFixed(2)};
+function carSvg(ty,col){const tall=ty===6,low=ty===1||ty===4;const top=tall?22:low?34:28;
+ return`<svg viewBox="0 0 220 90" aria-hidden="true"><ellipse cx="110" cy="82" rx="92" ry="6" fill="rgba(0,0,0,.18)"/><path d="M12 ${tall?60:64} L20 ${top+18} Q26 ${top+12} 44 ${top+10} L72 ${top+8} Q90 ${top-6} 116 ${top-6} L146 ${top-4} Q164 ${top} 176 ${top+10} L200 ${top+16} Q208 ${top+20} 206 ${tall?60:64} Z" fill="${col}" stroke="#1d1d1f" stroke-width="5" stroke-linejoin="round"/><path d="M82 ${top+8} Q94 ${top-1} 114 ${top-1} L142 ${top} Q152 ${top+3} 160 ${top+9} Z" fill="#9fd8ff" stroke="#1d1d1f" stroke-width="4" stroke-linejoin="round"/>${ty===1||ty===0||ty===4?`<path d="M182 ${top+8} l16 -6" stroke="#1d1d1f" stroke-width="5" stroke-linecap="round"/>`:''}<circle cx="56" cy="66" r="${tall?18:14}" fill="#222" stroke="#1d1d1f" stroke-width="3"/><circle cx="56" cy="66" r="6" fill="#ddd"/><circle cx="166" cy="66" r="${tall?18:14}" fill="#222" stroke="#1d1d1f" stroke-width="3"/><circle cx="166" cy="66" r="6" fill="#ddd"/></svg>`}
+const RACE={ph:'',k:[0,0],sel:[{ty:0,co:0,rd:false},{ty:3,co:1,rd:false}],track:0,api:null,res:null,goT:0,rT:0};
+window.__mpRace={ready(api){const fr=$('#rfr');if(RACE.ph!=='drive'||!fr||!api||api.__w!==fr.contentWindow)return;RACE.api=api;try{api.start(raceConf())}catch(e){}},
+ status(a){if(RACE.ph!=='drive'||!Array.isArray(a))return;a.slice(0,2).forEach((x,j)=>{const p=P[RACE.k[j]];if(!x||!p||!p.conn||!p.conn.open)return;try{p.conn.send({t:'rs',pl:x.pl|0,lap:x.lap|0,fin:!!x.fin,n:x.n|0})}catch(e){}})},
+ done(r){if(RACE.ph!=='drive')return;RACE.res=r;closeRace();raceResults()},
+ quit(){closeRace();goMenu()},
+ audio(){return AC}};
+const raceOK=p=>!!(p&&p.on&&!p.gone&&p.conn&&p.conn.open);
+const racers=()=>P.filter(p=>p.i>0&&p.on&&!p.pending&&raceOK(p));
+function raceConf(){return{track:RACE.track,diff:{kids:1,family:3,pro:5}[S.level]||3,cars:RACE.k.map((pi,j)=>({ty:RACE.sel[j].ty,co:RACE.sel[j].co,nm:PNAME[pi],pc:PCOL[pi],face:P[pi].face&&S.faces?fu(P[pi].face):''}))}}
+function raceGo(){const ph=racers();
+ if(!ph.length){openRace(false);return}
+ if(ph.length<2){toast('Turbo Circuit for 2 needs 2 joined phones — add one more with + Add players. (With no phones joined, it’s a 1-player race on this iPad.)',7000);return}
+ const k=[ph[0].i,ph[1].i];if(k[0]!==RACE.k[0]||k[1]!==RACE.k[1])RACE.sel=[{ty:0,co:0,rd:false},{ty:3,co:1,rd:false}];RACE.k=k;RACE.sel.forEach(x=>x.rd=false);
+ closeRace();state='race';RACE.ph='pick';RACE.goT=0;stopCam();pipC.hidden=true;show('rlob');renderRLob();say('Turbo Circuit! Pick your cars on your phones.')}
+function openRace(two){closeRace();state='race';RACE.ph=two?'drive':'solo';if(!two)RACE.k=[0,0];stopCam();pipC.hidden=true;mus.song=null;show('');
+ const w=$('#rwrap'),f=document.createElement('iframe');f.id='rfr';f.title='Turbo Circuit';f.setAttribute('allow',"camera 'none'; microphone 'none'; geolocation 'none'");f.src='race/index.html'+(two?'#duo':'');
+ f.addEventListener('load',()=>{try{f.contentWindow.focus()}catch(e){}});w.classList.toggle('two',!!two);w.prepend(f);w.hidden=false;bcast()}
+function closeRace(){const f=$('#rfr');if(RACE.api){try{RACE.api.stop()}catch(e){}}RACE.api=null;if(f)f.remove();$('#rwrap').hidden=true}
+$('#rExit').onclick=()=>{SFX.select();closeRace();goMenu()};
+function renderRLob(){const html=RACE.k.map((pi,j)=>{const p=P[pi],x=RACE.sel[j],ok=raceOK(p),c=RCAR[x.ty];
+  return`<div class="rp${x.rd&&ok?' rd':''}"><span class="rpn" style="background:${PCOL[pi]}">${p.face&&S.faces?`<img src="${fu(p.face)}" alt="">`:''}Car ${j+1} · ${PNAME[pi]}</span>${carSvg(x.ty,RCOL[x.co])}<b>${c.n}</b><div class="st">${!ok?'Disconnected — rejoin with the QR code':x.rd?'READY!':'Choosing on the phone…'}</div></div>`}).join('');
+ const el=$('#rps');if(el.dataset.h!==html){el.innerHTML=html;el.dataset.h=html}
+ const th=RTRK.map((n,i)=>`<button type="button" data-trk="${i}" aria-pressed="${i===RACE.track}">${n}</button>`).join('');if($('#rtrk').dataset.h!==th){$('#rtrk').innerHTML=th;$('#rtrk').dataset.h=th}
+ const all=RACE.k.every((pi,j)=>raceOK(P[pi])&&RACE.sel[j].rd),b=$('#bRGo');b.disabled=!all;const bt=all?`Starting in ${Math.max(1,Math.ceil(3-RACE.goT))}… (tap to go now)`:'Waiting for READY…';if(b.textContent!==bt)b.textContent=bt}
+$('#rtrk').addEventListener('click',e=>{const b=e.target.closest('[data-trk]');if(!b)return;const i=Number(b.dataset.trk);if(i>=0&&i<RTRK.length){RACE.track=i;RACE.goT=0;SFX.select();renderRLob()}});
+$('#bRBack').onclick=()=>{SFX.select();goMenu()};
+$('#bRGo').onclick=()=>{if(RACE.ph==='pick'&&!$('#bRGo').disabled){SFX.go();openRace(true)}};
+function raceTick(dt){g.drawImage(bg('party'),0,0,W,H);
+ if(RACE.ph==='pick'){if(!RACE.k.every(pi=>raceOK(P[pi]))){const r=racers();if(r.length>=2&&(r[0].i!==RACE.k[0]||r[1].i!==RACE.k[1])){RACE.k=[r[0].i,r[1].i];RACE.sel.forEach(x=>x.rd=false);bcast()}}const all=RACE.k.every((pi,j)=>raceOK(P[pi])&&RACE.sel[j].rd);RACE.goT=all?RACE.goT+dt:0;if((RACE.rT+=dt)>.2){RACE.rT=0;renderRLob()}if(all&&RACE.goT>=3){SFX.go();openRace(true)}}}
+function raceCar(p,d){const j=RACE.k.indexOf(p.i);if(state!=='race'||RACE.ph!=='pick'||j<0)return;const x=RACE.sel[j],was=x.rd;x.ty=d.ty;x.co=d.co;x.rd=d.rd;if(was!==x.rd){x.rd?SFX.ready():SFX.tick();RACE.goT=0}renderRLob();bcast()}
+function racePad(p,d){const j=RACE.k.indexOf(p.i);if(state==='race'&&RACE.ph==='drive'&&j>=0&&RACE.api){try{RACE.api.pad(j,d.s)}catch(e){}}}
+function raceResults(){const r=RACE.res,ok=r&&Array.isArray(r.r)&&r.r.length===2&&Number.isInteger(r.n)&&r.r.every(x=>x&&(x.k===0||x.k===1)&&Number.isInteger(x.pl)&&x.pl>=1&&x.pl<=r.n&&r.n<=8&&Number.isFinite(x.t)&&x.t>=0);
+ state='race';RACE.ph='res';playSong('menu');
+ if(!ok){$('#rrT').textContent='Race over!';$('#rrL').innerHTML='';show('rres');return}
+ const rows=r.r.slice().sort((a,b)=>a.pl-b.pl),w=rows[0],wp=RACE.k[w.k];
+ $('#rrT').textContent=w.pl===1?`${PNAME[wp]} wins the race!`:`${PNAME[wp]} beats ${PNAME[RACE.k[rows[1].k]]}!`;
+ $('#rrL').innerHTML=rows.map((x,i)=>{const pi=RACE.k[x.k],p=P[pi],c=RCAR[RACE.sel[x.k].ty];return`<div class="rrow${i===0?' win':''}"><span class="pl">${ordn(x.pl)}</span><span><span class="rpn" style="background:${PCOL[pi]}">${p.face&&S.faces?`<img src="${fu(p.face)}" alt="">`:''}Car ${x.k+1} · ${PNAME[pi]}</span><small>${c.n} · out of ${r.n} cars</small></span><span class="tm">${x.fin?rfmt(x.t):'≈ '+rfmt(x.t)}</span></div>`}).join('');
+ show('rres');SFX.fanfare();say($('#rrT').textContent)}
+$('#bRAgain').onclick=()=>{SFX.select();raceGo()};$('#bRMenu').onclick=()=>{SFX.select();goMenu()};
 
 /* ---------- join mode: this phone is one extra player's camera ---------- */
 const JM=location.hash.match(/^#join-(mp[0-9a-f]{32})-([0-9a-f]{32})-([0-9a-f]{64})$/);
@@ -972,6 +1092,37 @@ function runJoin(hid,key,fp){document.documentElement.classList.add('joinmode');
  phA.onclick=()=>{if(phA.textContent==='Use it'&&faceC){try{conn.send({t:'face',d:faceC.toDataURL('image/jpeg',.72)});faceSent=true}catch(e){}photoUI('off');stat('Photo sent! Watch the TV')}else{photoUI('off');shot=performance.now()+3000}};
  phB.onclick=()=>{if(phB.textContent==='Retake'){photoUI('off');shot=performance.now()+3000}else{faceSent=true;photoUI('off')}};
  const GT={fruit:'Fruit Slash',run:'Sprint Dash',beat:'Beat Punch'},MSG={title:'Waiting for the host…',menu:'You’re in! The host is choosing a game',qr:'You’re in! Waiting for more players',calib:'Step back until your whole body fits',intro:'Get ready',count:'Get ready…',play:'GO! Watch the TV',pause:'Paused',result:'Round over — check the TV',final:'Final results on the TV!'};
+
+ /* Turbo Circuit: this phone becomes a controller (camera off while racing) */
+ let jpadOn=false,jrk=0,jrph='',jsel={ty:0,co:0,rd:false},jselT=0,jhb=null,jhbN=0,jbits=0;const jptr=new Map(),jdr=$('#jdrive');
+ function enterPad(){if(jpadOn)return;jpadOn=true;camHold=true;stopCam();photoUI('off');$('#jpad').hidden=false;jhb=setInterval(padBeat,250)}
+ function leavePad(){if(!jpadOn)return;jpadOn=false;camHold=false;clearInterval(jhb);jhb=null;jptr.clear();jbits=0;$('#jpad').hidden=true;jrk=0;jrph='';if(jl&&!stream&&!document.hidden)openCam().catch(()=>{})}
+ function jsend(m){if(conn&&conn.open)try{conn.send(m)}catch(e){}}
+ function padBeat(){jhbN++;if(jrk&&jrph==='drive')jsend({t:'pad',s:jbits});else if(jrk&&jrph==='pick'){if(jhbN%4===0)jsend({t:'car',ty:jsel.ty,co:jsel.co,rd:jsel.rd})}else if(jhbN%4===0)jsend({t:'hb'})}
+ function paintPick(){const c=RCAR[jsel.ty];$('#jpsv').innerHTML=carSvg(jsel.ty,RCOL[jsel.co]);$('#jpn').textContent=c.n;$('#jpd').textContent=c.d;
+  const st=[['Speed',(c.v-44)/12],['Acceleration',(c.a-14)/9],['Handling',(c.t-1.6)/1.05]];$('#jpst').innerHTML=st.map(([k,v])=>`<span>${k}</span><i><u style="width:${Math.round(clamp(v,.08,1)*100)}%"></u></i>`).join('');
+  $('#jpc').innerHTML=RCOL.map((h,i)=>`<button type="button" data-co="${i}" style="background:${h}" aria-label="Colour ${i+1}" aria-pressed="${i===jsel.co}"></button>`).join('');
+  const b=$('#jpgo');b.classList.toggle('rd',jsel.rd);b.textContent=jsel.rd?'READY! ✓  (tap to change)':'READY!'}
+ function pickSend(){jselT=performance.now();paintPick();jsend({t:'car',ty:jsel.ty,co:jsel.co,rd:jsel.rd})}
+ $('#jpl').onclick=()=>{if(jsel.rd)return;jsel.ty=(jsel.ty+6)%7;SFX.tick?.();pickSend()};$('#jpr').onclick=()=>{if(jsel.rd)return;jsel.ty=(jsel.ty+1)%7;SFX.tick?.();pickSend()};
+ $('#jpc').addEventListener('click',e=>{const b=e.target.closest('[data-co]');if(!b||jsel.rd)return;jsel.co=Number(b.dataset.co)|0;pickSend()});
+ $('#jpgo').onclick=()=>{jsel.rd=!jsel.rd;if(jsel.rd)SFX.ready?.();pickSend()};
+ function raceUI(r){const I=(v,a,b)=>Number.isInteger(v)&&v>=a&&v<=b;if(!r||typeof r!=='object'||!I(r.k,0,2)||!['pick','drive','solo','res',''].includes(r.ph)||!I(r.ty,0,6)||!I(r.co,0,7))return;
+  const was=jpadOn&&jrk===r.k&&jrph;enterPad();
+  if(r.k&&r.ph==='pick'&&(was!=='pick'))jsel={ty:r.ty,co:r.co,rd:!!r.rd};else if(r.k&&r.ph==='pick'&&performance.now()-jselT>800)jsel.rd=!!r.rd;
+  jrk=r.k;jrph=r.ph;const col=PCOL[slot]||'#e8432f';
+  $('#jpick').hidden=!(jrk&&jrph==='pick');$('#jdrive').hidden=!(jrk&&jrph==='drive');$('#jwatch').hidden=!!(jrk&&(jrph==='pick'||jrph==='drive'));
+  for(const id of['#jpb','#jdb']){$(id).textContent=`Car ${jrk} · ${PNAME[slot]||''}`;$(id).style.background=col}
+  if(jrk&&jrph==='pick')paintPick();
+  if(jrk&&jrph==='drive'&&was!=='drive'){$('#jdp').textContent='Gas is automatic · steer with ◀ ▶';SFX.go?.()}
+  if(jrph!=='drive'){jptr.clear();padRecalc()}
+  $('#jwatch').textContent=jrph==='solo'?'The iPad player is racing — watch the TV!':jrph==='res'?'Race over — results are on the TV':'Two players are racing — watch the TV!'}
+ function padRecalc(){let b=0;if(jrph==='drive')for(const [,q] of jptr){const el=document.elementFromPoint(q.x,q.y),bt=el&&el.closest&&el.closest('[data-b]');if(bt&&jdr.contains(bt))b|=Number(bt.dataset.b)}
+  if(b!==jbits){const nw=b&~jbits;jbits=b;if(nw&&navigator.vibrate)try{navigator.vibrate(12)}catch(e){}$$('#jdrive [data-b]').forEach(e=>e.classList.toggle('on',!!(jbits&Number(e.dataset.b))));if(jrk&&jrph==='drive')jsend({t:'pad',s:jbits})}}
+ jdr.addEventListener('pointerdown',e=>{e.preventDefault();try{jdr.setPointerCapture(e.pointerId)}catch(_){}jptr.set(e.pointerId,{x:e.clientX,y:e.clientY});padRecalc()});
+ jdr.addEventListener('pointermove',e=>{if(!jptr.has(e.pointerId))return;e.preventDefault();jptr.set(e.pointerId,{x:e.clientX,y:e.clientY});padRecalc()});
+ ['pointerup','pointercancel','lostpointercapture'].forEach(ev=>jdr.addEventListener(ev,e=>{jptr.delete(e.pointerId);padRecalc()}));
+ $('#jpad').addEventListener('contextmenu',e=>e.preventDefault());$('#jpad').addEventListener('touchstart',e=>{if(e.target.closest('#jdrive'))e.preventDefault()},{passive:false});
  if(!MPOK()){stat('Joining works from the hosted game link (open it in Safari).');btn.hidden=true;return}
  function size(){const d=Math.min(2,devicePixelRatio||1);jc.width=Math.round(innerWidth*d);jc.height=Math.round(innerHeight*d)}size();addEventListener('resize',size);
  function connect(){stat('Connecting to the TV iPad…');try{jpeer&&jpeer.destroy()}catch(e){}
@@ -982,18 +1133,19 @@ function runJoin(hid,key,fp){document.documentElement.classList.add('joinmode');
     try{conn.send({t:'hi',k:key,v:2,dev})}catch(e){}});
    conn.on('data',m=>{if(!m||typeof m!=='object')return;
     if(m.t==='ok'&&[1,2,3].includes(m.slot)){slot=m.slot;const b=$('#jbadge');b.textContent=`${PNAME[slot]} · Player ${slot+1}`;b.style.background=PCOL[slot];stat(MSG.menu);SFX.ready&&SFX.ready();if(!faceSent&&m.f===true)photoUI('ask')}
-    else if(m.t==='st'&&ST_OK.includes(m.c)){if(m.f===false)photoUI('off');const gt=Object.prototype.hasOwnProperty.call(GT,m.g)?GT[m.g]:'';stat(['intro','count'].includes(m.c)&&gt?`${gt} — get ready!`:MSG[m.c])}
+    else if(m.t==='rs'){const I=(v,a,b)=>Number.isInteger(v)&&v>=a&&v<=b;if(jrk&&jrph==='drive'&&I(m.pl,1,8)&&I(m.lap,1,3)&&I(m.n,2,8))$('#jdp').textContent=m.fin?`Finished ${ordn(m.pl)}!`:`${ordn(m.pl)} of ${m.n} · Lap ${m.lap}/3`}
+    else if(m.t==='st'&&ST_OK.includes(m.c)){if(m.c==='race'){raceUI(m.r);return}if(jpadOn)leavePad();if(m.f===false)photoUI('off');const gt=Object.prototype.hasOwnProperty.call(GT,m.g)?GT[m.g]:'';stat(['intro','count'].includes(m.c)&&gt?`${gt} — get ready!`:MSG[m.c])}
     else if(m.t==='full'){stat('This game already has 4 players.');}
-    else if(m.t==='bye'){slot=0;stat('The host removed you from the game.');}});
-   conn.on('close',()=>{if(blocked)return;stat(slot?'Disconnected. Tap to reconnect.':'Couldn’t join. Scan the newest code on the TV, then try again.');slot=0;btn.textContent='Reconnect';btn.hidden=false})});
+    else if(m.t==='bye'){slot=0;leavePad();stat('The host removed you from the game.');}});
+   conn.on('close',()=>{if(blocked)return;leavePad();stat(slot?'Disconnected. Tap to reconnect.':'Couldn’t join. Scan the newest code on the TV, then try again.');slot=0;btn.textContent='Reconnect';btn.hidden=false})});
   jpeer.on('error',()=>{stat('Can’t reach the TV iPad. Make sure the game is open there, then tap to retry.');btn.textContent='Try again';btn.hidden=false})}
  btn.onclick=async()=>{btn.hidden=true;initAudio();
   if(!jl){stat('Starting camera…');try{await openCam();stat('Loading motion engine…');jl=await loadPose()}catch(e){stopCam();stat('The camera is needed to play. Allow it for this site, then tap to retry.');btn.textContent='Try again';btn.hidden=false;return}}
   else if(!stream){try{await openCam()}catch(e){}}
   try{navigator.wakeLock?.request('screen').catch(()=>{})}catch(e){}
   connect();if(!looping){looping=true;requestAnimationFrame(jloop)}};
- document.addEventListener('visibilitychange',()=>{if(!document.hidden&&jl&&!stream)openCam().catch(()=>{})});
- function jloop(now){requestAnimationFrame(jloop);const w=jc.width,h=jc.height;jg.fillStyle='#111';jg.fillRect(0,0,w,h);
+ document.addEventListener('visibilitychange',()=>{if(document.hidden){jptr.clear();padRecalc()}if(!document.hidden&&jl&&!stream&&!jpadOn)openCam().catch(()=>{})});
+ function jloop(now){requestAnimationFrame(jloop);if(jpadOn)return;const w=jc.width,h=jc.height;jg.fillStyle='#111';jg.fillRect(0,0,w,h);
   if(!stream||!video.videoWidth)return;const vw=video.videoWidth,vh=video.videoHeight,sc=Math.max(w/vw,h/vh),dw=vw*sc,dh=vh*sc,ox=(w-dw)/2,oy=(h-dh)/2;
   jg.save();jg.translate(w,0);jg.scale(-1,1);jg.drawImage(video,w-ox-dw,oy,dw,dh);jg.restore();
   if(jl&&video.currentTime!==lastV){lastV=video.currentTime;try{const r=jl.detectForVideo(video,now),ls=(r.landmarks||[]).map(l=>l.map(q=>({x:1-q.x,y:q.y,v:q.visibility??1})));pose=ls.length?ls.reduce((a,b)=>szp(a)>szp(b)?a:b):null}catch(e){pose=null}}
@@ -1027,7 +1179,7 @@ function drawCount(dt){ct-=dt;const n=Math.ceil(ct);if(n!==lastN&&n>0){lastN=n;S
 /* ---------- main loop ---------- */
 let last=performance.now();const MENUISH=['title','menu','intro','pause','result','final','calib'];
 function loop(now){const dt=Math.min(.05,(now-last)/1000);last=now;
- try{updatePose(now);remoteWatch();if(state==='menu'&&(lobbyT+=dt)>.5){lobbyT=0;renderLobby()}updField();g.save();if(shake>0)g.translate(rnd(-shake,shake),rnd(-shake,shake));
+ try{if(state==='race'){remoteWatch();raceTick(dt);requestAnimationFrame(loop);return}updatePose(now);remoteWatch();if(state==='menu'&&(lobbyT+=dt)>.5){lobbyT=0;renderLobby()}updField();g.save();if(shake>0)g.translate(rnd(-shake,shake),rnd(-shake,shake));
   if(state==='title'||state==='menu'){g.drawImage(bg('party'),0,0,W,H);ambientConf(dt,.5);drawPlayers(.55)}
   else if(state==='calib'){g.drawImage(bg('studio'),0,0,W,H);drawCalib(dt);drawPlayers(1)}
   else if(state==='final'){drawFinal(dt);ambientConf(dt,1)}
@@ -1038,6 +1190,7 @@ function loop(now){const dt=Math.min(.05,(now-last)/1000);last=now;
   if(state==='intro'){introT+=dt;drawDemo(dt);if(introT>25)startCount()}
  }catch(err){console.error(err)}
  requestAnimationFrame(loop)}
+if(MP.startsWith('%%')){$('.game[data-v="race"]').hidden=true;if(S.mode==='race')S.mode='party'}
 if(JM)runJoin(JM[1],JM[2],JM[3]);else{resize();syncMenu();syncFs();renderLobby();requestAnimationFrame(loop)}
 }
 </script>
