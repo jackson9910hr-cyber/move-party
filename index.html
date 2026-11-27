@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-NjklHhFnvMnwB1phQJMcJc6uuHH/HZNcd66l3fo0asA=' 'wasm-unsafe-eval'; connect-src 'self' https://storage.googleapis.com/mediapipe-models/pose_landmarker/ https://0.peerjs.com wss://0.peerjs.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; media-src 'self' blob: mediastream:; worker-src 'self' blob:; frame-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-vnouRW28n0+E1Yvz+nl/H0oRbsHYLhm3iuuEnpElH+I=' 'wasm-unsafe-eval'; connect-src 'self' https://storage.googleapis.com/mediapipe-models/pose_landmarker/ https://0.peerjs.com wss://0.peerjs.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; media-src 'self' blob: mediastream:; worker-src 'self' blob:; frame-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="robots" content="noindex,nofollow">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -206,6 +206,21 @@ button:focus-visible{outline:4px solid var(--sky);outline-offset:3px}
 #jstick{position:relative;border-radius:24px;background:#262b33;border:3px solid rgba(255,255,255,.2);touch-action:none;overflow:hidden}#jbase{position:absolute;width:150px;height:150px;margin:-75px 0 0 -75px;border-radius:50%;border:4px solid rgba(255,255,255,.35);left:50%;top:50%}#jknob{position:absolute;width:76px;height:76px;margin:-38px 0 0 -38px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fff,#9fb3c8);left:50%;top:50%;box-shadow:0 6px 16px rgba(0,0,0,.4)}.jhint{position:absolute;left:0;right:0;bottom:10px;text-align:center;font:700 13px var(--fb);color:#9aa6b2}
 .jbtns{display:flex;flex-direction:column;gap:12px;min-height:0}.jab{flex:1.4;border-radius:50%/40%;border:4px solid rgba(255,255,255,.3);background:#e8432f;color:#fff;font:900 clamp(34px,9vw,60px) var(--fh);touch-action:none}.jab.b{flex:1;background:#1e88ff}.jab.on{transform:scale(.94);filter:brightness(1.25)}
 #jwatch{flex:1;display:flex;align-items:center;justify-content:center;text-align:center;font:800 26px/1.3 var(--fb);padding:20px}
+
+/* main device can be a phone in landscape (short, wide screen) */
+#toast{pointer-events:none}
+@media (max-height:520px) and (orientation:landscape){
+ .l1,.l2{font-size:min(15vw,23vh)!important}#title{gap:1.6vh}#title .tag{font-size:16px;margin:0}#title .hint{font-size:12px;margin:0}.pill{font-size:20px;padding:8px 34px}
+ .card{width:min(1280px,100%);padding:12px 16px;border-radius:20px}
+ .mgrid{grid-template-columns:minmax(0,.72fr) minmax(0,2fr);gap:14px}.three .opt{font-size:13px;white-space:nowrap}
+ .games,.games.many{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+ .games .game,.games.many .game{grid-template-columns:30px minmax(0,1fr);min-height:50px;padding:6px 8px;border-radius:14px;column-gap:6px}
+ .games .game svg,.games.many .game svg{width:30px;height:30px}.games .game b,.games.many .game b{font-size:14px;line-height:1.1}.games .game span,.games.many .game span{display:none}
+ .lv10 .opt{min-height:32px;font-size:15px}.opt{min-height:38px;font-size:15px;border-radius:12px}.cats .opt{min-height:36px;font-size:14px}
+ .lbl{margin:5px 0 3px;font-size:12px}.lvcap{font-size:12px;margin-top:3px}.catnote{font-size:11px;margin-bottom:4px}
+ .go{min-height:46px;font-size:22px;margin-top:8px}
+ #iIcon{display:none}.howbox{grid-template-columns:minmax(110px,150px) minmax(0,1fr);gap:12px;margin-top:4px}#iDemo{max-width:150px}.steps li{font-size:14px;line-height:1.3}.icard h2{font-size:26px;margin:0}.uses span{font-size:12px;padding:3px 9px}#bReady{min-height:44px;margin-top:8px}.rounds{margin:0}
+}
 </style></head><body>
 <div id="app">
 <canvas id="cv" aria-label="Game stage"></canvas>
@@ -215,7 +230,7 @@ button:focus-visible{outline:4px solid var(--sky);outline-offset:3px}
   <div class="logo"><span class="l1">MOVE</span><span class="l2">PARTY!</span></div>
   <p class="tag">온 가족이 TV 앞에서 몸으로 하는 게임</p>
   <button id="bStart" class="pill" type="button">터치해서 시작</button>
-  <p class="hint">iPad 화면을 TV에 연결하고, iPad를 세워 거실 쪽을 보게 둔 뒤 2~3m 뒤로 물러나세요.</p>
+  <p class="hint">메인 기기(iPad·폰) 화면을 TV에 연결하고, 가로로 세워 거실 쪽을 보게 둔 뒤 2~3m 뒤로 물러나세요.</p>
 </section>
 
 <section id="menu" class="scr" hidden>
@@ -253,7 +268,7 @@ button:focus-visible{outline:4px solid var(--sky);outline-offset:3px}
    </div>
   </div>
   <button id="bGo" class="db go" type="button">시작</button>
-  <p class="priv">카메라 영상은 이 iPad 밖으로 나가지 않아요. 녹화·저장·업로드하지 않아요.</p>
+  <p class="priv">카메라 영상은 이 기기 밖으로 나가지 않아요. 녹화·저장·업로드하지 않아요.</p>
  </div>
 </section>
 
@@ -261,7 +276,7 @@ button:focus-visible{outline:4px solid var(--sky);outline-offset:3px}
   <div class="card qcard"><div class="rk">플레이어 추가 · 폰이나 태블릿 최대 3대 더</div><h2>QR을 찍어서 참여</h2>
   <div class="qwrap"><canvas id="qrc" width="330" height="330" aria-label="참여 코드"></canvas><ol class="qsteps"><li>다른 폰의 카메라로 이 QR 코드를 찍어요</li><li><b>게임 참여하기</b>를 누르고 카메라를 허용해요</li><li>폰을 세워서 플레이어를 보게 두고, 온몸이 다 보일 때까지 뒤로 물러나요</li></ol></div>
   <div id="qlist" class="lobby"></div>
-  <p class="small" id="qnote">각 폰은 몸의 관절 위치만 스스로 계산해서, 이 iPad에만 연결된 암호화 통신으로 그 숫자만 보내요. 영상은 어떤 기기에서도 밖으로 나가지 않아요. 무료 연결 도우미(PeerJS)는 접속 정보만 보고 게임 내용은 볼 수 없어요.</p>
+  <p class="small" id="qnote">각 폰은 몸의 관절 위치만 스스로 계산해서, 이 기기에만 연결된 암호화 통신으로 그 숫자만 보내요. 영상은 어떤 기기에서도 밖으로 나가지 않아요. 무료 연결 도우미(PeerJS)는 접속 정보만 보고 게임 내용은 볼 수 없어요.</p>
   <div class="row"><button id="bQrNew" class="db btn" type="button">새 코드</button><button id="bQrDone" class="db go" type="button">완료</button></div></div>
 </section>
 
@@ -269,9 +284,9 @@ button:focus-visible{outline:4px solid var(--sky);outline-offset:3px}
   <canvas id="jcv" aria-label="Your camera"></canvas>
   <div class="jtop"><div id="jbadge" class="jbadge">MOVE PARTY!</div><div id="jstat" class="jstat">아래 버튼을 눌러 TV 게임에 참여하세요</div></div>
   <button id="bJoin" class="pill jbtn" type="button">게임 참여하기</button>
-  <div class="jph" id="jph" hidden><h3 id="jphT">내 캐릭터 사진</h3><p id="jphP">내 얼굴이 TV 속 캐릭터에 들어가요. TV iPad로만 보내지고, 저장되지 않으며, 게임을 닫으면 사라져요.</p><canvas id="jphC" width="112" height="112" hidden></canvas>
+  <div class="jph" id="jph" hidden><h3 id="jphT">내 캐릭터 사진</h3><p id="jphP">내 얼굴이 TV 속 캐릭터에 들어가요. TV 메인 기기로만 보내지고, 저장되지 않으며, 게임을 닫으면 사라져요.</p><canvas id="jphC" width="112" height="112" hidden></canvas>
    <div class="row"><button id="jphA" class="go" type="button">사진 찍기</button><button id="jphB" class="btn" type="button">사진 없이</button></div></div>
-  <p class="jprv">카메라 영상은 이 폰에만 있어요. TV iPad로는 몸의 관절 위치 숫자만 보내요.</p>
+  <p class="jprv">카메라 영상은 이 폰에만 있어요. TV 메인 기기로는 몸의 관절 위치 숫자만 보내요.</p>
   <div id="jpad" hidden>
    <div id="jpick" hidden><div class="jpt"><span id="jpb" class="jbadge">Car 1</span><span>자동차를 골라요</span></div>
     <div class="jpcar"><button id="jpl" type="button" aria-label="이전 차">◀</button><div id="jpsv"></div><button id="jpr" type="button" aria-label="다음 차">▶</button></div>
@@ -319,7 +334,7 @@ button:focus-visible{outline:4px solid var(--sky);outline-offset:3px}
 </section>
 
 <canvas id="pip" aria-label="Camera preview" hidden></canvas>
-<div id="camBadge" hidden>카메라 켜짐 · 이 iPad에서만 사용</div>
+<div id="camBadge" hidden>카메라 켜짐 · 이 기기에서만 사용</div>
 <section id="rlob" class="scr dim" hidden>
  <div class="card rcard"><div class="rk">Turbo Circuit · 2인</div><h2>각자 폰에서 자동차를 골라요</h2>
   <div class="rps" id="rps"></div>
@@ -333,7 +348,7 @@ button:focus-visible{outline:4px solid var(--sky);outline-offset:3px}
 </section>
 <div id="rwrap" hidden><button id="rExit" type="button" aria-label="레이스 나가기">✕</button></div>
 <div id="toast" hidden></div>
-<div id="rot">iPad를 가로로<br>돌려 주세요</div>
+<div id="rot">기기를 가로로<br>돌려 주세요</div>
 </div>
 
 <script src="lib/peerjs.min.js"></script><script src="lib/qrcode.js"></script>
@@ -1114,7 +1129,7 @@ function endGame(){state='result';$('#hud').hidden=true;$('#runpads').hidden=tru
  const isNew=top>best;if(isNew)store.set(bestKey,top);
  $('#rKick').textContent=`${game.title} · Level ${S.lv} (${LVNAME(S.lv)})`;$('#rTitle').textContent=head;
  $('#rRows').innerHTML=rows.map(({p,st})=>`<div class="rr"><span class="who" style="background:${PCOL[p.i]}">${two?PNAME[p.i]:'나'}</span><span class="pts">${p.score|0}${isNew&&p.score===top&&top>0?'<span class="newb">NEW BEST</span>':''}</span><span class="stars">${'<u>★</u>'.repeat(st)}${'★'.repeat(3-st)}</span></div>`).join('');
- $('#rNote').textContent=(game.note?game.note()+' · ':'')+`이 iPad 최고 기록: ${Math.max(best,top)}${two?' · 이번 판 1등은 보너스 별 +1':''}`;
+ $('#rNote').textContent=(game.note?game.note()+' · ':'')+`이 기기 최고 기록: ${Math.max(best,top)}${two?' · 이번 판 1등은 보너스 별 +1':''}`;
  const party=queue.length>1,stand=$('#rStand');stand.hidden=!party;if(party){const mx=Math.max(3,...act().map(p=>p.stars));stand.innerHTML=`<b>토너먼트 순위 · ${gi+1}/${queue.length} 라운드 후</b>`+act().map(p=>`<div class="sb"><span style="color:${PCOL[p.i]}">${two?PNAME[p.i]:'나'}</span><i><u style="width:0;background:${PCOL[p.i]}" data-w="${Math.round(Math.min(1,p.stars/(queue.length*(two?4:3)))*100)}"></u></i><span>${p.stars}★</span></div>`).join('');requestAnimationFrame(()=>requestAnimationFrame(()=>stand.querySelectorAll('u').forEach(u=>u.style.width=u.dataset.w+'%')))}
  say(two?(head.startsWith('It')?'무승부!':head.replace('wins!','이번 판 승리!')):head);
  const last=gi>=queue.length-1;$('#bNext').hidden=!party;$('#bNext').textContent=last?'시상대 보기':'다음 게임';$('#bAgain').hidden=party;
@@ -1161,7 +1176,7 @@ const MPOK=()=>typeof window.Peer==='function'&&window.isSecureContext&&window.t
 function safeEq(a,b){if(typeof a!=='string'||a.length!==b.length)return false;let r=0;for(let i=0;i<a.length;i++)r|=a.charCodeAt(i)^b.charCodeAt(i);return r===0}
 function resetP(p){Object.assign(p,{lk:null,lkT:0,ref:null,faceT:0,faceN:0,lm:null,raw:null,seen:false,lostT:9,sw:0,score:0,stars:0,total:0,hist:[],ready:0,ok:false,calY:null,bz:null,zs:null,gone:false});p.hands.forEach(h=>Object.assign(h,mkH()))}
 async function hostNet(){if(!MPOK()||peer)return;if(!secret)secret=hex(16);hostId='mp'+hex(16);
- /* certificate pinning: the TV iPad's DTLS fingerprint goes into the QR, so a phone only talks to this exact iPad */
+ /* certificate pinning: the TV 메인 기기's DTLS fingerprint goes into the QR, so a phone only talks to this exact iPad */
  let cert;try{cert=await RTCPeerConnection.generateCertificate({name:'ECDSA',namedCurve:'P-256'});const f=cert.getFingerprints().find(x=>x.algorithm==='sha-256');certFp=f?f.value.replace(/:/g,'').toLowerCase():''}catch(e){certFp=''}
  if(!/^[0-9a-f]{64}$/.test(certFp)){toast('이 브라우저에서는 여러 명 플레이를 지원하지 않아요.',5000);return}
  try{peer=new window.Peer(hostId,{debug:0,config:{iceServers:ICE,certificates:[cert]}})}catch(e){peer=null;return}
@@ -1203,7 +1218,7 @@ const ST_OK=['title','menu','qr','calib','intro','count','play','pause','result'
 function bcast(){const m={t:'st',c:state,g:G[gname]?gname:'',f:!!S.faces};for(const p of P)if(p.conn&&p.conn.open){let x=m;if(state==='race'){const j=RACE.k.indexOf(p.i),rc=j>=0&&RACE.ph!=='solo'&&!p.pending;x={...m,r:{k:rc?j+1:0,ph:RACE.ph,rd:rc?!!RACE.sel[j].rd:false,ty:rc?RACE.sel[j].ty:0,co:rc?RACE.sel[j].co:0}}}else if(S.cat==='pad')x={...m,j:{on:1,play:['intro','count','play','pause'].includes(state)&&!!G[gname]?.pad?1:0}};try{p.conn.send(x)}catch(e){}}}
 let lobbyT=0;
 const FU=new WeakMap(),fu=c=>{if(!FU.has(c))FU.set(c,c.toDataURL('image/jpeg',.6));return FU.get(c)};
-function renderLobby(){const html=P.filter(p=>p.on).map(p=>`<span class="pch" style="background:${PCOL[p.i]}">${p.face&&S.faces?`<img src="${fu(p.face)}" alt="" style="width:32px;height:32px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 2px #fff">`:''}${PNAME[p.i]} <small>${p.i===0?'이 iPad':p.gone?'연결 끊김':p.pending?'다음 게임부터':p.seen?'준비됨':'연결됨'}</small>${p.i?`<button type="button" class="kick" data-kick="${p.i}" aria-label="Remove ${PNAME[p.i]}">×</button>`:(S.faces&&motion?`<button type="button" class="kick" data-photo="1" aria-label="New photo" title="New photo">↺</button>`:'')}</span>`).join('');
+function renderLobby(){const html=P.filter(p=>p.on).map(p=>`<span class="pch" style="background:${PCOL[p.i]}">${p.face&&S.faces?`<img src="${fu(p.face)}" alt="" style="width:32px;height:32px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 2px #fff">`:''}${PNAME[p.i]} <small>${p.i===0?'이 기기':p.gone?'연결 끊김':p.pending?'다음 게임부터':p.seen?'준비됨':'연결됨'}</small>${p.i?`<button type="button" class="kick" data-kick="${p.i}" aria-label="Remove ${PNAME[p.i]}">×</button>`:(S.faces&&motion?`<button type="button" class="kick" data-photo="1" aria-label="New photo" title="New photo">↺</button>`:'')}</span>`).join('');
  for(const id of['#lobby','#qlist']){const el=$(id);if(el.dataset.h!==html){el.innerHTML=html;el.dataset.h=html}}$('#bAdd').hidden=!MPOK()}
 document.addEventListener('click',e=>{if(e.target.closest('[data-photo]')){P[0].face=null;renderLobby();toast('다음 게임을 시작할 때 들어오면 새 사진을 찍어요.',4500);return}const b=e.target.closest('[data-kick]');if(!b)return;const k=Number(b.dataset.kick);if(k>=1&&k<=3){dropP(P[k]);secret=hex(16);drawQR();toast(`${PNAME[k]} 플레이어를 내보냈어요. 새 참여 코드를 만들었어요.`,4000)}});
 $('#bAdd').onclick=async()=>{SFX.select();show('qr');drawQR();await hostNet();drawQR()};
@@ -1229,7 +1244,7 @@ const racers=()=>P.filter(p=>p.i>0&&p.on&&!p.pending&&raceOK(p));
 function raceConf(){return{track:RACE.track,diff:S.lv,cars:RACE.k.map((pi,j)=>({ty:RACE.sel[j].ty,co:RACE.sel[j].co,nm:PNAME[pi],pc:PCOL[pi],face:P[pi].face&&S.faces?fu(P[pi].face):''}))}}
 function raceGo(){const ph=racers();
  if(!ph.length){openRace(false);return}
- if(ph.length<2){toast('Turbo Circuit 2인은 폰 2대가 필요해요 — + QR로 플레이어 추가로 한 대 더 연결하세요. (폰이 없으면 이 iPad에서 1인 레이스)',7000);return}
+ if(ph.length<2){toast('Turbo Circuit 2인은 폰 2대가 필요해요 — + QR로 플레이어 추가로 한 대 더 연결하세요. (폰이 없으면 이 기기에서 1인 레이스)',7000);return}
  const k=[ph[0].i,ph[1].i];if(k[0]!==RACE.k[0]||k[1]!==RACE.k[1])RACE.sel=[{ty:0,co:0,rd:false},{ty:3,co:1,rd:false}];RACE.k=k;RACE.sel.forEach(x=>x.rd=false);
  closeRace();state='race';RACE.ph='pick';RACE.goT=0;stopCam();pipC.hidden=true;show('rlob');renderRLob();say('터보 서킷! 폰에서 자동차를 골라요.')}
 function openRace(two){closeRace();state='race';RACE.ph=two?'drive':'solo';if(!two)RACE.k=[0,0];stopCam();pipC.hidden=true;mus.song=null;show('');
@@ -1588,7 +1603,7 @@ function runJoin(hid,key,fp){document.documentElement.classList.add('joinmode');
  history.replaceState(null,'',location.pathname);
  let dev=store.get('dev','');if(!/^[0-9a-f]{32}$/.test(dev)){dev=hex(16);store.set('dev',dev)}let faceSent=false,shot=0,faceC=null;
  const ph=$('#jph'),phA=$('#jphA'),phB=$('#jphB'),phC=$('#jphC'),phP=$('#jphP'),phT=$('#jphT');
- function photoUI(mode){ph.hidden=mode==='off';if(mode==='ask'){phT.textContent='내 캐릭터 사진';phP.textContent='내 얼굴이 TV 속 캐릭터에 들어가요. TV iPad로만 보내지고, 저장되지 않으며, 게임을 닫으면 사라져요.';phC.hidden=true;phA.textContent='사진 찍기';phB.textContent='사진 없이'}
+ function photoUI(mode){ph.hidden=mode==='off';if(mode==='ask'){phT.textContent='내 캐릭터 사진';phP.textContent='내 얼굴이 TV 속 캐릭터에 들어가요. TV 메인 기기로만 보내지고, 저장되지 않으며, 게임을 닫으면 사라져요.';phC.hidden=true;phA.textContent='사진 찍기';phB.textContent='사진 없이'}
   if(mode==='preview'){phT.textContent='이 사진 괜찮아요?';phP.textContent='이 얼굴이 캐릭터 머리에 들어가요.';phC.hidden=false;phA.textContent='이걸로 할래요';phB.textContent='다시 찍기'}}
  phA.onclick=()=>{if(phA.textContent==='이걸로 할래요'&&faceC){try{conn.send({t:'face',d:faceC.toDataURL('image/jpeg',.72)});faceSent=true}catch(e){}photoUI('off');stat('사진을 보냈어요! TV를 보세요')}else{photoUI('off');shot=performance.now()+3000}};
  phB.onclick=()=>{if(phB.textContent==='다시 찍기'){photoUI('off');shot=performance.now()+3000}else{faceSent=true;photoUI('off')}};
@@ -1631,7 +1646,7 @@ function runJoin(hid,key,fp){document.documentElement.classList.add('joinmode');
   if(jrk&&jrph==='pick')paintPick();
   if(jrk&&jrph==='drive'&&was!=='drive'){$('#jdp').textContent='가속은 자동 · ◀ ▶로 방향 조절';SFX.go?.()}
   if(jrph!=='drive'){jptr.clear();padRecalc()}
-  $('#jwatch').textContent=jrph==='solo'?'iPad 플레이어가 달리는 중 — TV를 보세요!':jrph==='res'?'레이스 끝 — 결과는 TV에서!':'두 명이 레이스 중 — TV를 보세요!'}
+  $('#jwatch').textContent=jrph==='solo'?'메인 기기 플레이어가 달리는 중 — TV를 보세요!':jrph==='res'?'레이스 끝 — 결과는 TV에서!':'두 명이 레이스 중 — TV를 보세요!'}
  function padRecalc(){let b=0;if(jrph==='drive')for(const [,q] of jptr){const el=document.elementFromPoint(q.x,q.y),bt=el&&el.closest&&el.closest('[data-b]');if(bt&&jdr.contains(bt))b|=Number(bt.dataset.b)}
   if(b!==jbits){const nw=b&~jbits;jbits=b;if(nw&&navigator.vibrate)try{navigator.vibrate(12)}catch(e){}$$('#jdrive [data-b]').forEach(e=>e.classList.toggle('on',!!(jbits&Number(e.dataset.b))));if(jrk&&jrph==='drive')jsend({t:'pad',s:jbits})}}
  jdr.addEventListener('pointerdown',e=>{e.preventDefault();try{jdr.setPointerCapture(e.pointerId)}catch(_){}jptr.set(e.pointerId,{x:e.clientX,y:e.clientY});padRecalc()});
@@ -1640,11 +1655,11 @@ function runJoin(hid,key,fp){document.documentElement.classList.add('joinmode');
  $('#jpad').addEventListener('contextmenu',e=>e.preventDefault());$('#jpad').addEventListener('touchstart',e=>{if(e.target.closest('#jdrive'))e.preventDefault()},{passive:false});
  if(!MPOK()){stat('참여는 게임 링크(Safari)에서만 할 수 있어요.');btn.hidden=true;return}
  function size(){const d=Math.min(2,devicePixelRatio||1);jc.width=Math.round(innerWidth*d);jc.height=Math.round(innerHeight*d)}size();addEventListener('resize',size);
- function connect(){stat('TV iPad에 연결하는 중…');try{jpeer&&jpeer.destroy()}catch(e){}
+ function connect(){stat('TV 메인 기기에 연결하는 중…');try{jpeer&&jpeer.destroy()}catch(e){}
   jpeer=new window.Peer({debug:0,config:{iceServers:ICE}});
   jpeer.on('open',()=>{conn=jpeer.connect(hid,{reliable:true,serialization:'json'});
    conn.on('open',()=>{const sdp=conn.peerConnection?.remoteDescription?.sdp||'',m=sdp.match(/a=fingerprint:sha-256 ([0-9A-Fa-f:]+)/),got=m?m[1].replace(/:/g,'').toLowerCase():'';
-    if(!safeEq(got,fp)){blocked=true;stat('보안 확인 실패: QR 코드의 TV iPad가 아니에요. 연결하지 않았어요.');try{conn.close()}catch(e){}try{jpeer.destroy()}catch(e){}btn.hidden=true;return}
+    if(!safeEq(got,fp)){blocked=true;stat('보안 확인 실패: QR 코드의 TV 메인 기기가 아니에요. 연결하지 않았어요.');try{conn.close()}catch(e){}try{jpeer.destroy()}catch(e){}btn.hidden=true;return}
     try{conn.send({t:'hi',k:key,v:2,dev})}catch(e){}});
    conn.on('data',m=>{if(!m||typeof m!=='object')return;
     if(m.t==='ok'&&[1,2,3].includes(m.slot)){slot=m.slot;const b=$('#jbadge');b.textContent=`${PNAME[slot]} · ${slot+1}번 플레이어`;b.style.background=PCOL[slot];stat(MSG.menu);SFX.ready&&SFX.ready();if(!faceSent&&m.f===true)photoUI('ask')}
@@ -1653,7 +1668,7 @@ function runJoin(hid,key,fp){document.documentElement.classList.add('joinmode');
     else if(m.t==='full'){stat('이미 4명이 플레이 중이에요.');}
     else if(m.t==='bye'){slot=0;leavePad();stat('진행자가 게임에서 내보냈어요.');}});
    conn.on('close',()=>{if(blocked)return;leavePad();stat(slot?'연결이 끊겼어요. 눌러서 다시 연결하세요.':'참여하지 못했어요. TV의 최신 QR 코드를 다시 찍어 주세요.');slot=0;btn.textContent='다시 연결';btn.hidden=false})});
-  jpeer.on('error',()=>{stat('TV iPad에 연결할 수 없어요. 그쪽에 게임이 열려 있는지 확인하고 다시 눌러 주세요.');btn.textContent='다시 시도';btn.hidden=false})}
+  jpeer.on('error',()=>{stat('TV 메인 기기에 연결할 수 없어요. 그쪽에 게임이 열려 있는지 확인하고 다시 눌러 주세요.');btn.textContent='다시 시도';btn.hidden=false})}
  btn.onclick=async()=>{btn.hidden=true;initAudio();
   if(!jl){stat('카메라 켜는 중…');try{await openCam();stat('동작 인식 준비 중…');jl=await loadPose()}catch(e){stopCam();stat('게임하려면 카메라가 필요해요. 이 사이트에 카메라를 허용하고 다시 눌러 주세요.');btn.textContent='다시 시도';btn.hidden=false;return}}
   else if(!stream){try{await openCam()}catch(e){}}
