@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-T3fbFji8Ta8XBv5g4nDH2p2NoTJtEIpR+xGHfdCSvgE=' 'wasm-unsafe-eval'; connect-src 'self' https://storage.googleapis.com/mediapipe-models/pose_landmarker/ https://0.peerjs.com wss://0.peerjs.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; media-src 'self' blob: mediastream:; worker-src 'self' blob:; frame-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-Z34iAxMaivLgceCHbWsERjzfujkw815tknZNJTHI7r8=' 'wasm-unsafe-eval'; connect-src 'self' https://storage.googleapis.com/mediapipe-models/pose_landmarker/ https://0.peerjs.com wss://0.peerjs.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; media-src 'self' blob: mediastream:; worker-src 'self' blob:; frame-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="robots" content="noindex,nofollow">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1489,7 +1489,7 @@ G.dance={title:'댄스 파티',th:[160,260,340],
   const u=t<cur.t?1:clamp((t-cur.t)/(cur.d*.35)),e=1-Math.pow(1-u,3),ps=t<this.moves[0].t?DPOSE.T.map((v,k)=>k<4?lerp(10,v,clamp(t/(this.moves[0].t)))*(k%2?1:1):0):poseMix(prev.ps.length<5?[...prev.ps,0]:prev.ps,cur.ps.length<5?[...cur.ps,0]:cur.ps,e);
   const cc2=cur.gold&&t>cur.t?'#ffd23f':'#ffffff';for(const p of act()){const R=refOf(p);drawCoach(R,ps,cc2,t/sp,.26,false)}
   drawPlayers(.95);
-  {const n=act().length,cw=Math.min(W*.2,H*.36),chh=cw*1.45,cx=n>=3?W/2:W-cw/2-W*.02,cy=n>=3?H*.13:H*.2;g.fillStyle='rgba(20,8,40,.78)';rrect(cx-cw/2,cy,cw,chh,18);g.fill();g.strokeStyle=cc2;g.lineWidth=3;g.stroke();
+  {const n=act().length,cw=n>=2?Math.min(W*.13,H*.24):Math.min(W*.2,H*.36),chh=cw*1.45,cx=n>=2?W/2:W-cw/2-W*.02,cy=n>=2?H*.13:H*.2;g.fillStyle='rgba(20,8,40,.78)';rrect(cx-cw/2,cy,cw,chh,18);g.fill();g.strokeStyle=cc2;g.lineWidth=3;g.stroke();
    txt('따라 하세요!',cx,cy+18,Math.min(20,cw*.11),cc2,.12);drawCoach({x:cx,y:cy+chh*.55,sw:chh*.12},ps,cc2==='#ffffff'?'#b388ff':cc2,t/sp,1,true)}
   // pictos: next moves slide in from the right
   const s=Math.min(74,H*.095),py=H*.9,px0=W*.3;g.fillStyle='rgba(0,0,0,.4)';rrect(px0-s*.75,py-s*.75,W-px0+s*.75-W*.02,s*1.5,s*.3);g.fill();
