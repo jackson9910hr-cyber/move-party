@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-rhBh2bROUgAvRdaWZRWRprfJtGZqIxxMtPv9N2gcjwQ=' 'wasm-unsafe-eval'; connect-src 'self' https://storage.googleapis.com/mediapipe-models/pose_landmarker/ https://0.peerjs.com wss://0.peerjs.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; media-src 'self' blob: mediastream:; worker-src 'self' blob:; frame-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-1g3L1fN8JyC/4qTZJlZ+wyg909wCrFP4I+ZjGQl3HWg=' 'wasm-unsafe-eval'; connect-src 'self' https://storage.googleapis.com/mediapipe-models/pose_landmarker/ https://0.peerjs.com wss://0.peerjs.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; media-src 'self' blob: mediastream:; worker-src 'self' blob:; frame-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="robots" content="noindex,nofollow">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -71,7 +71,7 @@ html,body{margin:0;height:100%;overflow:hidden;background:#e8432f;color:var(--cr
 .opt{font:800 19px var(--fh);min-height:clamp(52px,8.5vh,70px);border-radius:18px;border:3px solid var(--line);background:#fff;color:var(--ink);cursor:pointer;padding:0 6px}
 .opt[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:var(--cream)}
 .games{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.games.many{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.games.many .game{grid-template-columns:40px minmax(0,1fr);padding:8px 10px;min-height:clamp(64px,10.5vh,92px);column-gap:8px}.games.many .game svg{width:40px;height:40px}.games.many .game b{font-size:17px}.games.many .game span{font-size:12px}
-.cats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:6px}.cats .opt{min-height:46px;font-size:17px}.catnote{margin:0 0 8px;font:700 13px var(--fb);color:var(--mut)}
+.cats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:6px}.cats .opt{min-height:46px;font-size:17px}.catnote{margin:0 0 8px;font:700 13px var(--fb);color:var(--mut)}.hostpad{width:100%;min-height:42px;font-size:15px;margin-bottom:8px}
 .game{display:grid;grid-template-columns:54px minmax(0,1fr);column-gap:12px;align-items:center;text-align:left;padding:10px 12px;min-height:clamp(74px,12.5vh,104px);border-radius:20px;border:3px solid var(--line);background:#fff;color:var(--ink);cursor:pointer;font:inherit}
 .game svg{grid-row:span 2;width:54px;height:54px}
 .game b{font:800 21px/1.05 var(--fh)}.game span{font-size:13.5px;color:var(--mut);line-height:1.25}
@@ -248,7 +248,7 @@ button:focus-visible{outline:4px solid var(--sky);outline-offset:3px}
    </div>
    <div>
     <div class="lbl">게임</div>
-    <div class="cats" data-k="cat"><button class="db opt" type="button" data-v="cam">📷 카메라 게임</button><button class="db opt" type="button" data-v="pad">🎮 컨트롤러 게임</button></div><p class="catnote" id="catNote"></p>
+    <div class="cats" data-k="cat"><button class="db opt" type="button" data-v="cam">📷 카메라 게임</button><button class="db opt" type="button" data-v="pad">🎮 컨트롤러 게임</button></div><p class="catnote" id="catNote"></p><button id="bHostPad" class="db opt hostpad" type="button" hidden></button>
     <div class="games" data-k="mode">
      <button class="db game" type="button" data-v="party"><svg viewBox="0 0 100 100"><path d="M50 8l12 26 28 3-21 19 6 28-25-14-25 14 6-28-21-19 28-3z" fill="#ffd23f" stroke="#1d1d1f" stroke-width="5" stroke-linejoin="round"/></svg><b>파티 토너먼트</b><span>카메라 게임 5종목 랜덤 · 별 많이 모으면 우승</span></button>
      <button class="db game" type="button" data-v="fruit"><svg viewBox="0 0 100 100"><circle cx="50" cy="55" r="34" fill="#3fa34d"/><circle cx="50" cy="55" r="26" fill="#ff4b5c"/><path d="M14 90L88 14" stroke="#1d1d1f" stroke-width="8" stroke-linecap="round"/></svg><b>Fruit Slash</b><span>팔을 휘둘러 과일 베기</span></button>
@@ -359,7 +359,7 @@ const cv=$('#cv'),g=cv.getContext('2d'),video=$('#vid');
 const TAU=Math.PI*2,rnd=(a,b)=>a+Math.random()*(b-a),clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v)),lerp=(a,b,t)=>a+(b-a)*t;
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 const store={get(k,d){try{const v=localStorage.getItem('mp_'+k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem('mp_'+k,JSON.stringify(v))}catch(e){}}};
-const DEF={mode:'party',cat:'cam',level:'family',lv:5,music:true,sfx:true,faces:true};
+const DEF={mode:'party',cat:'cam',hostPad:false,level:'family',lv:5,music:true,sfx:true,faces:true};
 const saved=store.get('set',{}),S={...DEF};
 for(const k in DEF)if(saved&&typeof saved[k]===typeof DEF[k])S[k]=saved[k];
 if(!['party','fruit','run','swim','beat','blast'].includes(S.mode))S.mode='party';if(!['kids','family','pro'].includes(S.level))S.level='family';
@@ -1045,10 +1045,10 @@ function syncFs(){const t=isApp()?'앱 모드':fsEl()?'전체 화면 끝내기':
 $('#bFs').onclick=$('#bFs2').onclick=()=>{SFX.select();toggleFs()};
 document.addEventListener('fullscreenchange',syncFs);document.addEventListener('webkitfullscreenchange',syncFs);
 let tT=null;function toast(m,ms=4000){const t=$('#toast');t.textContent=m;t.hidden=false;clearTimeout(tT);tT=setTimeout(()=>t.hidden=true,ms)}
-function setCat(v){S.cat=v==='pad'?'pad':'cam';if(S.cat==='pad'){$('#bGo').disabled=false;$('#bGo').textContent='시작';camWanted=false;stopCam();P[0].on=false;P[0].seen=false;P[0].hands.forEach(h=>h.ok=false);if(G[S.mode]?.pad!==true&&S.mode!=='race')S.mode='bump';toast('카메라를 껐어요 · 연결된 폰이 컨트롤러가 돼요 (+ QR로 플레이어 추가)',5000)}
+function setCat(v){S.cat=v==='pad'?'pad':'cam';if(S.cat==='pad'){$('#bGo').disabled=false;$('#bGo').textContent='시작';camWanted=false;stopCam();P[0].on=!!S.hostPad;P[0].seen=false;P[0].hands.forEach(h=>h.ok=false);if(G[S.mode]?.pad!==true&&S.mode!=='race')S.mode='bump';toast('카메라를 껐어요 · 연결된 폰이 컨트롤러가 돼요 (+ QR로 플레이어 추가)',5000)}
  else{P[0].on=true;camWanted=true;if(motion&&!stream&&!document.hidden)openCam().catch(()=>{});if(G[S.mode]?.pad||S.mode==='race')S.mode='party'}renderLobby();syncMenu();bcast()}
 function syncMenu(){const pad=S.cat==='pad';let vis=0;$$('.games .game').forEach(b=>{const show=(b.dataset.cat||'cam')===(pad?'pad':'cam');b.hidden=!show;if(show)vis++});$('.games').classList.toggle('many',vis>6);
- const cn=$('#catNote');if(cn)cn.textContent=pad?'카메라 없이 폰으로 조작해요 · 폰마다 1명 · 빈자리는 컴퓨터가 채워요':'카메라로 몸을 움직여요 · 메뉴는 한 손을 들어 가리키면 선택돼요';const lc=$('#lvCap');if(lc)lc.textContent=`Level ${S.lv} · ${LVNAME(S.lv)}${S.lv<=3?' — 아이도 쉽게':S.lv>=9?' — 진짜 어려워요!':''}`;$$('[data-k]').forEach(gp=>{const k=gp.dataset.k;gp.querySelectorAll('[data-v]').forEach(b=>b.setAttribute('aria-pressed',String(String(S[k])===b.dataset.v)))});$('#tMus').setAttribute('aria-pressed',String(S.music));$('#tFace').setAttribute('aria-pressed',String(S.faces));$('#tSfx').setAttribute('aria-pressed',String(S.sfx))}
+ const hb=$('#bHostPad');if(hb){hb.hidden=!pad;hb.textContent=S.hostPad?'📱 이 기기도 참여: 켬 (화면 스틱으로 조작)':'📱 이 기기도 참여: 끔 (TV 화면만)';hb.setAttribute('aria-pressed',String(!!S.hostPad))}const cn=$('#catNote');if(cn)cn.textContent=pad?'카메라 없이 폰으로 조작해요 · 폰마다 1명 · 빈자리는 컴퓨터가 채워요':'카메라로 몸을 움직여요 · 메뉴는 한 손을 들어 가리키면 선택돼요';const lc=$('#lvCap');if(lc)lc.textContent=`Level ${S.lv} · ${LVNAME(S.lv)}${S.lv<=3?' — 아이도 쉽게':S.lv>=9?' — 진짜 어려워요!':''}`;$$('[data-k]').forEach(gp=>{const k=gp.dataset.k;gp.querySelectorAll('[data-v]').forEach(b=>b.setAttribute('aria-pressed',String(String(S[k])===b.dataset.v)))});$('#tMus').setAttribute('aria-pressed',String(S.music));$('#tFace').setAttribute('aria-pressed',String(S.faces));$('#tSfx').setAttribute('aria-pressed',String(S.sfx))}
 $$('[data-k]').forEach(gp=>gp.addEventListener('click',e=>{const b=e.target.closest('[data-v]');if(!b)return;const k=gp.dataset.k,v=b.dataset.v;S[k]=k==='players'||k==='lv'?Number(v):v;if(k==='lv'){S.level=tierOf(S.lv);LVC.clear()}if(k==='cat')setCat(v);;store.set('set',S);syncMenu();SFX.select()}));
 $('#tMus').onclick=()=>{S.music=!S.music;applyVol();store.set('set',S);syncMenu();SFX.select()};
 $('#tFace').onclick=()=>{S.faces=!S.faces;P.forEach(p=>p.face=null);bcast();store.set('set',S);syncMenu();SFX.select();toast(S.faces?'얼굴 사진 켬: 플레이어가 들어오면 사진을 찍어요.':'얼굴 사진 끔: 만화 얼굴을 쓰고 사진은 찍지 않아요.',4500)};
@@ -1056,7 +1056,7 @@ $('#tSfx').onclick=()=>{S.sfx=!S.sfx;applyVol();store.set('set',S);syncMenu();SF
 $('#bStart').onclick=$('#title').onclick=e=>{if(state!=='title')return;e.stopPropagation();enterFs();initAudio();if(AC&&AC.state==='suspended')AC.resume();SFX.select();playSong('menu');try{navigator.wakeLock?.request('screen').catch(()=>{})}catch(e){}
  $('#bGo').disabled=true;$('#bGo').textContent='카메라 켜는 중…';goMenu();initCamera()};
 function goMenu(){if(typeof closeRace==='function')closeRace();RACE.ph='';if(motion&&camWanted&&!stream&&!document.hidden)openCam().catch(()=>{});state='menu';P.forEach(p=>{if(p.gone)dropP(p);p.pending=false});renderLobby();show('menu');$('#hud').hidden=true;$('#runpads').hidden=true;playSong('menu');syncMenu()}
-$('#bGo').onclick=()=>{if(S.mode==='race'){SFX.select();raceGo();return}if(G[S.mode]?.pad){if(!padPlayers().length){toast('컨트롤러 게임은 폰이 필요해요 — + QR로 플레이어 추가에서 폰을 연결하세요.',6000);return}P.forEach(p=>{if(p.gone)dropP(p)});queue=[S.mode];gi=0;P.forEach(p=>{p.stars=0;p.total=0;p.hist=[]});SFX.select();startIntro();return}if(!camReady)return;P.forEach(p=>{if(p.gone)dropP(p)});queue=S.mode==='party'?['fruit','run','swim','beat','blast','dance','leak','goal','hula','ridge'].sort(()=>Math.random()-.5).slice(0,5):[S.mode];gi=0;P.forEach(p=>{p.stars=0;p.total=0;p.hist=[]});SFX.select();
+$('#bGo').onclick=()=>{if(S.mode==='race'){SFX.select();raceGo();return}if(G[S.mode]?.pad){if(!padPlayers().length){P[0].on=true;S.hostPad=true;renderLobby();syncMenu();toast('연결된 폰이 없어서 이 기기 화면으로 조작해요 (왼쪽 스틱 · 오른쪽 A/B). 폰을 더 연결하면 함께 할 수 있어요.',6500)}P.forEach(p=>{if(p.gone)dropP(p)});queue=[S.mode];gi=0;P.forEach(p=>{p.stars=0;p.total=0;p.hist=[]});SFX.select();startIntro();return}if(!camReady)return;P.forEach(p=>{if(p.gone)dropP(p)});queue=S.mode==='party'?['fruit','run','swim','beat','blast','dance','leak','goal','hula','ridge'].sort(()=>Math.random()-.5).slice(0,5):[S.mode];gi=0;P.forEach(p=>{p.stars=0;p.total=0;p.hist=[]});SFX.select();
  const need=act().filter(p=>!p.cal);if(motion&&need.length){state='calib';show('calib');need.forEach(p=>{p.ready=0;p.ok=false;p.calY=null;p.snap=null;p.snapN=0});act().filter(p=>p.cal).forEach(p=>{p.ok=true})}else startIntro()};
 $('#bSkip').onclick=()=>{SFX.select();P.forEach(p=>{if(p.seen&&p.calY==null){p.calY=p.ay;if(p.lm){const R=refOf(p);p.noseRel=clamp((p.lm[0].y-R.y)/R.sw,-3.6,-1.4)}}});startIntro()};
 function startIntro(){setPoses();act().forEach(p=>{if(p.calY!=null||p.seen)p.cal=true});gname=queue[gi];game=G[gname];P.forEach(p=>{p.score=0;p.match=0;p.hands.forEach(h=>{h.trail=[];if(!motion)h.ok=false})});ptrs.clear();parts=[];floats=[];stains=[];game.init();
@@ -1257,6 +1257,7 @@ function renderRLob(){const html=RACE.k.map((pi,j)=>{const p=P[pi],x=RACE.sel[j]
  const el=$('#rps');if(el.dataset.h!==html){el.innerHTML=html;el.dataset.h=html}
  const th=RTRK.map((n,i)=>`<button type="button" data-trk="${i}" aria-pressed="${i===RACE.track}">${n}</button>`).join('');if($('#rtrk').dataset.h!==th){$('#rtrk').innerHTML=th;$('#rtrk').dataset.h=th}
  const all=RACE.k.every((pi,j)=>raceOK(P[pi])&&RACE.sel[j].rd),b=$('#bRGo');b.disabled=!all;const bt=all?`${Math.max(1,Math.ceil(3-RACE.goT))}초 뒤 출발… (누르면 바로 출발)`:'READY를 기다리는 중…';if(b.textContent!==bt)b.textContent=bt}
+$('#bHostPad').onclick=()=>{S.hostPad=!S.hostPad;if(S.cat==='pad'){P[0].on=S.hostPad;renderLobby();bcast()}store.set('set',S);SFX.select();syncMenu()};
 $('#rtrk').addEventListener('click',e=>{const b=e.target.closest('[data-trk]');if(!b)return;const i=Number(b.dataset.trk);if(i>=0&&i<RTRK.length){RACE.track=i;RACE.goT=0;SFX.select();renderRLob()}});
 $('#bRBack').onclick=()=>{SFX.select();goMenu()};
 $('#bRGo').onclick=()=>{if(RACE.ph==='pick'&&!$('#bRGo').disabled){SFX.go();openRace(true)}};
@@ -1522,9 +1523,23 @@ G.ridge={title:'장애물 피하기',th:[150,260,360],
   if(t<6)txt(motion?'빨간 허들 = 두 손 번쩍(점프) · 보라 막대 = 쪼그려 앉기 · 파란 벽 = 옆으로 비켜요!':'버튼으로 피해요: ◀ ▶ 비키기 · 점프 · 숙이기',W/2,H*.2,Math.min(22,W*.021),'#fff',.14)},
  sc(i){return P[i].score},note(){return act().map(p=>`${NP()>1?PNAME[p.i]+': ':''}피함 ${this.st[p.i].ok} · 부딪힘 ${this.st[p.i].hit} · 별 ${this.st[p.i].coin}`).join(' · ')},hud(){return Math.max(0,Math.ceil(this.c.dur-this.t))}};
 
+
+/* on-screen controller for the main device in controller games (stick on the left, A/B on the right) */
+const HP=new Map();
+function hostPadGeo(){const u=Math.min(W,H);return{sx:u*.24,sy:H-u*.27,sr:u*.13,ax:W-u*.14,ay:H-u*.2,ar:u*.085,bx:W-u*.3,by:H-u*.11,br:u*.06}}
+function hostJoy(){const G0=hostPadGeo();let x=0,y=0,b=0;for(const[,q]of HP){const dx=q.x-G0.sx,dy=q.y-G0.sy;if(q.x<W*.5){const d=Math.hypot(dx,dy)||1,k=Math.min(1,d/G0.sr);x=dx/d*k;y=dy/d*k}else{if(Math.hypot(q.x-G0.ax,q.y-G0.ay)<G0.ar*1.5)b|=1;if(Math.hypot(q.x-G0.bx,q.y-G0.by)<G0.br*1.6)b|=2}}
+ P[0].joy={x:Math.round(x*100),y:Math.round(y*100),b,t:performance.now()}}
+function drawHostPad(){hostJoy();const G0=hostPadGeo(),j=P[0].joy;g.save();g.globalAlpha=.55;g.fillStyle='rgba(0,0,0,.35)';g.beginPath();g.arc(G0.sx,G0.sy,G0.sr,0,TAU);g.fill();g.strokeStyle='#fff';g.lineWidth=3;g.stroke();
+ g.globalAlpha=.85;g.fillStyle='#dfe7ef';g.beginPath();g.arc(G0.sx+j.x/100*G0.sr,G0.sy+j.y/100*G0.sr,G0.sr*.45,0,TAU);g.fill();
+ g.globalAlpha=j.b&1?.95:.6;g.fillStyle='#e8432f';g.beginPath();g.arc(G0.ax,G0.ay,G0.ar,0,TAU);g.fill();g.globalAlpha=j.b&2?.95:.6;g.fillStyle='#1e88ff';g.beginPath();g.arc(G0.bx,G0.by,G0.br,0,TAU);g.fill();g.globalAlpha=1;
+ txt('A',G0.ax,G0.ay+1,G0.ar*.9,'#fff',0);txt('B',G0.bx,G0.by+1,G0.br*.9,'#fff',0);chip(G0.sx,G0.sy-G0.sr-16,PNAME[0],PCOL[0],13);g.restore()}
+{const on=()=>game&&game.pad&&P[0].on&&['count','play'].includes(state);
+ addEventListener('pointerdown',e=>{if(!on())return;HP.set(e.pointerId,{x:e.clientX,y:e.clientY})});
+ addEventListener('pointermove',e=>{if(HP.has(e.pointerId))HP.set(e.pointerId,{x:e.clientX,y:e.clientY})});
+ for(const ev of['pointerup','pointercancel'])addEventListener(ev,e=>HP.delete(e.pointerId));addEventListener('blur',()=>HP.clear())}
 /* ===================== CONTROLLER GAMES (no camera: each phone is a joystick + A/B buttons) ===================== */
 const BOTN=['Bolt','Coco','Ziggy','Momo'],BOTC=['#9e9e9e','#8d6e63','#26a69a','#ec407a'];
-function padPlayers(){return act().filter(p=>p.i>0)}
+function padPlayers(){return act()}
 function joyOf(p){const j=p&&p.joy;if(!j||performance.now()-j.t>1500)return{x:0,y:0,a:false,b:false,ok:false};return{x:j.x/100,y:j.y/100,a:!!(j.b&1),b:!!(j.b&2),ok:true}}
 function drawFaceBall(x,y,r,col,face,label,t,spin){const gr=g.createRadialGradient(x-r*.35,y-r*.4,r*.1,x,y,r);gr.addColorStop(0,shade(col,.45));gr.addColorStop(.7,col);gr.addColorStop(1,shade(col,-.35));g.fillStyle=gr;g.beginPath();g.arc(x,y,r,0,TAU);g.fill();
  g.strokeStyle='rgba(255,255,255,.35)';g.lineWidth=Math.max(2,r*.08);g.beginPath();g.arc(x,y,r*.78,spin,spin+1.4);g.stroke();
@@ -1563,7 +1578,7 @@ G.bump={title:'범퍼 볼',pad:true,th:[60,120,180],
    g.fillStyle='rgba(0,0,0,.25)';g.beginPath();g.ellipse(q.x,q.y+r*.75,r*.9,r*.3,0,0,TAU);g.fill();if(b.dash>0){g.strokeStyle='rgba(255,255,255,.7)';g.lineWidth=4;g.beginPath();g.arc(q.x,q.y,r*1.25,0,TAU);g.stroke()}
    drawFaceBall(q.x,q.y,r,b.c,b.pi>=0?P[b.pi].face:null,b.pi>=0?b.n:'CPU',t,b.spin)}
   if(this.t<5)txt('스틱으로 굴러서 친구를 밖으로 밀어내요! A = 돌진',W/2,H*.17,Math.min(24,W*.024),'#ffd23f',.14)},
- sc(i){return P[i].score},note(){return padPlayers().map(p=>`${p.i?PNAME[p.i]:''}: 라운드 승리 ${this.wins[p.i]||0} · 밀어낸 수 ${this.ko[p.i]||0}`).join(' · ')},hud(){return `${this.round}/${this.c.rounds}`}};
+ sc(i){return P[i].score},note(){return padPlayers().map(p=>`${PNAME[p.i]}: 라운드 승리 ${this.wins[p.i]||0} · 밀어낸 수 ${this.ko[p.i]||0}`).join(' · ')},hud(){return `${this.round}/${this.c.rounds}`}};
 
 /* ---------- Bomb Battle (Bomberman): blast the blocks, grab power-ups, last one standing wins the round ---------- */
 const BW=13,BH=11;
@@ -1727,7 +1742,7 @@ function loop(now){const dt=Math.min(.05,(now-last)/1000);last=now;
   if(state==='title'||state==='menu'){g.drawImage(bg('party'),0,0,W,H);ambientConf(dt,.5);drawPlayers(.55)}
   else if(state==='calib'){g.drawImage(bg('studio'),0,0,W,H);drawCalib(dt);drawPlayers(1)}
   else if(state==='final'){drawFinal(dt);ambientConf(dt,1)}
-  else if(game){if(state==='play'){game.update(dt);if(game.done)endGame()}game.draw();if(state==='count')drawCount(dt);if(state==='result')ambientConf(dt,.3)}
+  else if(game){if(state==='play'){game.update(dt);if(game.done)endGame()}game.draw();if(game.pad&&P[0].on&&['count','play'].includes(state))drawHostPad();if(state==='count')drawCount(dt);if(state==='result')ambientConf(dt,.3)}
   updFx(state==='pause'?0:dt);drawFx();drawWipe(dt);if(flashA>0){g.globalAlpha=flashA;g.fillStyle=flashC;g.fillRect(-20,-20,W+40,H+40);g.globalAlpha=1}g.restore();
   drawPIP();if(MENUISH.includes(state)){drawCursors();dwell(dt)}
   if(state==='play'||state==='count')setHud();
