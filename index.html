@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-Wgpg6p5xZME5w2voI1C+55qGsqvFzNdsfFCUQ9KOZ9E=' 'wasm-unsafe-eval'; connect-src 'self' https://storage.googleapis.com/mediapipe-models/pose_landmarker/ https://0.peerjs.com wss://0.peerjs.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; media-src 'self' blob: mediastream:; worker-src 'self' blob:; frame-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-BcnnkHkww7iAgOxTmF5S5XaiLIzo+oJ4lC00TE6l0b4=' 'wasm-unsafe-eval'; connect-src 'self' https://storage.googleapis.com/mediapipe-models/pose_landmarker/ https://0.peerjs.com wss://0.peerjs.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; media-src 'self' blob: mediastream:; worker-src 'self' blob:; frame-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="robots" content="noindex,nofollow">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -163,7 +163,7 @@ button:focus-visible{outline:4px solid var(--sky);outline-offset:3px}
 #rwrap.two #rExit{left:auto;top:calc(10px + env(safe-area-inset-top));right:calc(10px + env(safe-area-inset-right));transform:none}
 #rExit{position:absolute;left:calc(8px + env(safe-area-inset-left));top:50%;transform:translateY(-50%);z-index:2;width:46px;height:46px;border-radius:50%;border:2px solid rgba(255,255,255,.55);background:rgba(0,0,0,.45);color:#fff;font:800 20px var(--fb);cursor:pointer}
 .rcard{width:min(860px,100%)}
-.hpcard{width:min(620px,100%);text-align:center}.hpwrap{display:flex;justify-content:center;margin:8px 0}#hpv{width:min(420px,70vw);max-height:44vh;aspect-ratio:4/3;border-radius:18px;background:#1d2633;object-fit:contain}#hpf{width:min(220px,36vh);height:auto;aspect-ratio:1;border-radius:50%;border:6px solid var(--blue,#1e88ff);box-shadow:0 8px 20px rgba(0,0,0,.25)}
+.isum{font:900 clamp(17px,2.3vw,26px) var(--fh);color:#e8432f;margin:2px 0 10px;text-align:center;line-height:1.35}.hpcard{width:min(620px,100%);text-align:center}.hpwrap{display:flex;justify-content:center;margin:8px 0}#hpv{width:min(420px,70vw);max-height:44vh;aspect-ratio:4/3;border-radius:18px;background:#1d2633;object-fit:contain}#hpf{width:min(220px,36vh);height:auto;aspect-ratio:1;border-radius:50%;border:6px solid var(--blue,#1e88ff);box-shadow:0 8px 20px rgba(0,0,0,.25)}
 .rps{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0}
 .rp{border-radius:20px;padding:12px;border:4px solid var(--line);background:#fff;text-align:center;display:flex;flex-direction:column;align-items:center;gap:4px}
 .rp.rd{border-color:#1fa34a;background:#effaf1}
@@ -310,7 +310,7 @@ button:focus-visible{outline:4px solid var(--sky);outline-offset:3px}
 </section>
 
 <section id="intro" class="scr dim" hidden>
-  <div class="card icard"><div class="rk" id="iNum"></div><div class="rounds" id="iRound"></div><div class="ic" id="iIcon"></div><h2 id="iName"></h2><div class="howbox"><canvas id="iDemo" width="300" height="300" aria-label="동작 방법"></canvas><div><div class="uses" id="iUses"></div><ol class="steps" id="iSteps"></ol></div></div><button id="bReady" class="db go" type="button">준비 완료!</button></div>
+  <div class="card icard"><div class="rk" id="iNum"></div><div class="rounds" id="iRound"></div><div class="ic" id="iIcon"></div><h2 id="iName"></h2><p class="isum" id="iSum"></p><div class="howbox"><canvas id="iDemo" width="300" height="300" aria-label="동작 방법"></canvas><div><div class="uses" id="iUses"></div><ol class="steps" id="iSteps"></ol></div></div><button id="bReady" class="db go" type="button">준비 완료!</button></div>
 </section>
 
 <div id="hud" hidden>
@@ -681,9 +681,12 @@ function drawGhost(p){const R=refOf(p),c=PCOL[p.i],hy=R.y-R.sw*2.35;g.save();g.g
  txt(p.gone?'다시 연결하는 중…':'카메라 안으로 들어와요',R.x,R.y+R.sw*.6,clamp(R.sw*.42,16,32),'#fff',.16);if(NP()>1)txt(PNAME[p.i],R.x,hy,clamp(R.sw*.4,14,28),c,.16)}
 const drawPlayers=(a=.96)=>act().forEach(p=>{if(motion&&!p.seen)drawGhost(p);else drawPuppet(p,a)});
 function drawTrails(){for(const p of act())for(const h of p.hands){const tr=h.trail;if(!h.ok||tr.length<2)continue;const fast=h.sp>L().thr*F.h;g.lineCap='round';for(let i=1;i<tr.length;i++){const k=i/tr.length;g.strokeStyle=fast?`rgba(255,255,255,${k*.95})`:`rgba(255,255,255,${k*.3})`;g.lineWidth=(fast?F.h*.022:F.h*.01)*k+1;g.beginPath();g.moveTo(tr[i-1].x,tr[i-1].y);g.lineTo(tr[i].x,tr[i].y);g.stroke()}}}
+function drawHandPtr(x,y,col,on){const s=Math.max(.8,Math.min(1.3,H/700))*(on?1.12:1);g.save();g.translate(x,y);g.scale(s,s);g.rotate(-.18);g.lineJoin='round';g.lineCap='round';
+ const P2=new Path2D('M0 0 C-5 0 -8 4 -8 9 L-8 38 C-12 34 -20 33 -24 38 C-27 42 -25 47 -21 51 L-6 70 C-1 77 6 80 15 80 L30 80 C42 80 50 71 50 59 L50 36 C50 31 46 28 42 28 C38 28 35 31 35 35 L35 31 C35 26 31 23 27 23 C23 23 20 26 20 30 L20 27 C20 22 16 19 12 19 C10 19 9 20 8 21 L8 9 C8 4 5 0 0 0 Z');
+ g.shadowColor='rgba(0,0,0,.35)';g.fillStyle='rgba(0,0,0,.28)';g.translate(3,5);g.fill(P2);g.translate(-3,-5);g.fillStyle='#fff';g.fill(P2);g.strokeStyle=col;g.lineWidth=5;g.stroke(P2);
+ g.strokeStyle=col+'88';g.lineWidth=2.5;g.beginPath();g.moveTo(8,30);g.lineTo(8,46);g.moveTo(20,32);g.lineTo(20,46);g.moveTo(35,36);g.lineTo(35,48);g.stroke();g.restore()}
 function drawCursors(){if(!motion)return;const p=menuOwner();if(!p)return;const h=ptrHand(p);if(!h){if(['menu','qr'].includes(state)){const R=refOf(p);chip(R.x,Math.min(H-30,R.y+R.sw*.4),`${PNAME[p.i]}: 한 손을 들어 가리켜요`,PCOL[p.i],15)}return}
- const pu=1+Math.sin(performance.now()/180)*.08;g.fillStyle=PCOL[p.i]+'cc';g.strokeStyle='#fff';g.lineWidth=6;g.beginPath();g.arc(h.x,h.y,28*pu,0,TAU);g.fill();g.stroke();g.fillStyle='#fff';g.beginPath();g.arc(h.x,h.y,7,0,TAU);g.fill();
- if(dw.el&&dw.p===p){g.strokeStyle='#ffd23f';g.lineWidth=7;g.beginPath();g.arc(h.x,h.y,38,-Math.PI/2,-Math.PI/2+TAU*clamp(dw.t/1.1));g.stroke()}chip(h.x,h.y-50,`${PNAME[p.i]} 선택 중`,PCOL[p.i],13)}
+ if(dw.el&&dw.p===p){g.strokeStyle='rgba(0,0,0,.35)';g.lineWidth=8;g.beginPath();g.arc(h.x,h.y,24,0,TAU);g.stroke();g.strokeStyle='#ffd23f';g.lineWidth=6;g.beginPath();g.arc(h.x,h.y,24,-Math.PI/2,-Math.PI/2+TAU*clamp(dw.t/1.1));g.stroke()}drawHandPtr(h.x,h.y,PCOL[p.i],dw.el&&dw.p===p)}
 /* small live camera window, bottom-right: shows how the camera sees the room, with tracked joints */
 const PIPJ=[[11,12],[11,13],[13,15],[12,14],[14,16],[11,23],[12,24],[23,24],[23,25],[25,27],[24,26],[26,28]];
 const pipC=$('#pip'),pg=pipC.getContext('2d');
@@ -704,7 +707,7 @@ const dw={el:null,t:0,block:null};
 
 /* top layer over the menus: see-through people + the one hand that is choosing */
 let ovDirty=0;function ovDraw(){const ox=$('#ov').getContext('2d');if(!MENUISH.includes(state)||!motion){if(ovDirty){ox.clearRect(0,0,W,H);ovDirty=0}return}
- ox.clearRect(0,0,W,H);ovDirty=1;g=ox;try{if(['title','menu','qr','hphoto'].includes(state)&&state!=='hphoto')drawPlayers(.34);drawCursors()}finally{g=g0}}
+ ox.clearRect(0,0,W,H);ovDirty=1;g=ox;try{drawCursors()}finally{g=g0}}
 function menuOwner(){return act().find(p=>p.seen&&p.lm)||null}
 function ptrHand(p){if(!p.seen)return null;const R=refOf(p),hs=p.hands.filter(h=>h.ok&&h.y<R.y-R.sw*.4);if(!hs.length){p.ptr=null;return null}let h=hs.reduce((a,b)=>a.y<b.y?a:b);if(p.ptr&&hs.includes(p.ptr)&&p.ptr.y<h.y+R.sw*.9)h=p.ptr;p.ptr=h;return h}
 const dwC={t:0,l:[],st:''};function dwBtns(){const n=performance.now();if(n-dwC.t>300||dwC.st!==state){dwC.t=n;dwC.st=state;dwC.l=$$('.db').filter(b=>b.offsetParent!==null&&!b.disabled).map(b=>({b,r:b.getBoundingClientRect()}))}return dwC.l}
@@ -1071,7 +1074,7 @@ G.blast={title:'Monster Blaster',th:[1500,3000,4500],
   if(motion)for(const p of act()){if(!p.seen||p.ko)continue;const A=this.aim?.[p.i];if(A)for(const a of A){if(!a.ok||this.ch[p.i].on)continue;const L=Math.hypot(W,H),ex=a.x+a.dx*L,ey=a.y+a.dy*L,gr=g.createLinearGradient(a.x,a.y,a.x+a.dx*H*.7,a.y+a.dy*H*.7);gr.addColorStop(0,PCOL[p.i]+'ee');gr.addColorStop(1,PCOL[p.i]+'00');g.strokeStyle=gr;g.lineWidth=6;g.setLineDash([18,10]);g.beginPath();g.moveTo(a.x,a.y);g.lineTo(ex,ey);g.stroke();g.setLineDash([]);
     const cx=a.x+a.dx*H*.42,cy=a.y+a.dy*H*.42;g.strokeStyle='#fff';g.lineWidth=3;g.beginPath();g.arc(cx,cy,14,0,TAU);g.moveTo(cx-22,cy);g.lineTo(cx-8,cy);g.moveTo(cx+8,cy);g.lineTo(cx+22,cy);g.moveTo(cx,cy-22);g.lineTo(cx,cy-8);g.moveTo(cx,cy+8);g.lineTo(cx,cy+22);g.stroke()}
    for(const h of p.hands){if(!h.ok)continue;g.strokeStyle=PCOL[p.i];g.lineWidth=4;g.beginPath();g.arc(h.x,h.y,(p.sw||40)*.28,0,TAU);g.stroke()}}
-  if(this.t<6&&!this.over)txt(motion?'팁: 팔을 뻗은 방향(점선)으로 쏴요 · 두 손을 모으면 캐논 충전, 가득 차면 자동 발사!':'팁: 두 손가락으로 누르고 있으면 캐논 충전, 가득 차면 자동 발사!',W/2,Math.max(H*.16,(H<560?104:0)),Math.min(22,W*.022),'#7fe3ff',.14);
+  if(this.t<12&&!this.over)txt(motion?'팁: 팔을 뻗은 방향(점선)으로 쏴요 · 두 손을 모으면 캐논 충전, 가득 차면 자동 발사!':'팁: 두 손가락으로 누르고 있으면 캐논 충전, 가득 차면 자동 발사!',W/2,Math.max(H*.16,(H<560?104:0)),Math.min(22,W*.022),'#7fe3ff',.14);
   if(this.over)txt('GAME OVER',W/2,H*.42,Math.min(96,W*.1),'#ff5252',.12)},
  sc(i){return P[i].score},
  note(){return this.over?'게임 오버 — 모두 쓰러졌어요. 다 같이 다시 도전!':`살아남았어요! 남은 하트: ${act().map(p=>(NP()>1?PNAME[p.i]+' ':'')+this.life[p.i]).join(', ')}`},
@@ -1136,7 +1139,7 @@ G.beat={title:'Beat Punch',how:'줄어드는 링이 과녁에 닿는 순간 펀�
  hud(){return Math.max(0,Math.ceil(this.end-this.now()))}};
 
 /* ---------- flow ---------- */
-let state='title',queue=[],gi=0,game=null,gname='',ct=0,lastN=0,introT=0,lastClock=-1;
+let state='title',queue=[],gi=0,game=null,gname='',ct=0,lastN=0,introT=0,readT=0,lastClock=-1;
 const SCR=['title','menu','qr','calib','intro','pause','result','final','rlob','rres','hphoto'];
 function show(n){SCR.forEach(k=>$('#'+k).hidden=k!==n);fitCards();bcast()}
 /* shrink a menu card to fit the screen instead of scrolling (Safari bars, short landscape screens) */
@@ -1194,10 +1197,11 @@ $('#bGo').onclick=()=>{if(S.mode==='race'){SFX.select();raceGo();return}if(G[S.m
 $('#bSkip').onclick=()=>{SFX.select();P.forEach(p=>{if(p.seen&&p.calY==null){p.calY=p.ay;if(p.lm){const R=refOf(p);p.noseRel=clamp((p.lm[0].y-R.y)/R.sw,-3.6,-1.4)}}});startIntro()};
 function startIntro(){setPoses();act().forEach(p=>{if(p.calY!=null||p.seen)p.cal=true});gname=queue[gi];game=G[gname];P.forEach(p=>{p.score=0;p.match=0;p.hands.forEach(h=>{h.trail=[];if(!motion)h.ok=false})});ptrs.clear();parts=[];floats=[];stains=[];game.init();try{const bp=game.c?.bpm||game.bpm;if(bp&&SONGS[gname])renderSong({...SONGS[gname],bpm:bp})}catch(e){}
  state='intro';introT=0;show('intro');$('#iNum').textContent=queue.length>1?`게임 ${gi+1} / ${queue.length}`:'단일 게임';$('#iName').textContent=game.title;
- const hw=HOWTO[gname][motion?'m':'t'];$('#iUses').innerHTML=HOWTO[gname].uses.map(u=>`<span>${u}</span>`).join('');$('#iSteps').innerHTML=hw.map(x=>`<li>${x}</li>`).join('');demoT=0;$('#iIcon').innerHTML=$(`.game[data-v="${gname}"] svg`).outerHTML;playSong(gname);
+ const hw=HOWTO[gname][motion?'m':'t'];$('#iSum').textContent=(motion||G[gname]?.pad)?(ISUM[gname]||''):(HOWTO[gname].t[0]||'').replace(/<[^>]+>/g,'');readT=7;$('#bReady').disabled=true;$('#iUses').innerHTML=HOWTO[gname].uses.map(u=>`<span>${u}</span>`).join('');$('#iSteps').innerHTML=hw.map(x=>`<li>${x}</li>`).join('');demoT=0;$('#iIcon').innerHTML=$(`.game[data-v="${gname}"] svg`).outerHTML;playSong(gname);
  $('#iRound').innerHTML=queue.length>1?queue.map((q,k)=>`<span class="${k<gi?'done':k===gi?'cur':''}">${k<gi?'✓ ':''}${G[q].title}</span>`).join(''):'';
  wipe=1;SFX.whoosh?.();say(/[가-힣]/.test(game.title)?(queue.length>1?`${gi+1}라운드, ${game.title}!`:`${game.title}!`):queue.length>1?`Round ${['one','two','three','four','five'][gi]||gi+1}. ${game.title}!`:`${game.title}!`)}
 let wipe=0,demoT=0;
+const ISUM={"fruit": "팔을 휘둘러 과일을 쓱! 반으로 잘라요. 폭탄은 건드리지 마요!", "run": "제자리에서 팔을 힘차게 흔들면 달려요. 두 손 번쩍 = 점프!", "swim": "팔로 헤엄쳐요! 가운데에 나온 영법을 따라 하면 더 빨라요.", "beat": "과녁에 링이 닿을 때 그 자리를 펀치! 박자에 맞추면 점수가 커요.", "blast": "팔을 뻗은 쪽으로 총알이 나가요! 두 손을 모으면 큰 대포!", "dance": "오른쪽 카드의 춤 동작을 그대로 따라 해요!", "leak": "물이 새는 곳에 손·머리·발을 대서 막아요!", "goal": "날아오는 공을 손으로 막아요! 몸을 기울이면 멀리까지 닿아요.", "hula": "엉덩이를 빙글빙글! 날아오는 후프는 몸을 기울여 받아요.", "ridge": "빨간 허들은 점프, 보라 막대는 숙이기, 파란 벽은 옆으로 비켜요!", "bump": "폰 스틱으로 굴러가서 친구를 밖으로 밀어내요!", "bomb": "폰 스틱으로 움직이고 A로 폭탄! 폭발은 피해요."};
 const HOWTO={
  dance:{uses:['온몸','따라 하기'],m:['내 몸 바로 뒤에 <b>빛나는 댄서</b>가 있어요. 댄서와 <b>똑같은 자세</b>를 만들어요 (거울처럼).','위쪽 <b>그림 카드</b>가 다음 동작이에요. 카드가 하얀 선에 닿을 때 그 자세! 딱 맞으면 <b>PERFECT</b>.','<b>노란 골드 카드</b>는 점수 2배! 쪼그려 앉는 동작도 있어요.'],t:['박자에 맞춰 화면을 톡 눌러요.','그림 카드가 하얀 선에 닿을 때 누르면 PERFECT!','노란 골드 카드는 점수 2배!']},
  leak:{uses:['손','머리','발'],m:['나는 바닷속 <b>유리방</b> 안에 있어요. 물고기가 유리를 <b>쾅</b> 치면 금이 가요.','금이 간 곳에 <b>손·머리·발</b>을 대고 잠깐 있으면 <b>막혀요!</b> 여러 곳을 동시에 막아야 할 때도 있어요 (트위스터처럼!).','안 막으면 <b>물이 차올라요</b>. 머리나 발로 막으면 보너스!'],t:['금이 간 곳을 손가락으로 꾹 누르고 있어요.','여러 손가락으로 동시에 막아도 돼요.','물이 가득 차기 전에 막아요!']},
@@ -1485,7 +1489,7 @@ G.dance={title:'댄스 파티',th:[160,260,340],
   // feedback
   for(const p of act()){const f=this.fb[p.i],R=refOf(p);if(f&&f.T>0){f.T-=1/60;const y=R.y-R.sw*4.6-(1-f.T)*20;txt(f.t,R.x,y,f.gold?54:42,f.c,.16)}if(this.combo[p.i]>=3)chip(R.x,R.y-R.sw*5.6,`콤보 ${this.combo[p.i]}`,PCOL[p.i],16)}
   const rem=Math.max(0,this.end-t);g.fillStyle='rgba(255,255,255,.25)';g.fillRect(W*.1,H-10,W*.8,5);g.fillStyle='#ff4d9d';g.fillRect(W*.1,H-10,W*.8*clamp(1-rem/this.end),5);
-  if(!motion&&t<6)txt('그림 카드가 하얀 선에 닿을 때 화면을 톡!',W/2,Math.max(H*.32,(H<560?104:0)),22,'#fff',.14)},
+  if(!motion&&t<12)txt('그림 카드가 하얀 선에 닿을 때 화면을 톡!',W/2,Math.max(H*.32,(H<560?104:0)),22,'#fff',.14)},
  sc(i){return P[i].score},
  note(){return act().map(p=>`${NP()>1?PNAME[p.i]+': ':''}PERFECT ${this.cnt[p.i].p}번 · 골드 무브 ${this.cnt[p.i].gold}번`).join(' · ')},
  hud(){return Math.max(0,Math.ceil(this.end-this.now()))}};
@@ -1543,7 +1547,7 @@ G.leak={title:'구멍 막기',th:[200,350,500],
   // water level
   const wl=H*(1-this.water*.85);if(this.water>.01){g.fillStyle='rgba(40,150,230,.38)';g.beginPath();g.moveTo(0,H);for(let x=0;x<=W;x+=20)g.lineTo(x,wl+Math.sin(x*.02+t*3)*8);g.lineTo(W,H);g.fill()}
   g.fillStyle='rgba(0,0,0,.45)';rrect(W*.04,H*.06,30,H*.4,10);g.fill();g.fillStyle=this.water>.7?'#ff5252':'#4fc3f7';const hh=H*.4*Math.min(1,this.water);rrect(W*.04,H*.06+H*.4-hh,30,hh,10);g.fill();txt('물',W*.04+15,H*.06+H*.4+18,16,'#fff',.12);
-  if(t<6)txt(motion?'금이 간 곳에 손·머리·발을 대고 있으면 막혀요!':'금이 간 곳을 손가락으로 꾹 누르고 있어요!',W/2,Math.max(H*.2,(H<560?104:0)),Math.min(24,W*.024),'#fff',.14)},
+  if(t<12)txt(motion?'금이 간 곳에 손·머리·발을 대고 있으면 막혀요!':'금이 간 곳을 손가락으로 꾹 누르고 있어요!',W/2,Math.max(H*.2,(H<560?104:0)),Math.min(24,W*.024),'#fff',.14)},
  sc(i){return P[i].score},note(){return act().map(p=>`${NP()>1?PNAME[p.i]+': ':''}구멍 ${this.seal[p.i]}개 막음`).join(' · ')+(this.flood?' · 물이 가득 찼어요':'')},
  hud(){return Math.max(0,Math.ceil(this.c.dur-this.t))}};
 
@@ -1593,7 +1597,7 @@ G.goal={title:'슈퍼 골키퍼',th:[120,220,320],
    const show=q>Math.max(.08,1-c.lead/b.fly-.2);if(show){const a=clamp((q-.1)/.9),rr=R.sw*(.45+1.2*(1-a));g.strokeStyle=col;g.lineWidth=5;g.globalAlpha=.45+.55*a;g.beginPath();g.arc(b.tx,b.ty,rr,0,TAU);g.stroke();g.beginPath();g.moveTo(b.tx-rr*.4,b.ty);g.lineTo(b.tx+rr*.4,b.ty);g.moveTo(b.tx,b.ty-rr*.4);g.lineTo(b.tx,b.ty+rr*.4);g.stroke();g.globalAlpha=1;
     if(q>.45){const left=b.tx<R.x;txt(left?'◀ 왼손!':'오른손! ▶',b.tx+(left?-1:1)*rr*1.1,b.ty-rr*.9,Math.max(15,R.sw*.32),col,.14)}}}
   for(const b of this.balls){const P0=this.pos(b);if(b.done){if(b.t<b.fly+.6){g.globalAlpha=1-(b.t-b.fly)/.6;drawBall(P0.x,P0.y-(b.t-b.fly)*80,P0.r,b.rot,b.gold);g.globalAlpha=1}continue}drawBall(P0.x,P0.y,Math.max(P0.r,H*.014),b.rot,b.gold)}
-  if(t<6)txt(motion?'선수가 차면 점선과 노란 표적이 보여요 — 표적에 손을 대요! 두 손이면 CATCH!':'노란 표적이 나오면 그곳을 손가락으로 꾹!',W/2,Math.max(H*.2,(H<560?104:0)),Math.min(22,W*.022),'#fff',.14)},
+  if(t<12)txt(motion?'선수가 차면 점선과 노란 표적이 보여요 — 표적에 손을 대요! 두 손이면 CATCH!':'노란 표적이 나오면 그곳을 손가락으로 꾹!',W/2,Math.max(H*.2,(H<560?104:0)),Math.min(22,W*.022),'#fff',.14)},
  sc(i){return P[i].score},note(){return act().map(p=>`${NP()>1?PNAME[p.i]+': ':''}선방 ${this.st[p.i].s} · 실점 ${this.st[p.i].g}`).join(' · ')},hud(){return Math.max(0,Math.ceil(this.c.dur-this.t))}};
 
 /* ===================== HULA HOOP (Wii Fit Hula Hoop + Super Hula Hoop catches) ===================== */
@@ -1629,7 +1633,7 @@ G.hula={title:'훌라후프',th:[150,300,450],
    if(!o.res){const near=o.t>o.fly-this.c.win*1.6;if(near){txt(o.s<0?'◀ 이쪽으로 기울이거나 손을 뻗어요!':'이쪽으로 기울이거나 손을 뻗어요! ▶',R.x+o.s*R.sw*1.6,R.y-R.sw*4.1,22,'#ffd23f',.16)}}}
   // throwers on the sides
   for(const s of[-1,1]){const x=s<0?W*.06:W*.94,y=H*.7;g.fillStyle=s<0?'#ff4d9d':'#4fc3f7';rrect(x-H*.025,y-H*.1,H*.05,H*.08,8);g.fill();g.fillStyle='#f1c7a0';g.beginPath();g.arc(x,y-H*.125,H*.028,0,TAU);g.fill()}
-  if(t<6)txt(motion?'엉덩이를 빙글빙글 돌려 훌라후프를 돌려요!':'손가락으로 화면에 동그라미를 계속 그려요!',W/2,Math.max(H*.2,(H<560?104:0)),Math.min(24,W*.024),'#fff',.14)},
+  if(t<12)txt(motion?'엉덩이를 빙글빙글 돌려 훌라후프를 돌려요!':'손가락으로 화면에 동그라미를 계속 그려요!',W/2,Math.max(H*.2,(H<560?104:0)),Math.min(24,W*.024),'#fff',.14)},
  sc(i){return P[i].score},note(){return act().map(p=>{const H0=this.hs(p);return`${NP()>1?PNAME[p.i]+': ':''}${H0?H0.cnt:0}바퀴 · 후프 ${H0?H0.catch:0}개 잡음`}).join(' · ')},hud(){return Math.max(0,Math.ceil(this.c.dur-this.t))}};
 
 /* ===================== OBSTACLE DODGE (Reflex Ridge: jump, duck, step aside on a moving platform) ===================== */
@@ -1672,7 +1676,7 @@ G.ridge={title:'장애물 피하기',th:[150,260,360],
    g.save();g.translate(st.dx,st.dy);if(motion&&!p.seen)drawGhost(p);else if(motion)drawPuppet(p,.95);else{g.fillStyle=PCOL[p.i];rrect(R.x-R.sw*.6,R.y-R.sw*2,R.sw*1.2,R.sw*3.2,R.sw*.5);g.fill();g.beginPath();g.arc(R.x,R.y-R.sw*2.6,R.sw*.55,0,TAU);g.fill()}g.restore()}
   for(const p of ps){const R=refOf(p),st=this.st[p.i],s=this.state(p);if(st.stun>0){g.fillStyle=`rgba(255,82,82,${st.stun*.4})`;g.beginPath();g.arc(R.x,R.y-R.sw*2,R.sw*2.4,0,TAU);g.fill()}
    chip(R.x,R.y+R.sw*2.9,`${s.jump?'점프 중':s.duck?'숙임':s.side<0?'◀ 왼쪽':s.side>0?'오른쪽 ▶':'가운데'}`,PCOL[p.i],15)}
-  if(t<6)txt(motion?'빨간 허들 = 두 손 번쩍(점프) · 보라 막대 = 쪼그려 앉기 · 파란 벽 = 옆으로 비켜요!':'버튼으로 피해요: ◀ ▶ 비키기 · 점프 · 숙이기',W/2,Math.max(H*.2,(H<560?104:0)),Math.min(22,W*.021),'#fff',.14)},
+  if(t<12)txt(motion?'빨간 허들 = 두 손 번쩍(점프) · 보라 막대 = 쪼그려 앉기 · 파란 벽 = 옆으로 비켜요!':'버튼으로 피해요: ◀ ▶ 비키기 · 점프 · 숙이기',W/2,Math.max(H*.2,(H<560?104:0)),Math.min(22,W*.021),'#fff',.14)},
  sc(i){return P[i].score},note(){return act().map(p=>`${NP()>1?PNAME[p.i]+': ':''}피함 ${this.st[p.i].ok} · 부딪힘 ${this.st[p.i].hit} · 별 ${this.st[p.i].coin}`).join(' · ')},hud(){return Math.max(0,Math.ceil(this.c.dur-this.t))}};
 
 
@@ -1905,7 +1909,7 @@ function loop(now){const dt=Math.min(.05,(now-last)/1000);last=now;
   updFx(state==='pause'?0:dt);drawFx();drawWipe(dt);if(flashA>0){g.globalAlpha=flashA;g.fillStyle=flashC;g.fillRect(-20,-20,W+40,H+40);g.globalAlpha=1}g.restore();
   drawPIP();ovDraw();if(MENUISH.includes(state))dwell(dt);
   if(state==='play'||state==='count')setHud();
-  if(state==='intro'){introT+=dt;drawDemo(dt);if(introT>25)startCount()}
+  if(state==='intro'){introT+=dt;drawDemo(dt);if(readT>0){readT-=dt;const b=$('#bReady'),tx=readT>0?`설명을 읽어요… ${Math.ceil(readT)}`:'준비 완료!';if(b.textContent!==tx)b.textContent=tx;if(readT<=0)b.disabled=false}if(introT>50)startCount()}
  }catch(err){console.error(err);g=g0;try{g.restore()}catch(e){}g.setTransform(DPR,0,0,DPR,0,0)}
  requestAnimationFrame(loop)}
 if(MP.startsWith('%%')){$('.game[data-v="race"]').hidden=true;if(S.mode==='race')S.mode='party'}
