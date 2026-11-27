@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-7EXZ1xk6vUFytz/tpGjoGe4xgaUm3KMDqPZhb3fRz5s=' 'wasm-unsafe-eval'; connect-src 'self' https://storage.googleapis.com/mediapipe-models/pose_landmarker/ https://0.peerjs.com wss://0.peerjs.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; media-src 'self' blob: mediastream:; worker-src 'self' blob:; frame-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-Te3Lb8vV6M3wkHiz0n456KDlL4mJa/y4Fpy3PR5hsLg=' 'wasm-unsafe-eval'; connect-src 'self' https://storage.googleapis.com/mediapipe-models/pose_landmarker/ https://0.peerjs.com wss://0.peerjs.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; media-src 'self' blob: mediastream:; worker-src 'self' blob:; frame-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="robots" content="noindex,nofollow">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -209,76 +209,76 @@ button:focus-visible{outline:4px solid var(--sky);outline-offset:3px}
 
 <section id="title" class="scr">
   <div class="logo"><span class="l1">MOVE</span><span class="l2">PARTY!</span></div>
-  <p class="tag">Family motion games for the big screen</p>
-  <button id="bStart" class="pill" type="button">Tap to start</button>
-  <p class="hint">Mirror the iPad to your TV, stand it up facing the room, and step back 2–3 m.</p>
+  <p class="tag">온 가족이 TV 앞에서 몸으로 하는 게임</p>
+  <button id="bStart" class="pill" type="button">터치해서 시작</button>
+  <p class="hint">iPad 화면을 TV에 연결하고, iPad를 세워 거실 쪽을 보게 둔 뒤 2~3m 뒤로 물러나세요.</p>
 </section>
 
 <section id="menu" class="scr" hidden>
  <div class="card">
-  <div class="mhead"><div class="mlogo">MOVE <b>PARTY!</b></div><div class="mtools"><button id="bFs" class="fs" type="button">Full screen</button><div id="mode" class="mode">Starting camera…</div></div></div>
+  <div class="mhead"><div class="mlogo">MOVE <b>PARTY!</b></div><div class="mtools"><button id="bFs" class="fs" type="button">전체 화면</button><div id="mode" class="mode">카메라 켜는 중…</div></div></div>
   <div class="mgrid">
    <div>
-    <div class="lbl">Players · 1 device = 1 player</div>
+    <div class="lbl">플레이어 · 기기 1대 = 1명</div>
     <div id="lobby" class="lobby"></div>
-    <button id="bAdd" class="db opt add" type="button" hidden>+ Add players with QR</button>
-    <div class="lbl">Level</div>
+    <button id="bAdd" class="db opt add" type="button" hidden>+ QR로 플레이어 추가</button>
+    <div class="lbl">난이도</div>
     <div class="opts lv10" data-k="lv"><button class="db opt" type="button" data-v="1" style="--h:117">1</button><button class="db opt" type="button" data-v="2" style="--h:104">2</button><button class="db opt" type="button" data-v="3" style="--h:91">3</button><button class="db opt" type="button" data-v="4" style="--h:78">4</button><button class="db opt" type="button" data-v="5" style="--h:65">5</button><button class="db opt" type="button" data-v="6" style="--h:52">6</button><button class="db opt" type="button" data-v="7" style="--h:39">7</button><button class="db opt" type="button" data-v="8" style="--h:26">8</button><button class="db opt" type="button" data-v="9" style="--h:13">9</button><button class="db opt" type="button" data-v="10" style="--h:0">10</button></div><div class="lvcap" id="lvCap"></div>
-    <div class="lbl">Options</div>
-    <div class="opts three"><button id="tMus" class="db opt" type="button">Music</button><button id="tSfx" class="db opt" type="button">Effects</button><button id="tFace" class="db opt" type="button">Face photos</button></div>
+    <div class="lbl">옵션</div>
+    <div class="opts three"><button id="tMus" class="db opt" type="button">음악</button><button id="tSfx" class="db opt" type="button">효과음</button><button id="tFace" class="db opt" type="button">얼굴 사진</button></div>
    </div>
    <div>
-    <div class="lbl">Game</div>
+    <div class="lbl">게임</div>
     <div class="games" data-k="mode">
-     <button class="db game" type="button" data-v="party"><svg viewBox="0 0 100 100"><path d="M50 8l12 26 28 3-21 19 6 28-25-14-25 14 6-28-21-19 28-3z" fill="#ffd23f" stroke="#1d1d1f" stroke-width="5" stroke-linejoin="round"/></svg><b>Party Tournament</b><span>All 5 games · most stars wins</span></button>
-     <button class="db game" type="button" data-v="fruit"><svg viewBox="0 0 100 100"><circle cx="50" cy="55" r="34" fill="#3fa34d"/><circle cx="50" cy="55" r="26" fill="#ff4b5c"/><path d="M14 90L88 14" stroke="#1d1d1f" stroke-width="8" stroke-linecap="round"/></svg><b>Fruit Slash</b><span>Swing your arms to slice</span></button>
-     <button class="db game" type="button" data-v="run"><svg viewBox="0 0 100 100"><rect x="4" y="62" width="92" height="30" rx="8" fill="#d9573b"/><path d="M8 77h84" stroke="#fff" stroke-width="3" stroke-dasharray="9 7"/><circle cx="60" cy="17" r="9" fill="#1d1d1f"/><g stroke="#1d1d1f" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" fill="none"><path d="M56 30l-9 20"/><path d="M47 50l13 10l-2 10M47 50l-16 7"/><path d="M53 34l14 7M53 34l-17 3"/></g></svg><b>Sprint Dash</b><span>Run in place · jump the hurdles</span></button>
-     <button class="db game" type="button" data-v="swim"><svg viewBox="0 0 100 100"><rect x="4" y="30" width="92" height="64" rx="10" fill="#29b6f6"/><path d="M4 52h92M4 72h92" stroke="#fff8ec" stroke-width="4" stroke-dasharray="6 6"/><circle cx="62" cy="62" r="9" fill="#1d1d1f"/><path d="M28 62h26M48 52l14 10M48 72l14-10" stroke="#1d1d1f" stroke-width="8" stroke-linecap="round"/><path d="M10 20q10-10 20 0t20 0t20 0t20 0" stroke="#29b6f6" stroke-width="5" fill="none"/></svg><b>Swim Race</b><span>Swim with your arms · zones</span></button>
-     <button class="db game" type="button" data-v="blast"><svg viewBox="0 0 100 100"><circle cx="66" cy="36" r="22" fill="#7e57c2"/><circle cx="58" cy="32" r="6" fill="#fff"/><circle cx="74" cy="32" r="6" fill="#fff"/><circle cx="58" cy="33" r="3" fill="#d81b1b"/><circle cx="74" cy="33" r="3" fill="#d81b1b"/><path d="M14 86l30-30" stroke="#1d1d1f" stroke-width="10" stroke-linecap="round"/><path d="M48 52l8-8" stroke="#ffd23f" stroke-width="6" stroke-linecap="round"/></svg><b>Monster Blaster</b><span>Your hands are blasters</span></button>
-     <button class="db game" type="button" data-v="beat"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" fill="none" stroke="#ff3d7f" stroke-width="6"/><circle cx="50" cy="50" r="27" fill="#ff3d7f"/><path d="M37 41h21a8 8 0 0 1 0 16h-5v8H37z" fill="#fff8ec"/></svg><b>Beat Punch</b><span>Punch the targets on the beat</span></button>
-     <button class="db game" type="button" data-v="race"><svg viewBox="0 0 100 100"><path d="M8 66l8-18q4-6 12-7l12-2q8-12 22-12l14 1q8 2 14 10l2 8q3 2 3 8v12H8z" fill="#e8392c" stroke="#1d1d1f" stroke-width="5" stroke-linejoin="round"/><path d="M42 39q6-7 16-7l12 1q5 1 9 6z" fill="#9fd8ff" stroke="#1d1d1f" stroke-width="4"/><circle cx="28" cy="70" r="10" fill="#1d1d1f"/><circle cx="76" cy="70" r="10" fill="#1d1d1f"/><circle cx="28" cy="70" r="4" fill="#fff"/><circle cx="76" cy="70" r="4" fill="#fff"/></svg><b>Turbo Circuit</b><span>3D racing · phones are the wheel</span></button>
+     <button class="db game" type="button" data-v="party"><svg viewBox="0 0 100 100"><path d="M50 8l12 26 28 3-21 19 6 28-25-14-25 14 6-28-21-19 28-3z" fill="#ffd23f" stroke="#1d1d1f" stroke-width="5" stroke-linejoin="round"/></svg><b>파티 토너먼트</b><span>5종목 모두 · 별을 가장 많이 모으면 우승</span></button>
+     <button class="db game" type="button" data-v="fruit"><svg viewBox="0 0 100 100"><circle cx="50" cy="55" r="34" fill="#3fa34d"/><circle cx="50" cy="55" r="26" fill="#ff4b5c"/><path d="M14 90L88 14" stroke="#1d1d1f" stroke-width="8" stroke-linecap="round"/></svg><b>Fruit Slash</b><span>팔을 휘둘러 과일 베기</span></button>
+     <button class="db game" type="button" data-v="run"><svg viewBox="0 0 100 100"><rect x="4" y="62" width="92" height="30" rx="8" fill="#d9573b"/><path d="M8 77h84" stroke="#fff" stroke-width="3" stroke-dasharray="9 7"/><circle cx="60" cy="17" r="9" fill="#1d1d1f"/><g stroke="#1d1d1f" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" fill="none"><path d="M56 30l-9 20"/><path d="M47 50l13 10l-2 10M47 50l-16 7"/><path d="M53 34l14 7M53 34l-17 3"/></g></svg><b>스프린트 대시</b><span>제자리 달리기 · 두 손 들면 점프</span></button>
+     <button class="db game" type="button" data-v="swim"><svg viewBox="0 0 100 100"><rect x="4" y="30" width="92" height="64" rx="10" fill="#29b6f6"/><path d="M4 52h92M4 72h92" stroke="#fff8ec" stroke-width="4" stroke-dasharray="6 6"/><circle cx="62" cy="62" r="9" fill="#1d1d1f"/><path d="M28 62h26M48 52l14 10M48 72l14-10" stroke="#1d1d1f" stroke-width="8" stroke-linecap="round"/><path d="M10 20q10-10 20 0t20 0t20 0t20 0" stroke="#29b6f6" stroke-width="5" fill="none"/></svg><b>수영 대회</b><span>팔로 수영 · 구간마다 다른 영법</span></button>
+     <button class="db game" type="button" data-v="blast"><svg viewBox="0 0 100 100"><circle cx="66" cy="36" r="22" fill="#7e57c2"/><circle cx="58" cy="32" r="6" fill="#fff"/><circle cx="74" cy="32" r="6" fill="#fff"/><circle cx="58" cy="33" r="3" fill="#d81b1b"/><circle cx="74" cy="33" r="3" fill="#d81b1b"/><path d="M14 86l30-30" stroke="#1d1d1f" stroke-width="10" stroke-linecap="round"/><path d="M48 52l8-8" stroke="#ffd23f" stroke-width="6" stroke-linecap="round"/></svg><b>Monster Blaster</b><span>내 손이 블래스터! · 두 손 모아 캐논</span></button>
+     <button class="db game" type="button" data-v="beat"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" fill="none" stroke="#ff3d7f" stroke-width="6"/><circle cx="50" cy="50" r="27" fill="#ff3d7f"/><path d="M37 41h21a8 8 0 0 1 0 16h-5v8H37z" fill="#fff8ec"/></svg><b>Beat Punch</b><span>박자에 맞춰 과녁 펀치</span></button>
+     <button class="db game" type="button" data-v="race"><svg viewBox="0 0 100 100"><path d="M8 66l8-18q4-6 12-7l12-2q8-12 22-12l14 1q8 2 14 10l2 8q3 2 3 8v12H8z" fill="#e8392c" stroke="#1d1d1f" stroke-width="5" stroke-linejoin="round"/><path d="M42 39q6-7 16-7l12 1q5 1 9 6z" fill="#9fd8ff" stroke="#1d1d1f" stroke-width="4"/><circle cx="28" cy="70" r="10" fill="#1d1d1f"/><circle cx="76" cy="70" r="10" fill="#1d1d1f"/><circle cx="28" cy="70" r="4" fill="#fff"/><circle cx="76" cy="70" r="4" fill="#fff"/></svg><b>Turbo Circuit</b><span>3D 레이싱 · 폰이 핸들</span></button>
     </div>
    </div>
   </div>
-  <button id="bGo" class="db go" type="button">Start</button>
-  <p class="priv">The camera picture never leaves this iPad. Nothing is recorded, saved or uploaded.</p>
+  <button id="bGo" class="db go" type="button">시작</button>
+  <p class="priv">카메라 영상은 이 iPad 밖으로 나가지 않아요. 녹화·저장·업로드하지 않아요.</p>
  </div>
 </section>
 
 <section id="qr" class="scr dim" hidden>
-  <div class="card qcard"><div class="rk">Add players · up to 3 more phones or tablets</div><h2>Scan to join</h2>
-  <div class="qwrap"><canvas id="qrc" width="330" height="330" aria-label="Join code"></canvas><ol class="qsteps"><li>Scan this code with the other phone’s camera</li><li>Tap <b>Join the game</b> and allow the camera</li><li>Stand that phone up facing its player, and step back until the whole body fits</li></ol></div>
+  <div class="card qcard"><div class="rk">플레이어 추가 · 폰이나 태블릿 최대 3대 더</div><h2>QR을 찍어서 참여</h2>
+  <div class="qwrap"><canvas id="qrc" width="330" height="330" aria-label="참여 코드"></canvas><ol class="qsteps"><li>다른 폰의 카메라로 이 QR 코드를 찍어요</li><li><b>게임 참여하기</b>를 누르고 카메라를 허용해요</li><li>폰을 세워서 플레이어를 보게 두고, 온몸이 다 보일 때까지 뒤로 물러나요</li></ol></div>
   <div id="qlist" class="lobby"></div>
-  <p class="small" id="qnote">Each phone works out body points itself and sends only those points over an encrypted link locked to this iPad. No video leaves any device. A free matchmaking service (PeerJS) only sees connection details, never game data.</p>
-  <div class="row"><button id="bQrNew" class="db btn" type="button">New code</button><button id="bQrDone" class="db go" type="button">Done</button></div></div>
+  <p class="small" id="qnote">각 폰은 몸의 관절 위치만 스스로 계산해서, 이 iPad에만 연결된 암호화 통신으로 그 숫자만 보내요. 영상은 어떤 기기에서도 밖으로 나가지 않아요. 무료 연결 도우미(PeerJS)는 접속 정보만 보고 게임 내용은 볼 수 없어요.</p>
+  <div class="row"><button id="bQrNew" class="db btn" type="button">새 코드</button><button id="bQrDone" class="db go" type="button">완료</button></div></div>
 </section>
 
 <section id="join" hidden>
   <canvas id="jcv" aria-label="Your camera"></canvas>
-  <div class="jtop"><div id="jbadge" class="jbadge">MOVE PARTY!</div><div id="jstat" class="jstat">Tap below to join the game on the TV</div></div>
-  <button id="bJoin" class="pill jbtn" type="button">Join the game</button>
-  <div class="jph" id="jph" hidden><h3 id="jphT">Your character photo</h3><p id="jphP">Your face goes on your character on the TV. It is sent only to the TV iPad, never saved, and gone when the game closes.</p><canvas id="jphC" width="112" height="112" hidden></canvas>
-   <div class="row"><button id="jphA" class="go" type="button">Take photo</button><button id="jphB" class="btn" type="button">No photo</button></div></div>
-  <p class="jprv">Your camera picture stays on this device. Only body points are sent to the TV iPad.</p>
+  <div class="jtop"><div id="jbadge" class="jbadge">MOVE PARTY!</div><div id="jstat" class="jstat">아래 버튼을 눌러 TV 게임에 참여하세요</div></div>
+  <button id="bJoin" class="pill jbtn" type="button">게임 참여하기</button>
+  <div class="jph" id="jph" hidden><h3 id="jphT">내 캐릭터 사진</h3><p id="jphP">내 얼굴이 TV 속 캐릭터에 들어가요. TV iPad로만 보내지고, 저장되지 않으며, 게임을 닫으면 사라져요.</p><canvas id="jphC" width="112" height="112" hidden></canvas>
+   <div class="row"><button id="jphA" class="go" type="button">사진 찍기</button><button id="jphB" class="btn" type="button">사진 없이</button></div></div>
+  <p class="jprv">카메라 영상은 이 폰에만 있어요. TV iPad로는 몸의 관절 위치 숫자만 보내요.</p>
   <div id="jpad" hidden>
-   <div id="jpick" hidden><div class="jpt"><span id="jpb" class="jbadge">Car 1</span><span>Pick your car</span></div>
-    <div class="jpcar"><button id="jpl" type="button" aria-label="Previous car">◀</button><div id="jpsv"></div><button id="jpr" type="button" aria-label="Next car">▶</button></div>
+   <div id="jpick" hidden><div class="jpt"><span id="jpb" class="jbadge">Car 1</span><span>자동차를 골라요</span></div>
+    <div class="jpcar"><button id="jpl" type="button" aria-label="이전 차">◀</button><div id="jpsv"></div><button id="jpr" type="button" aria-label="다음 차">▶</button></div>
     <b id="jpn" class="jpn"></b><span id="jpd" class="jpd"></span><div id="jpst" class="jpst"></div>
     <div id="jpc" class="jpc"></div><button id="jpgo" class="jpgo" type="button">READY!</button></div>
-   <div id="jdrive" hidden><div id="jdst"><span id="jdb" class="jbadge">Car 1</span><span id="jdp">Gas is automatic · steer with ◀ ▶</span></div>
-    <button class="jb big" data-b="1" type="button" aria-label="Steer left">◀</button><button class="jb big" data-b="2" type="button" aria-label="Steer right">▶</button>
-    <div class="jsm"><button class="jb nit" data-b="16" type="button">NITRO</button><button class="jb dri" data-b="8" type="button">DRIFT</button><button class="jb brk" data-b="4" type="button">BRAKE</button></div></div>
+   <div id="jdrive" hidden><div id="jdst"><span id="jdb" class="jbadge">Car 1</span><span id="jdp">가속은 자동 · ◀ ▶로 방향 조절</span></div>
+    <button class="jb big" data-b="1" type="button" aria-label="왼쪽">◀</button><button class="jb big" data-b="2" type="button" aria-label="오른쪽">▶</button>
+    <div class="jsm"><button class="jb nit" data-b="16" type="button">니트로</button><button class="jb dri" data-b="8" type="button">드리프트</button><button class="jb brk" data-b="4" type="button">브레이크</button></div></div>
    <div id="jwatch" hidden></div>
   </div>
 </section>
 
 <section id="calib" class="ovl" hidden>
-  <div class="ctext"><h2>Step into the frame</h2><p id="cmsg">Stand back until your shoulders and hips are on screen.</p><div id="chips" class="chips"></div></div>
-  <button id="bSkip" class="db ghost" type="button">Skip</button>
+  <div class="ctext"><h2>카메라 안으로 들어와요</h2><p id="cmsg">어깨와 엉덩이가 화면에 보일 때까지 뒤로 물러나요.</p><div id="chips" class="chips"></div></div>
+  <button id="bSkip" class="db ghost" type="button">건너뛰기</button>
 </section>
 
 <section id="intro" class="scr dim" hidden>
-  <div class="card icard"><div class="rk" id="iNum"></div><div class="rounds" id="iRound"></div><div class="ic" id="iIcon"></div><h2 id="iName"></h2><div class="howbox"><canvas id="iDemo" width="300" height="300" aria-label="How to move"></canvas><div><div class="uses" id="iUses"></div><ol class="steps" id="iSteps"></ol></div></div><button id="bReady" class="db go" type="button">I'm ready!</button></div>
+  <div class="card icard"><div class="rk" id="iNum"></div><div class="rounds" id="iRound"></div><div class="ic" id="iIcon"></div><h2 id="iName"></h2><div class="howbox"><canvas id="iDemo" width="300" height="300" aria-label="동작 방법"></canvas><div><div class="uses" id="iUses"></div><ol class="steps" id="iSteps"></ol></div></div><button id="bReady" class="db go" type="button">준비 완료!</button></div>
 </section>
 
 <div id="hud" hidden>
@@ -290,35 +290,35 @@ button:focus-visible{outline:4px solid var(--sky);outline-offset:3px}
 </div>
 
 <section id="pause" class="scr dim" hidden>
-  <div class="card icard"><h2>Paused</h2><div class="row"><button id="bResume" class="db go" type="button">Resume</button></div><div class="row"><button id="bFs2" class="btn" type="button">Full screen</button></div><div class="row"><button id="bRestart" class="db btn" type="button">Restart</button><button id="bQuit" class="db btn" type="button">Menu</button></div></div>
+  <div class="card icard"><h2>잠깐 멈춤</h2><div class="row"><button id="bResume" class="db go" type="button">계속하기</button></div><div class="row"><button id="bFs2" class="btn" type="button">전체 화면</button></div><div class="row"><button id="bRestart" class="db btn" type="button">다시 시작</button><button id="bQuit" class="db btn" type="button">메뉴</button></div></div>
 </section>
 
 <section id="result" class="scr dim" hidden>
   <div class="card" style="width:min(640px,100%)"><div class="rk" id="rKick"></div><h2 id="rTitle"></h2><div id="rRows" class="rrows"></div><p class="small" id="rNote"></p><div class="stand" id="rStand" hidden></div>
-  <div class="row"><button id="bNext" class="db go" type="button">Next game</button><button id="bAgain" class="db go" type="button">Play again</button><button id="bMenu" class="db btn" type="button">Menu</button></div></div>
+  <div class="row"><button id="bNext" class="db go" type="button">다음 게임</button><button id="bAgain" class="db go" type="button">한 번 더</button><button id="bMenu" class="db btn" type="button">메뉴</button></div></div>
 </section>
 
 <section id="final" class="scr dim" hidden>
-  <div class="card" style="width:min(680px,100%)"><div class="rk">Party Tournament · final results</div><h2 id="fTitle"></h2><table class="ftab" id="fTab"></table>
-  <div class="row"><button id="bFAgain" class="db go" type="button">Play again</button><button id="bFMenu" class="db btn" type="button">Menu</button></div></div>
+  <div class="card" style="width:min(680px,100%)"><div class="rk">파티 토너먼트 · 최종 결과</div><h2 id="fTitle"></h2><table class="ftab" id="fTab"></table>
+  <div class="row"><button id="bFAgain" class="db go" type="button">한 번 더</button><button id="bFMenu" class="db btn" type="button">메뉴</button></div></div>
 </section>
 
 <canvas id="pip" aria-label="Camera preview" hidden></canvas>
-<div id="camBadge" hidden>Camera on · this iPad only</div>
+<div id="camBadge" hidden>카메라 켜짐 · 이 iPad에서만 사용</div>
 <section id="rlob" class="scr dim" hidden>
- <div class="card rcard"><div class="rk">Turbo Circuit · 2 players</div><h2>Pick your cars on your phones</h2>
+ <div class="card rcard"><div class="rk">Turbo Circuit · 2인</div><h2>각자 폰에서 자동차를 골라요</h2>
   <div class="rps" id="rps"></div>
-  <div class="lbl">Track</div><div class="trks" id="rtrk"></div>
-  <p class="small" id="rhint">Each phone becomes a steering wheel. The TV shows Car 1 on top and Car 2 below. Gas is automatic.</p>
-  <div class="row"><button id="bRBack" class="db btn" type="button">Back</button><button id="bRGo" class="db go" type="button" disabled>Waiting for READY…</button></div></div>
+  <div class="lbl">트랙</div><div class="trks" id="rtrk"></div>
+  <p class="small" id="rhint">폰이 핸들이 돼요. TV 위쪽은 1번 차, 아래쪽은 2번 차예요. 가속은 자동이에요.</p>
+  <div class="row"><button id="bRBack" class="db btn" type="button">뒤로</button><button id="bRGo" class="db go" type="button" disabled>READY를 기다리는 중…</button></div></div>
 </section>
 <section id="rres" class="scr dim" hidden>
- <div class="card rcard"><div class="rk">Turbo Circuit · results</div><h2 id="rrT">Race over!</h2><div id="rrL" class="rrl"></div>
-  <div class="row"><button id="bRMenu" class="db btn" type="button">Menu</button><button id="bRAgain" class="db go" type="button">Race again</button></div></div>
+ <div class="card rcard"><div class="rk">Turbo Circuit · 결과</div><h2 id="rrT">레이스 끝!</h2><div id="rrL" class="rrl"></div>
+  <div class="row"><button id="bRMenu" class="db btn" type="button">메뉴</button><button id="bRAgain" class="db go" type="button">한 번 더 달리기</button></div></div>
 </section>
-<div id="rwrap" hidden><button id="rExit" type="button" aria-label="Exit the race">✕</button></div>
+<div id="rwrap" hidden><button id="rExit" type="button" aria-label="레이스 나가기">✕</button></div>
 <div id="toast" hidden></div>
-<div id="rot">Turn the iPad sideways<br>to play</div>
+<div id="rot">iPad를 가로로<br>돌려 주세요</div>
 </div>
 
 <script src="lib/peerjs.min.js"></script><script src="lib/qrcode.js"></script>
@@ -414,15 +414,15 @@ async function loadPose(){const {PoseLandmarker,FilesetResolver}=await import(MP
  try{return await PoseLandmarker.createFromOptions(fs,o('GPU'))}catch(e){return await PoseLandmarker.createFromOptions(fs,o('CPU'))}}
 async function initCamera(){camWanted=true;
  try{if(!window.isSecureContext||!navigator.mediaDevices?.getUserMedia||window.top!==window.self||MP.startsWith('%%'))throw new Error('no camera');
-  await openCam();setMode('Loading motion engine…');
+  await openCam();setMode('동작 인식 준비 중…');
   landmarker=await loadPose();
   if(!stream&&!document.hidden)await openCam();
-  motion=true;setMode('Motion mode · camera on',true);
- }catch(e){stopCam();motion=false;setMode('Touch mode');toast('Camera isn’t available here, so touch mode is on. Open the hosted version in Safari for motion play.',7000)}
- camReady=true;$('#bGo').disabled=false;$('#bGo').textContent='Start'}
+  motion=true;setMode('동작 모드 · 카메라 켜짐',true);
+ }catch(e){stopCam();motion=false;setMode('터치 모드');toast('여기서는 카메라를 쓸 수 없어 터치 모드로 켰어요. 몸으로 하려면 Safari에서 게임 링크를 여세요.',7000)}
+ camReady=true;$('#bGo').disabled=false;$('#bGo').textContent='시작'}
 function setPoses(){}
 document.addEventListener('visibilitychange',async()=>{if(JM)return;if(document.hidden){stopCam();pauseGame()}else{if(AC&&AC.state!=='running')AC.resume().catch(()=>{});try{navigator.wakeLock?.request('screen').catch(()=>{})}catch(e){}
- if(motion&&camWanted&&!stream&&state!=='race'){try{await openCam()}catch(e){motion=false;setMode('Touch mode')}}}});
+ if(motion&&camWanted&&!stream&&state!=='race'){try{await openCam()}catch(e){motion=false;setMode('터치 모드')}}}});
 addEventListener('pagehide',stopCam);
 function setMode(t,on){const m=$('#mode');m.textContent=t;m.classList.toggle('on',!!on)}
 function updField(){if(NP()>1){F={x:0,y:0,w:W,h:H};const vw=video.videoWidth||16,vh=video.videoHeight||9;M.s=W/vw;M.ox=0;M.oy=(H-vh*M.s)/2;return}if(motion&&video.videoWidth){const vw=video.videoWidth,vh=video.videoHeight;let s=W/vw;if(vh*s<H*.62)s=H*.62/vh;M.s=s;M.ox=(W-vw*s)/2;M.oy=(H-vh*s)/2;F={x:Math.max(0,M.ox),y:Math.max(0,M.oy),w:Math.min(W,vw*s),h:Math.min(H,vh*s)}}else F={x:0,y:0,w:W,h:H}}
@@ -537,7 +537,7 @@ function drawPuppet(p,alpha=1){const l=p.lm;if(!motion||!l||!p.seen)return;const
  g.restore()}
 function drawGhost(p){const R=refOf(p),c=PCOL[p.i],hy=R.y-R.sw*2.35;g.save();g.globalAlpha=.85;g.setLineDash([12,10]);g.lineWidth=Math.max(3,R.sw*.06);g.strokeStyle=c;
  g.beginPath();g.arc(R.x,hy,R.sw*.45,0,TAU);g.stroke();g.beginPath();g.moveTo(R.x-R.sw*.5,hy+R.sw*.65);g.lineTo(R.x+R.sw*.5,hy+R.sw*.65);g.lineTo(R.x+R.sw*.4,R.y);g.lineTo(R.x-R.sw*.4,R.y);g.closePath();g.stroke();g.restore();
- txt(p.gone?'Reconnecting…':'Step into the camera',R.x,R.y+R.sw*.6,clamp(R.sw*.42,16,32),'#fff',.16);if(NP()>1)txt(PNAME[p.i],R.x,hy,clamp(R.sw*.4,14,28),c,.16)}
+ txt(p.gone?'다시 연결하는 중…':'카메라 안으로 들어와요',R.x,R.y+R.sw*.6,clamp(R.sw*.42,16,32),'#fff',.16);if(NP()>1)txt(PNAME[p.i],R.x,hy,clamp(R.sw*.4,14,28),c,.16)}
 const drawPlayers=(a=.96)=>act().forEach(p=>{if(motion&&!p.seen)drawGhost(p);else drawPuppet(p,a)});
 function drawTrails(){for(const p of act())for(const h of p.hands){const tr=h.trail;if(!h.ok||tr.length<2)continue;const fast=h.sp>L().thr*F.h;g.lineCap='round';for(let i=1;i<tr.length;i++){const k=i/tr.length;g.strokeStyle=fast?`rgba(255,255,255,${k*.95})`:`rgba(255,255,255,${k*.3})`;g.lineWidth=(fast?F.h*.022:F.h*.01)*k+1;g.beginPath();g.moveTo(tr[i-1].x,tr[i-1].y);g.lineTo(tr[i].x,tr[i].y);g.stroke()}}}
 function drawCursors(){if(!motion)return;for(const p of act()){if(!p.seen)continue;for(const h of p.hands){if(!h.ok)continue;g.fillStyle=PCOL[p.i]+'aa';g.strokeStyle='#fff';g.lineWidth=5;g.beginPath();g.arc(h.x,h.y,24,0,TAU);g.fill();g.stroke();g.fillStyle='#fff';g.beginPath();g.arc(h.x,h.y,6,0,TAU);g.fill()}}}
@@ -580,7 +580,7 @@ function drawBomb(x,y,R,t){g.save();g.translate(x,y);g.fillStyle=`rgba(255,40,40
  g.fillStyle='#fff';g.font=`800 ${R*.9}px "Baloo 2",system-ui`;g.textAlign='center';g.textBaseline='middle';g.fillText('✕',0,R*.08);g.restore()}
 function drawStar(x,y,R,t){g.save();g.translate(x,y);g.rotate(t*1.5);g.fillStyle='rgba(255,210,63,.35)';g.beginPath();g.arc(0,0,R*1.45,0,TAU);g.fill();g.fillStyle='#ffd23f';g.strokeStyle='#c98a00';g.lineWidth=R*.1;g.beginPath();for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,r=i%2?R*.48:R*1.05;g.lineTo(Math.cos(a)*r,Math.sin(a)*r)}g.closePath();g.fill();g.stroke();g.restore();txt('HEAD',x,y+R*1.55,Math.max(12,R*.4),'#fff',.16)}
 const G={};
-G.fruit={title:'Fruit Slash',dur:45,how:'Swing your arms fast through the fruit to slice it. Slice 3 in one swing for a combo! Don’t touch the bombs.',howK:'Swing your arms fast through the fruit to slice it. Slice 3 in one swing for a combo!',howT:'Swipe your finger fast across the fruit. Don’t swipe the bombs!',th:[15,30,45],
+G.fruit={title:'Fruit Slash',dur:45,how:'팔을 빠르게 휘둘러 과일을 베요. 한 번에 3개면 콤보! 폭탄은 건드리지 마요.',howK:'팔을 빠르게 휘둘러 과일을 베요. 한 번에 3개면 콤보!',howT:'손가락으로 과일을 빠르게 그어요. 폭탄은 피해요!',th:[15,30,45],
  init(){this.t=0;this.next=1;this.items=[];this.halves=[];this.combo=[0,0,0,0];this.comboT=[0,0,0,0];this.done=false},
  spawn(){const n=this.t<10?1:this.t<25?(Math.random()<.5?1:2):(Math.random()<.4?3:2),ps=act();SFX.toss();
   for(let i=0;i<n;i++){const Rf=refOf(ps[(this.sp=(this.sp||0)+1)%ps.length]),R=Math.min(F.h*.068,Rf.sw*.62)*L().size,reach=Rf.sw*2.5,gr=F.h*1.15*L().grav,y0=F.y+F.h+R;
@@ -861,7 +861,7 @@ G.blast={title:'Monster Blaster',th:[1500,3000,4500],
     if(ps.length){const tp=ps[Math.floor(Math.random()*ps.length)],tg=refOf(tp),n=c.shots+(B.rage&&S.level!=='kids'?1:0);
      for(let i=0;i<n;i++){const tx=tg.x+(i-(n-1)/2)*tg.sw*2.2,ty=(this.ry??this.rowY()),ox=B.x,oy=B.y+B.r*.45,d=Math.hypot(tx-ox,ty-oy)||1,spd=H*c.fb*(B.rage?1.15:1);
       this.fb.push({x:ox,y:oy,tx,ty,vx:(tx-ox)/d*spd,vy:(ty-oy)/d*spd,r:H*.034,hp:S.level==='pro'&&B.rage?2:1,tp,t:0})}tone(300,.4,'sawtooth',.18,null,.3)}
-    if(B.n%2===0&&B.zt>.15){B.zt=Math.max(.12,B.zt-c.step*(B.rage?1.4:1));floatT(W/2,H*.3,'The boss steps closer!','#ff9f1c',34)}
+    if(B.n%2===0&&B.zt>.15){B.zt=Math.max(.12,B.zt-c.step*(B.rage?1.4:1));floatT(W/2,H*.3,'보스가 한 걸음 다가와요!','#ff9f1c',34)}
     else if(B.zt<=.15&&B.z<=.15){floatT(W/2,H*.3,'GROUND SLAM!','#ff5252',60);shake=24;flashA=.4;flashC='#ff3b30';SFX.boom();for(const p of this.alive())this.hurt(refOf(p).x,refOf(p).y,p);B.zt=.7}}}
   for(const f of this.fb){f.t+=dt;f.x+=f.vx*dt;f.y+=f.vy*dt;if(f.y>=f.ty){f.dead=true;burst(f.x,f.y,['#ff7a1a','#ffd23f'],14,H*.25,{gr:200});this.hurt(f.x,f.y,f.tp)}}
   const BB0=this.boss,cone=c.cone,turn=c.turn;
@@ -897,20 +897,20 @@ G.blast={title:'Monster Blaster',th:[1500,3000,4500],
   for(const p of act()){if(p.ko){const R=refOf(p);g.save();g.globalAlpha=.35;drawPuppet(p,.35);g.restore();txt('K.O.',R.x,R.y-R.sw*2.4,clamp(R.sw*.7,22,48),'#ffd23f',.16)}else if(motion&&!p.seen)drawGhost(p);else drawPuppet(p,.95)}
   for(const p of act()){const R=refOf(p),n=this.life[p.i];for(let i=0;i<5;i++){const x=R.x-2*22+i*22,y=H-16;g.fillStyle=i<n?'#ff3b5c':'rgba(0,0,0,.45)';g.beginPath();g.moveTo(x,y+7);g.bezierCurveTo(x-11,y-1,x-6,y-11,x,y-5);g.bezierCurveTo(x+6,y-11,x+11,y-1,x,y+7);g.fill()}
    const ch=this.ch[p.i];if(ch.on&&ch.v>0){const r=(p.sw||R.sw)*(.35+.9*ch.v),gr=g.createRadialGradient(ch.x,ch.y,0,ch.x,ch.y,r);gr.addColorStop(0,'#ffffff');gr.addColorStop(.4,'rgba(127,227,255,.95)');gr.addColorStop(1,'rgba(30,136,255,0)');g.fillStyle=gr;g.beginPath();g.arc(ch.x,ch.y,r,0,TAU);g.fill();
-    g.strokeStyle=ch.v>=1?'#ffd23f':'#7fe3ff';g.lineWidth=6;g.beginPath();g.arc(ch.x,ch.y,r*.85,-Math.PI/2,-Math.PI/2+TAU*ch.v);g.stroke();if(ch.v>=1&&Math.floor(t*6)%2)txt('RELEASE!',ch.x,ch.y-r-14,26,'#ffd23f',.16)}
-   else if(ch.cd>0){txt('recharging…',R.x,H-40,14,'#9fe8ff',.12)}}
+    g.strokeStyle=ch.v>=1?'#ffd23f':'#7fe3ff';g.lineWidth=6;g.beginPath();g.arc(ch.x,ch.y,r*.85,-Math.PI/2,-Math.PI/2+TAU*ch.v);g.stroke();if(ch.v>=1&&Math.floor(t*6)%2)txt('손을 벌려 발사!',ch.x,ch.y-r-14,26,'#ffd23f',.16)}
+   else if(ch.cd>0){txt('캐논 충전 대기…',R.x,H-40,14,'#9fe8ff',.12)}}
   g.lineCap='round';for(const s of this.shots){if(s.big){const gr=g.createRadialGradient(s.x,s.y,0,s.x,s.y,s.r);gr.addColorStop(0,'#fff');gr.addColorStop(.5,'rgba(127,227,255,.9)');gr.addColorStop(1,'rgba(30,136,255,0)');g.strokeStyle='rgba(127,227,255,.35)';g.lineWidth=s.r*1.4;g.beginPath();g.moveTo(s.x,s.y);g.lineTo(s.x-s.vx*.12,s.y-s.vy*.12);g.stroke();g.fillStyle=gr;g.beginPath();g.arc(s.x,s.y,s.r,0,TAU);g.fill();continue}
    g.strokeStyle=PCOL[s.pi];g.lineWidth=7;g.beginPath();g.moveTo(s.x,s.y);g.lineTo(s.x-s.vx*.025,s.y-s.vy*.025);g.stroke();g.fillStyle='#fff';g.beginPath();g.arc(s.x,s.y,4,0,TAU);g.fill()}
   if(motion)for(const p of act()){if(!p.seen)continue;for(const h of p.hands){if(!h.ok)continue;g.strokeStyle=PCOL[p.i];g.lineWidth=4;g.beginPath();g.arc(h.x,h.y,(p.sw||40)*.28,0,TAU);g.stroke()}}
-  if(this.t<6&&!this.over)txt(motion?'TIP: put both hands together to charge the ENERGY CANNON, then pull them apart!':'TIP: hold TWO fingers to charge the ENERGY CANNON, then let go!',W/2,H*.16,Math.min(22,W*.022),'#7fe3ff',.14);
+  if(this.t<6&&!this.over)txt(motion?'팁: 두 손을 모으면 에너지 캐논 충전, 벌리면 발사!':'팁: 두 손가락으로 누르면 에너지 캐논 충전, 떼면 발사!',W/2,H*.16,Math.min(22,W*.022),'#7fe3ff',.14);
   if(this.over)txt('GAME OVER',W/2,H*.42,Math.min(96,W*.1),'#ff5252',.12)},
  sc(i){return P[i].score},
- note(){return this.over?'GAME OVER — everyone was knocked out. Try again as a team!':`You survived! Hearts left: ${act().map(p=>(NP()>1?PNAME[p.i]+' ':'')+this.life[p.i]).join(', ')}`},
+ note(){return this.over?'게임 오버 — 모두 쓰러졌어요. 다 같이 다시 도전!':`살아남았어요! 남은 하트: ${act().map(p=>(NP()>1?PNAME[p.i]+' ':'')+this.life[p.i]).join(', ')}`},
  hud(){return Math.max(0,Math.ceil(this.c.dur-this.t))}};
 
 /* ---------- mini-game: Beat Punch (rhythm boxing) ---------- */
 const ZONES=[{x:-1.55,y:-1.15},{x:1.55,y:-1.15},{x:-2,y:.35},{x:2,y:.35}],ZC=['#ff3d7f','#29b6f6','#ffd23f','#7ed957'];
-G.beat={title:'Beat Punch',how:'Punch each target right when the shrinking ring reaches it. Perfect timing scores big — keep the combo going!',howK:'Punch the targets when the ring gets small! Follow the beat!',howT:'Tap each target right when the shrinking ring reaches it!',
+G.beat={title:'Beat Punch',how:'줄어드는 링이 과녁에 닿는 순간 펀치! 박자가 딱 맞으면 점수가 커요.',howK:'링이 작아지면 과녁을 펀치! 박자를 따라가요!',howT:'줄어드는 링이 닿는 순간 과녁을 눌러요!',
  cfg(){const c={...mixLv({kids:{bpm:92,ap:1.8,win:.27,per:.11,r:.78},family:{bpm:108,ap:1.4,win:.2,per:.085,r:.64},pro:{bpm:124,ap:1.1,win:.16,per:.065,r:.54}})};c.bpm=Math.round(c.bpm);c.r=clamp(c.r,.42,.9);return c},
  init(){const c=this.cfg();this.c=c;this.done=false;this.started=false;this.t0=0;this.paused=null;this.useAC=false;this.lat=0;this.notes=this.chart(c);this.end=this.notes[this.notes.length-1].t+2;
   this.st=[0,1,2,3].map(()=>({hit:0,per:0,combo:0,best:0}));this.pulse=0;this.lastBeat=-1;this.glow=[];P.forEach(p=>{p.zin=[[0,0,0,0],[0,0,0,0]];p.bz=null;p.zs=null;p.zblk=[0,0,0,0]});$('#runpads').hidden=true},
@@ -963,7 +963,7 @@ G.beat={title:'Beat Punch',how:'Punch each target right when the shrinking ring 
  sc(i){return P[i].score},
  acc(i){const tot=this.notes.length||1,st=this.st[i];return(st.hit+st.per)/(2*tot)},
  starsFor(p){const a=this.acc(p.i);return a>=.82?3:a>=.62?2:a>=.4?1:0},
- note(){return act().map(p=>`${NP()>1?PNAME[p.i]:'You'}: ${Math.round(this.acc(p.i)*100)}% accuracy, best combo ${this.st[p.i].best}`).join(' · ')},
+ note(){return act().map(p=>`${NP()>1?PNAME[p.i]:'나'}: 정확도 ${Math.round(this.acc(p.i)*100)}% · 최고 콤보 ${this.st[p.i].best}`).join(' · ')},
  hud(){return Math.max(0,Math.ceil(this.end-this.now()))}};
 
 /* ---------- flow ---------- */
@@ -977,34 +977,34 @@ addEventListener('resize',()=>setTimeout(fitCards,60));
 const isApp=()=>matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
 const fsEl=()=>document.fullscreenElement||document.webkitFullscreenElement;
 function enterFs(){if(isApp()||fsEl())return;const e=document.documentElement,f=e.requestFullscreen||e.webkitRequestFullscreen;if(f){try{const r=f.call(e);if(r&&r.catch)r.catch(()=>{})}catch(err){}}}
-function toggleFs(){if(fsEl()){(document.exitFullscreen||document.webkitExitFullscreen)?.call(document)}else{enterFs();setTimeout(()=>{if(!fsEl()&&!isApp())toast('If full screen doesn’t start: Share → Add to Home Screen, then open Move Party from the icon.',7000)},700)}}
-function syncFs(){const t=isApp()?'App mode':fsEl()?'Exit full screen':'Full screen';$('#bFs').textContent=t;$('#bFs2').textContent=t;$('#bFs').disabled=$('#bFs2').disabled=isApp();setTimeout(fitCards,120)}
+function toggleFs(){if(fsEl()){(document.exitFullscreen||document.webkitExitFullscreen)?.call(document)}else{enterFs();setTimeout(()=>{if(!fsEl()&&!isApp())toast('전체 화면이 안 되면: 공유 → 홈 화면에 추가 후, 아이콘으로 Move Party를 여세요.',7000)},700)}}
+function syncFs(){const t=isApp()?'앱 모드':fsEl()?'전체 화면 끝내기':'전체 화면';$('#bFs').textContent=t;$('#bFs2').textContent=t;$('#bFs').disabled=$('#bFs2').disabled=isApp();setTimeout(fitCards,120)}
 $('#bFs').onclick=$('#bFs2').onclick=()=>{SFX.select();toggleFs()};
 document.addEventListener('fullscreenchange',syncFs);document.addEventListener('webkitfullscreenchange',syncFs);
 let tT=null;function toast(m,ms=4000){const t=$('#toast');t.textContent=m;t.hidden=false;clearTimeout(tT);tT=setTimeout(()=>t.hidden=true,ms)}
 function syncMenu(){const lc=$('#lvCap');if(lc)lc.textContent=`Level ${S.lv} · ${LVNAME(S.lv)}${S.lv<=3?' — 아이도 쉽게':S.lv>=9?' — 진짜 어려워요!':''}`;$$('[data-k]').forEach(gp=>{const k=gp.dataset.k;gp.querySelectorAll('[data-v]').forEach(b=>b.setAttribute('aria-pressed',String(String(S[k])===b.dataset.v)))});$('#tMus').setAttribute('aria-pressed',String(S.music));$('#tFace').setAttribute('aria-pressed',String(S.faces));$('#tSfx').setAttribute('aria-pressed',String(S.sfx))}
 $$('[data-k]').forEach(gp=>gp.addEventListener('click',e=>{const b=e.target.closest('[data-v]');if(!b)return;const k=gp.dataset.k,v=b.dataset.v;S[k]=k==='players'||k==='lv'?Number(v):v;if(k==='lv'){S.level=tierOf(S.lv);LVC.clear()};store.set('set',S);syncMenu();SFX.select()}));
 $('#tMus').onclick=()=>{S.music=!S.music;applyVol();store.set('set',S);syncMenu();SFX.select()};
-$('#tFace').onclick=()=>{S.faces=!S.faces;P.forEach(p=>p.face=null);bcast();store.set('set',S);syncMenu();SFX.select();toast(S.faces?'Face photos on: a photo is taken when each player steps in.':'Face photos off: cartoon faces, no photos taken.',4500)};
+$('#tFace').onclick=()=>{S.faces=!S.faces;P.forEach(p=>p.face=null);bcast();store.set('set',S);syncMenu();SFX.select();toast(S.faces?'얼굴 사진 켬: 플레이어가 들어오면 사진을 찍어요.':'얼굴 사진 끔: 만화 얼굴을 쓰고 사진은 찍지 않아요.',4500)};
 $('#tSfx').onclick=()=>{S.sfx=!S.sfx;applyVol();store.set('set',S);syncMenu();SFX.select()};
 $('#bStart').onclick=$('#title').onclick=e=>{if(state!=='title')return;e.stopPropagation();enterFs();initAudio();if(AC&&AC.state==='suspended')AC.resume();SFX.select();playSong('menu');try{navigator.wakeLock?.request('screen').catch(()=>{})}catch(e){}
- $('#bGo').disabled=true;$('#bGo').textContent='Starting camera…';goMenu();initCamera()};
+ $('#bGo').disabled=true;$('#bGo').textContent='카메라 켜는 중…';goMenu();initCamera()};
 function goMenu(){if(typeof closeRace==='function')closeRace();RACE.ph='';if(motion&&camWanted&&!stream&&!document.hidden)openCam().catch(()=>{});state='menu';P.forEach(p=>{if(p.gone)dropP(p);p.pending=false});renderLobby();show('menu');$('#hud').hidden=true;$('#runpads').hidden=true;playSong('menu');syncMenu()}
 $('#bGo').onclick=()=>{if(S.mode==='race'){SFX.select();raceGo();return}if(!camReady)return;P.forEach(p=>{p.lk=null});P.forEach(p=>{if(p.gone)dropP(p)});queue=S.mode==='party'?['fruit','run','swim','beat','blast']:[S.mode];gi=0;P.forEach(p=>{p.stars=0;p.total=0;p.hist=[]});SFX.select();
  if(motion){state='calib';show('calib');P.forEach(p=>{p.ready=0;p.ok=false;p.calY=null;p.snap=null;p.snapN=0})}else startIntro()};
 $('#bSkip').onclick=()=>{SFX.select();P.forEach(p=>{if(p.seen&&p.calY==null){p.calY=p.ay;if(p.lm){const R=refOf(p);p.noseRel=clamp((p.lm[0].y-R.y)/R.sw,-3.6,-1.4)}}});startIntro()};
 function startIntro(){setPoses();gname=queue[gi];game=G[gname];P.forEach(p=>{p.score=0;p.match=0;p.hands.forEach(h=>{h.trail=[];if(!motion)h.ok=false})});ptrs.clear();parts=[];floats=[];stains=[];game.init();
- state='intro';introT=0;show('intro');$('#iNum').textContent=queue.length>1?`Game ${gi+1} of ${queue.length}`:'Single game';$('#iName').textContent=game.title;
+ state='intro';introT=0;show('intro');$('#iNum').textContent=queue.length>1?`게임 ${gi+1} / ${queue.length}`:'단일 게임';$('#iName').textContent=game.title;
  const hw=HOWTO[gname][motion?'m':'t'];$('#iUses').innerHTML=HOWTO[gname].uses.map(u=>`<span>${u}</span>`).join('');$('#iSteps').innerHTML=hw.map(x=>`<li>${x}</li>`).join('');demoT=0;$('#iIcon').innerHTML=$(`.game[data-v="${gname}"] svg`).outerHTML;playSong(gname);
  $('#iRound').innerHTML=queue.length>1?queue.map((q,k)=>`<span class="${k<gi?'done':k===gi?'cur':''}">${k<gi?'✓ ':''}${G[q].title}</span>`).join(''):'';
  wipe=1;SFX.whoosh?.();say(/[가-힣]/.test(game.title)?(queue.length>1?`${gi+1}라운드, ${game.title}!`:`${game.title}!`):queue.length>1?`Round ${['one','two','three','four','five'][gi]||gi+1}. ${game.title}!`:`${game.title}!`)}
 let wipe=0,demoT=0;
 const HOWTO={
- fruit:{uses:['Hands','Head'],m:['Stand in your spot facing the TV. Your character copies your arms.','<b>Swing your hands fast</b> through the fruit to slice it. Slice 3 in one swing for a <b>combo</b>.','A spinning <b>star</b> comes to your head: <b>head-butt it for +5</b>. Never touch a <b>bomb</b>.'],t:['Swipe your finger fast across the fruit to slice it.','Slice 3 in one swipe for a combo bonus.','Don’t swipe the bombs!']},
+ fruit:{uses:['손','머리'],m:['TV를 보고 <b>내 자리에 서요</b>. 캐릭터가 내 팔을 따라 해요.','<b>손을 빠르게 휘둘러</b> 과일을 베요. 한 번에 3개를 베면 <b>콤보</b>!','빙글빙글 도는 <b>별</b>이 머리 쪽으로 오면 <b>머리로 박치기해서 +5</b>. <b>폭탄</b>은 절대 건드리지 마요!'],t:['손가락으로 과일을 빠르게 쓱 그어서 베요.','한 번에 3개를 베면 콤보 보너스!','폭탄은 베지 마요!']},
  run:{uses:['팔 흔들기','온몸','두 손 번쩍 = 점프'],m:['TV를 보고 <b>내 자리에 서요</b>. 앞으로 걸어가지 말고 <b>제자리에서 달려요!</b>','<b>팔을 힘차게 앞뒤로 흔들고</b> 무릎도 올리며 <b>온몸을 크게 움직일수록 더 빨라져요!</b> 팔 흔들기가 제일 중요해요.','<b>점프!</b>가 깜빡이면 <b>두 손을 머리 위로 번쩍</b> 들어요. 허들에 걸리면 느려져요.'],t:['<b>왼발·오른발</b> 버튼을 번갈아 빠르게 눌러요.','<b>점프!</b>가 깜빡이면 <b>점프</b> 버튼을 눌러요.','먼저 결승선에 들어오면 1등!']},
  swim:{uses:['팔로 수영','제자리에 서서'],m:['TV를 보고 <b>내 자리에 서요</b>. 앞으로 걸어가지 말고 <b>팔로 헤엄쳐요!</b>','<b>자유형</b> ×1.0: 한 팔씩 번갈아 머리 위로. <b>평영</b> ×1.1: 두 손을 가슴 앞에 모았다가 양옆으로 쫙! <b>접영</b> ×1.2: 두 팔을 동시에 머리 위로! 팔을 멈추면 둥둥 떠서 느려져요.','수영장은 <b>4개 구간</b>으로 나뉘어 있어요. 구간 표지판에 나온 영법으로 바꾸면 <b>35% 더 빨라요!</b> 위쪽 막대에서 내 위치를 확인해요.'],t:['<b>자유형</b> 버튼을 계속 눌러서 헤엄쳐요.','<b>평영</b> ×1.1, <b>접영</b> ×1.2 — 더 빠르지만 구간이 중요해요.','구간이 바뀌면 표지판의 영법 버튼으로 바꿔요. <b>35% 더 빨라요!</b>']},
- blast:{uses:['Hands (aim)','Both hands = cannon'],m:['Stand in your spot. <b>Your hands are blasters</b> — point your arm at a monster and it fires on its own.','<b>ENERGY CANNON:</b> put <b>both hands together</b> in front of your chest to charge, then <b>pull them apart</b> to fire a giant blast that smashes everything in its path — even the boss.','The boss <b>walks closer</b> after every attack and <b>shoots fireballs</b> — a red <b>!</b> shows where they land. <b>Shoot the fireballs down!</b> If the boss reaches the front it does a <b>GROUND SLAM</b>. 5 hits = K.O.'],t:['Touch and hold where you want to shoot.','Hold <b>two fingers</b> to charge the <b>ENERGY CANNON</b>, then let go.','Shoot the boss fireballs before they land on the red <b>!</b>']},
- beat:{uses:['Hands','Squat'],m:['Four targets sit around your body: high left, high right, low left, low right.','When the <b>shrinking ring</b> reaches a target, <b>punch it</b>. Right on the beat = <b>PERFECT</b>. Keeping your hand there does not count.','When the purple bar drops, <b>squat down (DUCK!)</b> under it.'],t:['Tap each target when the shrinking ring reaches it.','Tap the purple bar when it reaches the line to duck.','Keep the combo going for bonus points!']}};
+ blast:{uses:['손으로 조준','두 손 = 캐논'],m:['내 자리에 서요. <b>내 손이 블래스터!</b> 팔로 몬스터를 가리키면 저절로 발사돼요.','<b>에너지 캐논:</b> 가슴 앞에서 <b>두 손을 모으면</b> 충전되고, <b>두 손을 벌리면</b> 거대한 에너지탄이 나가요. 앞에 있는 건 보스까지 다 부숴요!','보스는 공격할 때마다 <b>한 걸음씩 다가오고 불덩이를 쏴요</b>. 빨간 <b>!</b> 자리에 떨어지니 <b>불덩이를 쏴서 터뜨려요!</b> 보스가 맨 앞까지 오면 <b>땅 내려치기</b>. 하트 5개를 다 잃으면 K.O.'],t:['쏘고 싶은 곳을 꾹 누르고 있어요.','<b>두 손가락</b>으로 누르면 <b>에너지 캐논</b> 충전, 떼면 발사!','보스 불덩이가 빨간 <b>!</b>에 떨어지기 전에 쏴서 터뜨려요.']},
+ beat:{uses:['손 펀치','스쿼트'],m:['내 몸 주변에 과녁 4개가 있어요: 왼쪽 위, 오른쪽 위, 왼쪽 아래, 오른쪽 아래.','<b>줄어드는 링</b>이 과녁에 딱 맞을 때 <b>펀치!</b> 박자에 딱 맞으면 <b>PERFECT</b>. 손을 계속 대고 있으면 안 돼요.','보라색 막대가 내려오면 <b>쪼그려 앉아요(DUCK!)</b>.'],t:['줄어드는 링이 과녁에 닿을 때 과녁을 눌러요.','보라색 막대가 선에 닿으면 눌러서 숙여요.','콤보를 이어 가면 보너스 점수!']}};
 /* animated stick figure that shows the move for each game */
 function drawDemo(dt){const c=$('#iDemo');if(!c||c.offsetParent===null)return;const x=c.getContext('2d'),W2=c.width,H2=c.height;demoT+=dt;const t=demoT,col=PCOL[0];
  x.fillStyle='#1d2633';x.fillRect(0,0,W2,H2);x.fillStyle='#2a3647';x.fillRect(0,H2*.86,W2,H2*.14);
@@ -1034,7 +1034,7 @@ function startCount(){state='count';ct=3.999;lastN=4;show(null);$('#hud').hidden
 function buildHud(){const ps=act(),many=ps.length>2;['scL','scR'].forEach((id,side)=>{const el=$('#'+id);el.classList.toggle('many',many);el.innerHTML=ps.filter((p,k)=>k%2===side).map(p=>`<div class="sc"><i style="background:${PCOL[p.i]}">P${p.i+1}</i><b id="sc${p.i}">0</b></div>`).join('')});for(const k in hudC)delete hudC[k]}
 const hudC={};const setT=(id,v)=>{v=String(v);if(hudC[id]!==v){hudC[id]=v;$('#'+id).textContent=v}};
 function setHud(){for(const p of act())if($('#sc'+p.i))setT('sc'+p.i,game.sc?game.sc(p.i):p.score);const c=game.hud();const ck=$('#clock');setT('clock',c);const hot=typeof c==='number'&&c<=5&&state==='play';ck.classList.toggle('hot',hot);if(hot&&c!==lastClock){SFX.tick();lastClock=c}
- const lost=motion&&state==='play'?act().filter(p=>!p.seen):[];const lt=$('#lost');lt.hidden=!lost.length;if(lost.length)lt.textContent=lost.map(p=>PNAME[p.i]).join(' & ')+': step back into view'}
+ const lost=motion&&state==='play'?act().filter(p=>!p.seen):[];const lt=$('#lost');lt.hidden=!lost.length;if(lost.length)lt.textContent=lost.map(p=>PNAME[p.i]).join(' & ')+': 화면 안으로 돌아와요'}
 function pauseGame(){if(state!=='play'&&state!=='count')return;game?.onPause?.();state='pause';show('pause');$('#runpads').hidden=true}
 $('#bPause').onclick=pauseGame;
 addEventListener('keydown',e=>{if(e.key==='Escape')pauseGame()});
@@ -1043,14 +1043,14 @@ $('#bRestart').onclick=()=>{SFX.select();startIntro()};
 $('#bQuit').onclick=()=>{SFX.select();goMenu()};
 function endGame(){state='result';$('#hud').hidden=true;$('#runpads').hidden=true;const m=L().mult,ps=act(),two=ps.length>1,bestKey=`best_${gname}_L${S.lv}`,best=store.get(bestKey,0);let top=0;
  const rows=act().map(p=>{const st=game.starsFor?game.starsFor(p):game.th.filter(v=>p.score>=Math.round(v*m)).length;p.stars+=st;p.total+=p.score;p.hist.push({g:game.title,s:p.score,st});top=Math.max(top,p.score);return{p,st}});
- let head;if(two){const mx=Math.max(...ps.map(p=>p.score)),tops=ps.filter(p=>p.score===mx);if(tops.length>1)head='It’s a tie!';else{const w=tops[0];w.stars+=1;w.hist[w.hist.length-1].win=1;head=`${PNAME[w.i]} wins!`}}else{const st=rows[0].st;head=['Nice try!','Good job!','Great moves!','Superstar!'][st]}
+ let head;if(two){const mx=Math.max(...ps.map(p=>p.score)),tops=ps.filter(p=>p.score===mx);if(tops.length>1)head='무승부!';else{const w=tops[0];w.stars+=1;w.hist[w.hist.length-1].win=1;head=`${PNAME[w.i]} 승리!`}}else{const st=rows[0].st;head=['아깝다! 다시 도전!','좋아요!','정말 잘했어요!','슈퍼스타!'][st]}
  const isNew=top>best;if(isNew)store.set(bestKey,top);
  $('#rKick').textContent=`${game.title} · Level ${S.lv} (${LVNAME(S.lv)})`;$('#rTitle').textContent=head;
- $('#rRows').innerHTML=rows.map(({p,st})=>`<div class="rr"><span class="who" style="background:${PCOL[p.i]}">${two?PNAME[p.i]:'You'}</span><span class="pts">${p.score|0}${isNew&&p.score===top&&top>0?'<span class="newb">NEW BEST</span>':''}</span><span class="stars">${'<u>★</u>'.repeat(st)}${'★'.repeat(3-st)}</span></div>`).join('');
- $('#rNote').textContent=(game.note?game.note()+' · ':'')+`Best on this iPad: ${Math.max(best,top)}${two?' · Game winner gets +1 bonus star':''}`;
- const party=queue.length>1,stand=$('#rStand');stand.hidden=!party;if(party){const mx=Math.max(3,...act().map(p=>p.stars));stand.innerHTML=`<b>Tournament standings · after round ${gi+1} of ${queue.length}</b>`+act().map(p=>`<div class="sb"><span style="color:${PCOL[p.i]}">${two?PNAME[p.i]:'You'}</span><i><u style="width:0;background:${PCOL[p.i]}" data-w="${Math.round(Math.min(1,p.stars/(queue.length*(two?4:3)))*100)}"></u></i><span>${p.stars}★</span></div>`).join('');requestAnimationFrame(()=>requestAnimationFrame(()=>stand.querySelectorAll('u').forEach(u=>u.style.width=u.dataset.w+'%')))}
- say(two?(head.startsWith('It')?'It is a tie!':head.replace('wins!','wins this round!')):head);
- const last=gi>=queue.length-1;$('#bNext').hidden=!party;$('#bNext').textContent=last?'See the podium':'Next game';$('#bAgain').hidden=party;
+ $('#rRows').innerHTML=rows.map(({p,st})=>`<div class="rr"><span class="who" style="background:${PCOL[p.i]}">${two?PNAME[p.i]:'나'}</span><span class="pts">${p.score|0}${isNew&&p.score===top&&top>0?'<span class="newb">NEW BEST</span>':''}</span><span class="stars">${'<u>★</u>'.repeat(st)}${'★'.repeat(3-st)}</span></div>`).join('');
+ $('#rNote').textContent=(game.note?game.note()+' · ':'')+`이 iPad 최고 기록: ${Math.max(best,top)}${two?' · 이번 판 1등은 보너스 별 +1':''}`;
+ const party=queue.length>1,stand=$('#rStand');stand.hidden=!party;if(party){const mx=Math.max(3,...act().map(p=>p.stars));stand.innerHTML=`<b>토너먼트 순위 · ${gi+1}/${queue.length} 라운드 후</b>`+act().map(p=>`<div class="sb"><span style="color:${PCOL[p.i]}">${two?PNAME[p.i]:'나'}</span><i><u style="width:0;background:${PCOL[p.i]}" data-w="${Math.round(Math.min(1,p.stars/(queue.length*(two?4:3)))*100)}"></u></i><span>${p.stars}★</span></div>`).join('');requestAnimationFrame(()=>requestAnimationFrame(()=>stand.querySelectorAll('u').forEach(u=>u.style.width=u.dataset.w+'%')))}
+ say(two?(head.startsWith('It')?'무승부!':head.replace('wins!','이번 판 승리!')):head);
+ const last=gi>=queue.length-1;$('#bNext').hidden=!party;$('#bNext').textContent=last?'시상대 보기':'다음 게임';$('#bAgain').hidden=party;
  show('result');SFX.fanfare();playSong('menu');for(let i=0;i<5;i++)burst(rnd(W*.2,W*.8),H*.3,['#ffd23f','#29b6f6','#ff7eb6','#7ed957','#fff'],30,H*.6,{gr:400,sq:true,r:7,life:2})}
 $('#bNext').onclick=()=>{SFX.select();if(gi<queue.length-1){gi++;startIntro()}else showFinal()};
 $('#bAgain').onclick=()=>{SFX.select();P.forEach(p=>{p.stars=0;p.total=0;p.hist=[]});startIntro()};
@@ -1060,9 +1060,9 @@ let FIN=null;
 function showFinal(){state='final';const ps=act(),multi=ps.length>1;
  const rank=[...ps].sort((a,b)=>b.stars-a.stars||b.total-a.total),place=rank.map((p,k)=>1+rank.filter(q=>q.stars>p.stars||(q.stars===p.stars&&q.total>p.total)).length);
  const top=rank.filter((p,k)=>place[k]===1);let title;
- if(multi)title=top.length>1?'Co-champions!':`${PNAME[top[0].i]} is the champion!`;
+ if(multi)title=top.length>1?'공동 우승!':`${PNAME[top[0].i]} 최종 우승!`;
  const st0=ps[0].stars,max=queue.length*3,medal=st0>=max-1?['GOLD','#f5b800']:st0>=Math.ceil(max/2)?['SILVER','#b8c0c8']:['BRONZE','#c98a55'];
- if(!multi)title=st0>=max-1?'Party Superstar!':st0>=Math.ceil(max/2)?'Party Pro!':'Nice moves!';
+ if(!multi)title=st0>=max-1?'파티 슈퍼스타!':st0>=Math.ceil(max/2)?'파티 프로!':'잘했어요!';
  FIN={multi,rank,place,medal,t:0,fw:0};$('#fTitle').textContent=title;
  $('#fTab').innerHTML=`<tr><th>Game</th>${ps.map(p=>`<th style="text-align:right">${multi?PNAME[p.i]:'Score'}</th>`).join('')}</tr>`+ps[0].hist.map((h,k)=>`<tr><td>${h.g}</td>${ps.map(p=>{const x=p.hist[k]||{s:0,st:0};return`<td class="n">${x.s|0} · ${x.st}★${x.win?' +1':''}</td>`}).join('')}</tr>`).join('')+`<tr><td><b>Total</b></td>${ps.map(p=>`<td class="n">${p.total|0} · ${p.stars}★</td>`).join('')}</tr>`;
  show('final');SFX.fanfare();setTimeout(()=>SFX.perfect(),900);say(title)}
@@ -1082,7 +1082,7 @@ function drawFinal(dt){if(!FIN)return;FIN.t+=dt;FIN.fw-=dt;g.drawImage(bg('party
  FIN.rank.forEach((p,k)=>{const pl=FIN.place[k],f=HF[pl-1],x=W/2+(FIN.multi?OFF[k]*bw2*1.06-(n>3?bw2*.5:0):0),top=base-ph*f*ease;
   g.fillStyle='rgba(0,0,0,.2)';g.fillRect(x-bw2/2+8,top+8,bw2,base-top);g.fillStyle=FIN.multi?PCOL[p.i]:FIN.medal[1];g.fillRect(x-bw2/2,top,bw2,base-top);g.fillStyle='rgba(255,255,255,.22)';g.fillRect(x-bw2/2,top,bw2,10);
   if(rise>=1){txt(FIN.multi?String(pl):FIN.medal[0],x,top+(base-top)*.5,FIN.multi?Math.min(56,(base-top)*.6):Math.min(34,ph*.22),'#fff',.12);
-   drawChamp(x,top,h*(n>3?.85:1),FIN.multi?PCOL[p.i]:'#e8432f',pl===1,FIN.t+k);txt(`${FIN.multi?PNAME[p.i]:'You'} · ${p.stars}★`,x,top-h*(n>3?1.15:1.32),n>3?20:26,'#fff',.14)}})}
+   drawChamp(x,top,h*(n>3?.85:1),FIN.multi?PCOL[p.i]:'#e8432f',pl===1,FIN.t+k);txt(`${FIN.multi?PNAME[p.i]:'나'} · ${p.stars}★`,x,top-h*(n>3?1.15:1.32),n>3?20:26,'#fff',.14)}})}
 
 /* ---------- multiplayer: extra players join from their own phone (1 device = 1 player) ----------
    Privacy: every phone runs pose detection itself and sends ONLY 33 body points (numbers) over an
@@ -1096,13 +1096,13 @@ function resetP(p){Object.assign(p,{lk:null,lkT:0,ref:null,faceT:0,faceN:0,lm:nu
 async function hostNet(){if(!MPOK()||peer)return;if(!secret)secret=hex(16);hostId='mp'+hex(16);
  /* certificate pinning: the TV iPad's DTLS fingerprint goes into the QR, so a phone only talks to this exact iPad */
  let cert;try{cert=await RTCPeerConnection.generateCertificate({name:'ECDSA',namedCurve:'P-256'});const f=cert.getFingerprints().find(x=>x.algorithm==='sha-256');certFp=f?f.value.replace(/:/g,'').toLowerCase():''}catch(e){certFp=''}
- if(!/^[0-9a-f]{64}$/.test(certFp)){toast('Multiplayer isn’t supported on this browser.',5000);return}
+ if(!/^[0-9a-f]{64}$/.test(certFp)){toast('이 브라우저에서는 여러 명 플레이를 지원하지 않아요.',5000);return}
  try{peer=new window.Peer(hostId,{debug:0,config:{iceServers:ICE,certificates:[cert]}})}catch(e){peer=null;return}
  peer.on('open',drawQR);peer.on('connection',onConn);
  peer.on('disconnected',()=>{try{peer.reconnect()}catch(e){}});
- peer.on('error',e=>{if(e&&e.type==='unavailable-id'){try{peer.destroy()}catch(x){}peer=null;hostNet()}else if(e&&['network','server-error','socket-error','socket-closed'].includes(e.type))toast('Can’t reach the connection service. Check Wi-Fi, then tap New code.',6000)})}
+ peer.on('error',e=>{if(e&&e.type==='unavailable-id'){try{peer.destroy()}catch(x){}peer=null;hostNet()}else if(e&&['network','server-error','socket-error','socket-closed'].includes(e.type))toast('연결 서비스에 닿지 않아요. 와이파이를 확인하고 새 코드를 눌러 주세요.',6000)})}
 function joinURL(){return`${location.origin}${location.pathname}#join-${hostId}-${secret}-${certFp}`}
-function drawQR(){const c=$('#qrc'),x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);if(!peer||!peer.open||typeof window.qrcode!=='function'){x.fillStyle='#6b6259';x.font='700 18px Nunito,system-ui';x.textAlign='center';x.fillText('Preparing code…',c.width/2,c.height/2);return}
+function drawQR(){const c=$('#qrc'),x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);if(!peer||!peer.open||typeof window.qrcode!=='function'){x.fillStyle='#6b6259';x.font='700 18px Nunito,system-ui';x.textAlign='center';x.fillText('코드 준비 중…',c.width/2,c.height/2);return}
  const q=window.qrcode(0,'M');q.addData(joinURL());q.make();const n=q.getModuleCount(),cell=Math.floor(c.width/(n+8)),o=Math.floor((c.width-cell*n)/2);x.fillStyle='#1d1d1f';for(let r=0;r<n;r++)for(let k=0;k<n;k++)if(q.isDark(r,k))x.fillRect(o+k*cell,o+r*cell,cell,cell)}
 function onConn(conn){if(unauth>=4){try{conn.close()}catch(e){}return}unauth++;let ok=false,counted=true;const unc=()=>{if(counted){counted=false;unauth--}};const kill=setTimeout(()=>{if(!ok){unc();try{conn.close()}catch(e){}}},6000);
  conn.on('data',d=>{if(!d||typeof d!=='object'||Array.isArray(d))return;
@@ -1111,13 +1111,13 @@ function onConn(conn){if(unauth>=4){try{conn.close()}catch(e){}return}unauth++;l
    const back=mine&&(P[mine].gone||!P[mine].on)&&(!P[mine].on||P[mine].dev===dev)?mine:0;
    const slot=back||[1,2,3].find(i=>!P[i].on&&!reserved.has(i))||[1,2,3].find(i=>!P[i].on);if(!slot){try{conn.send({t:'full'})}catch(e){}setTimeout(()=>{try{conn.close()}catch(e){}},300);return}
    ok=true;clearTimeout(kill);const p=P[slot],rejoin=back&&p.gone&&p.on;if(!rejoin){resetP(p);p.face=null;p.on=true;p.pending=!['title','menu'].includes(state)}else{p.gone=false}p.dev=dev;if(dev)devSlot.set(dev,slot);p.conn=conn;p.last=performance.now();
-   try{conn.send({t:'ok',slot,f:!!S.faces})}catch(e){}bcast();SFX.ready();toast(`${PNAME[slot]} joined${p.pending?' (plays from the next game)':''}!`);renderLobby();return}
+   try{conn.send({t:'ok',slot,f:!!S.faces})}catch(e){}bcast();SFX.ready();toast(`${PNAME[slot]} 참여!${p.pending?' (다음 게임부터 함께해요)':''}`);renderLobby();return}
   const p=P.find(q=>q.conn===conn);if(!p)return;if(d.t==='face'){takeFace(p,d.d);return}
   if(d.t==='car'||d.t==='pad'||d.t==='hb'){const I=(v,a,b)=>Number.isInteger(v)&&v>=a&&v<=b;if(d.t==='car'&&!(I(d.ty,0,6)&&I(d.co,0,7)&&typeof d.rd==='boolean')||d.t==='pad'&&!I(d.s,0,31)){try{conn.close()}catch(e){}return}
    const now=performance.now();if(d.t==='pad'&&now-(p.padT||0)<15&&p.padS===d.s)return;if(d.t==='car'){if(now-(p.carT||0)<80)return;p.carT=now}if(d.t==='hb'&&now-(p.hbT||0)<200)return;if(d.t==='hb')p.hbT=now;if(d.t==='pad')p.padT=now;p.last=now;if(d.t==='car')raceCar(p,d);else if(d.t==='pad'){p.padS=d.s;racePad(p,d)}return}if(d.t!=='p'||(d.l!==null&&!Array.isArray(d.l))){try{conn.close()}catch(e){}return}ingest(p,d)});
  const gone=()=>{clearTimeout(kill);unc();const p=P.find(q=>q.conn===conn);if(p)dropP(p,true)};conn.on('close',gone);conn.on('error',gone)}
 function dropP(p,disc){if(!p||p.i===0)return;
- if(disc&&!p.pending&&!['title','menu'].includes(state)){p.conn=null;p.seen=false;p.gone=true;p.hands.forEach(h=>h.ok=false);renderLobby();toast(`${PNAME[p.i]} disconnected`);return}
+ if(disc&&!p.pending&&!['title','menu'].includes(state)){p.conn=null;p.seen=false;p.gone=true;p.hands.forEach(h=>h.ok=false);renderLobby();toast(`${PNAME[p.i]} 연결 끊김`);return}
  const c=p.conn;p.conn=null;if(c){try{c.send({t:'bye'})}catch(e){}setTimeout(()=>{try{c.close()}catch(e){}},200)}
  p.on=false;p.pending=false;p.gone=false;p.seen=false;p.lm=null;p.face=null;renderLobby()}
 /* a phone may send ONE small face photo (jpeg, <=60 KB) for its own character; kept in memory only */
@@ -1135,17 +1135,17 @@ const ST_OK=['title','menu','qr','calib','intro','count','play','pause','result'
 function bcast(){const m={t:'st',c:state,g:G[gname]?gname:'',f:!!S.faces};for(const p of P)if(p.conn&&p.conn.open){let x=m;if(state==='race'){const j=RACE.k.indexOf(p.i),rc=j>=0&&RACE.ph!=='solo'&&!p.pending;x={...m,r:{k:rc?j+1:0,ph:RACE.ph,rd:rc?!!RACE.sel[j].rd:false,ty:rc?RACE.sel[j].ty:0,co:rc?RACE.sel[j].co:0}}}try{p.conn.send(x)}catch(e){}}}
 let lobbyT=0;
 const FU=new WeakMap(),fu=c=>{if(!FU.has(c))FU.set(c,c.toDataURL('image/jpeg',.6));return FU.get(c)};
-function renderLobby(){const html=P.filter(p=>p.on).map(p=>`<span class="pch" style="background:${PCOL[p.i]}">${p.face&&S.faces?`<img src="${fu(p.face)}" alt="" style="width:32px;height:32px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 2px #fff">`:''}${PNAME[p.i]} <small>${p.i===0?'this iPad':p.gone?'disconnected':p.pending?'joins next game':p.seen?'ready':'connected'}</small>${p.i?`<button type="button" class="kick" data-kick="${p.i}" aria-label="Remove ${PNAME[p.i]}">×</button>`:(S.faces&&motion?`<button type="button" class="kick" data-photo="1" aria-label="New photo" title="New photo">↺</button>`:'')}</span>`).join('');
+function renderLobby(){const html=P.filter(p=>p.on).map(p=>`<span class="pch" style="background:${PCOL[p.i]}">${p.face&&S.faces?`<img src="${fu(p.face)}" alt="" style="width:32px;height:32px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 2px #fff">`:''}${PNAME[p.i]} <small>${p.i===0?'이 iPad':p.gone?'연결 끊김':p.pending?'다음 게임부터':p.seen?'준비됨':'연결됨'}</small>${p.i?`<button type="button" class="kick" data-kick="${p.i}" aria-label="Remove ${PNAME[p.i]}">×</button>`:(S.faces&&motion?`<button type="button" class="kick" data-photo="1" aria-label="New photo" title="New photo">↺</button>`:'')}</span>`).join('');
  for(const id of['#lobby','#qlist']){const el=$(id);if(el.dataset.h!==html){el.innerHTML=html;el.dataset.h=html}}$('#bAdd').hidden=!MPOK()}
-document.addEventListener('click',e=>{if(e.target.closest('[data-photo]')){P[0].face=null;renderLobby();toast('A new photo will be taken when you step in at the start of the next game.',4500);return}const b=e.target.closest('[data-kick]');if(!b)return;const k=Number(b.dataset.kick);if(k>=1&&k<=3){dropP(P[k]);secret=hex(16);drawQR();toast(`${PNAME[k]} removed. A new join code was made.`,4000)}});
+document.addEventListener('click',e=>{if(e.target.closest('[data-photo]')){P[0].face=null;renderLobby();toast('다음 게임을 시작할 때 들어오면 새 사진을 찍어요.',4500);return}const b=e.target.closest('[data-kick]');if(!b)return;const k=Number(b.dataset.kick);if(k>=1&&k<=3){dropP(P[k]);secret=hex(16);drawQR();toast(`${PNAME[k]} 플레이어를 내보냈어요. 새 참여 코드를 만들었어요.`,4000)}});
 $('#bAdd').onclick=async()=>{SFX.select();show('qr');drawQR();await hostNet();drawQR()};
-$('#bQrNew').onclick=async()=>{SFX.select();secret=hex(16);drawQR();if(!peer)await hostNet();drawQR();toast('New code made. Phones already in the game stay connected.',4000)};
+$('#bQrNew').onclick=async()=>{SFX.select();secret=hex(16);drawQR();if(!peer)await hostNet();drawQR();toast('새 코드를 만들었어요. 이미 들어온 폰은 그대로 연결돼요.',4000)};
 $('#bQrDone').onclick=()=>{SFX.select();show('menu')};
 
 
 /* ---------- Turbo Circuit: phones are controllers, the race runs in race/ (same site) ---------- */
-const RCAR=[{n:'Balanced GT',d:'Good at everything',v:50,a:19,t:2.1},{n:'Speed R',d:'King of the straights',v:54,a:16.5,t:1.85},{n:'Corner King',d:'Grips the corners',v:47.5,a:22,t:2.45},{n:'Muscle V8',d:'Explosive acceleration',v:51.5,a:22.5,t:1.8},{n:'Hyper X',d:'Top speed, twitchy steering',v:55.5,a:20,t:1.9},{n:'Roadster',d:'Light and nimble',v:48,a:20.5,t:2.6},{n:'Trophy Truck',d:'Fast even on the grass',v:47,a:18.5,t:1.95}];
-const RCOL=['#e8392c','#1f6fe0','#ffc21a','#1fae6b','#f2f2f2','#8a3ffc','#ff7a1a','#1a1c20'],RTRK=['Green Valley','Sunset Coast','Snow Peak','Neon City'];
+const RCAR=[{n:'밸런스 GT',d:'무엇이든 고르게 잘해요',v:50,a:19,t:2.1},{n:'스피드 R',d:'직선 구간의 왕',v:54,a:16.5,t:1.85},{n:'코너 킹',d:'코너에서 강해요',v:47.5,a:22,t:2.45},{n:'머슬 V8',d:'폭발적인 가속',v:51.5,a:22.5,t:1.8},{n:'하이퍼 X',d:'최고 속도, 예민한 핸들',v:55.5,a:20,t:1.9},{n:'로드스터',d:'가볍고 날렵해요',v:48,a:20.5,t:2.6},{n:'트로피 트럭',d:'잔디에서도 빨라요',v:47,a:18.5,t:1.95}];
+const RCOL=['#e8392c','#1f6fe0','#ffc21a','#1fae6b','#f2f2f2','#8a3ffc','#ff7a1a','#1a1c20'],RTRK=['그린 밸리','선셋 코스트','스노우 피크','네온 시티'];
 const ordn=n=>n+(n%100>=11&&n%100<=13?'th':['th','st','nd','rd'][n%10]||'th');
 const rfmt=t=>{if(!Number.isFinite(t))return'--';const m=Math.floor(t/60),x=t-m*60;return m+':'+(x<10?'0':'')+x.toFixed(2)};
 function carSvg(ty,col){const tall=ty===6,low=ty===1||ty===4;const top=tall?22:low?34:28;
@@ -1161,19 +1161,19 @@ const racers=()=>P.filter(p=>p.i>0&&p.on&&!p.pending&&raceOK(p));
 function raceConf(){return{track:RACE.track,diff:S.lv,cars:RACE.k.map((pi,j)=>({ty:RACE.sel[j].ty,co:RACE.sel[j].co,nm:PNAME[pi],pc:PCOL[pi],face:P[pi].face&&S.faces?fu(P[pi].face):''}))}}
 function raceGo(){const ph=racers();
  if(!ph.length){openRace(false);return}
- if(ph.length<2){toast('Turbo Circuit for 2 needs 2 joined phones — add one more with + Add players. (With no phones joined, it’s a 1-player race on this iPad.)',7000);return}
+ if(ph.length<2){toast('Turbo Circuit 2인은 폰 2대가 필요해요 — + QR로 플레이어 추가로 한 대 더 연결하세요. (폰이 없으면 이 iPad에서 1인 레이스)',7000);return}
  const k=[ph[0].i,ph[1].i];if(k[0]!==RACE.k[0]||k[1]!==RACE.k[1])RACE.sel=[{ty:0,co:0,rd:false},{ty:3,co:1,rd:false}];RACE.k=k;RACE.sel.forEach(x=>x.rd=false);
- closeRace();state='race';RACE.ph='pick';RACE.goT=0;stopCam();pipC.hidden=true;show('rlob');renderRLob();say('Turbo Circuit! Pick your cars on your phones.')}
+ closeRace();state='race';RACE.ph='pick';RACE.goT=0;stopCam();pipC.hidden=true;show('rlob');renderRLob();say('터보 서킷! 폰에서 자동차를 골라요.')}
 function openRace(two){closeRace();state='race';RACE.ph=two?'drive':'solo';if(!two)RACE.k=[0,0];stopCam();pipC.hidden=true;mus.song=null;show('');
  const w=$('#rwrap'),f=document.createElement('iframe');f.id='rfr';f.title='Turbo Circuit';f.setAttribute('allow',"camera 'none'; microphone 'none'; geolocation 'none'");f.src='race/index.html'+(two?'#duo':'');
  f.addEventListener('load',()=>{try{f.contentWindow.focus()}catch(e){}});w.classList.toggle('two',!!two);w.prepend(f);w.hidden=false;bcast()}
 function closeRace(){const f=$('#rfr');if(RACE.api){try{RACE.api.stop()}catch(e){}}RACE.api=null;if(f)f.remove();$('#rwrap').hidden=true}
 $('#rExit').onclick=()=>{SFX.select();closeRace();goMenu()};
 function renderRLob(){const html=RACE.k.map((pi,j)=>{const p=P[pi],x=RACE.sel[j],ok=raceOK(p),c=RCAR[x.ty];
-  return`<div class="rp${x.rd&&ok?' rd':''}"><span class="rpn" style="background:${PCOL[pi]}">${p.face&&S.faces?`<img src="${fu(p.face)}" alt="">`:''}Car ${j+1} · ${PNAME[pi]}</span>${carSvg(x.ty,RCOL[x.co])}<b>${c.n}</b><div class="st">${!ok?'Disconnected — rejoin with the QR code':x.rd?'READY!':'Choosing on the phone…'}</div></div>`}).join('');
+  return`<div class="rp${x.rd&&ok?' rd':''}"><span class="rpn" style="background:${PCOL[pi]}">${p.face&&S.faces?`<img src="${fu(p.face)}" alt="">`:''}${j+1}번 차 · ${PNAME[pi]}</span>${carSvg(x.ty,RCOL[x.co])}<b>${c.n}</b><div class="st">${!ok?'연결 끊김 — QR 코드로 다시 참여하세요':x.rd?'READY!':'폰에서 고르는 중…'}</div></div>`}).join('');
  const el=$('#rps');if(el.dataset.h!==html){el.innerHTML=html;el.dataset.h=html}
  const th=RTRK.map((n,i)=>`<button type="button" data-trk="${i}" aria-pressed="${i===RACE.track}">${n}</button>`).join('');if($('#rtrk').dataset.h!==th){$('#rtrk').innerHTML=th;$('#rtrk').dataset.h=th}
- const all=RACE.k.every((pi,j)=>raceOK(P[pi])&&RACE.sel[j].rd),b=$('#bRGo');b.disabled=!all;const bt=all?`Starting in ${Math.max(1,Math.ceil(3-RACE.goT))}… (tap to go now)`:'Waiting for READY…';if(b.textContent!==bt)b.textContent=bt}
+ const all=RACE.k.every((pi,j)=>raceOK(P[pi])&&RACE.sel[j].rd),b=$('#bRGo');b.disabled=!all;const bt=all?`${Math.max(1,Math.ceil(3-RACE.goT))}초 뒤 출발… (누르면 바로 출발)`:'READY를 기다리는 중…';if(b.textContent!==bt)b.textContent=bt}
 $('#rtrk').addEventListener('click',e=>{const b=e.target.closest('[data-trk]');if(!b)return;const i=Number(b.dataset.trk);if(i>=0&&i<RTRK.length){RACE.track=i;RACE.goT=0;SFX.select();renderRLob()}});
 $('#bRBack').onclick=()=>{SFX.select();goMenu()};
 $('#bRGo').onclick=()=>{if(RACE.ph==='pick'&&!$('#bRGo').disabled){SFX.go();openRace(true)}};
@@ -1183,10 +1183,10 @@ function raceCar(p,d){const j=RACE.k.indexOf(p.i);if(state!=='race'||RACE.ph!=='
 function racePad(p,d){const j=RACE.k.indexOf(p.i);if(state==='race'&&RACE.ph==='drive'&&j>=0&&RACE.api){try{RACE.api.pad(j,d.s)}catch(e){}}}
 function raceResults(){const r=RACE.res,ok=r&&Array.isArray(r.r)&&r.r.length===2&&Number.isInteger(r.n)&&r.r.every(x=>x&&(x.k===0||x.k===1)&&Number.isInteger(x.pl)&&x.pl>=1&&x.pl<=r.n&&r.n<=8&&Number.isFinite(x.t)&&x.t>=0);
  state='race';RACE.ph='res';playSong('menu');
- if(!ok){$('#rrT').textContent='Race over!';$('#rrL').innerHTML='';show('rres');return}
+ if(!ok){$('#rrT').textContent='레이스 끝!';$('#rrL').innerHTML='';show('rres');return}
  const rows=r.r.slice().sort((a,b)=>a.pl-b.pl),w=rows[0],wp=RACE.k[w.k];
- $('#rrT').textContent=w.pl===1?`${PNAME[wp]} wins the race!`:`${PNAME[wp]} beats ${PNAME[RACE.k[rows[1].k]]}!`;
- $('#rrL').innerHTML=rows.map((x,i)=>{const pi=RACE.k[x.k],p=P[pi],c=RCAR[RACE.sel[x.k].ty];return`<div class="rrow${i===0?' win':''}"><span class="pl">${ordn(x.pl)}</span><span><span class="rpn" style="background:${PCOL[pi]}">${p.face&&S.faces?`<img src="${fu(p.face)}" alt="">`:''}Car ${x.k+1} · ${PNAME[pi]}</span><small>${c.n} · out of ${r.n} cars</small></span><span class="tm">${x.fin?rfmt(x.t):'≈ '+rfmt(x.t)}</span></div>`}).join('');
+ $('#rrT').textContent=w.pl===1?`${PNAME[wp]} 우승!`:`${PNAME[wp]}가 ${PNAME[RACE.k[rows[1].k]]}보다 빨랐어요!`;
+ $('#rrL').innerHTML=rows.map((x,i)=>{const pi=RACE.k[x.k],p=P[pi],c=RCAR[RACE.sel[x.k].ty];return`<div class="rrow${i===0?' win':''}"><span class="pl">${x.pl}등</span><span><span class="rpn" style="background:${PCOL[pi]}">${p.face&&S.faces?`<img src="${fu(p.face)}" alt="">`:''}${x.k+1}번 차 · ${PNAME[pi]}</span><small>${c.n} · ${r.n}대 중</small></span><span class="tm">${x.fin?rfmt(x.t):'≈ '+rfmt(x.t)}</span></div>`}).join('');
  show('rres');SFX.fanfare();say($('#rrT').textContent)}
 $('#bRAgain').onclick=()=>{SFX.select();raceGo()};$('#bRMenu').onclick=()=>{SFX.select();goMenu()};
 
@@ -1197,11 +1197,11 @@ function runJoin(hid,key,fp){document.documentElement.classList.add('joinmode');
  history.replaceState(null,'',location.pathname);
  let dev=store.get('dev','');if(!/^[0-9a-f]{32}$/.test(dev)){dev=hex(16);store.set('dev',dev)}let faceSent=false,shot=0,faceC=null;
  const ph=$('#jph'),phA=$('#jphA'),phB=$('#jphB'),phC=$('#jphC'),phP=$('#jphP'),phT=$('#jphT');
- function photoUI(mode){ph.hidden=mode==='off';if(mode==='ask'){phT.textContent='Your character photo';phP.textContent='Your face goes on your character on the TV. It is sent only to the TV iPad, never saved, and gone when the game closes.';phC.hidden=true;phA.textContent='Take photo';phB.textContent='No photo'}
-  if(mode==='preview'){phT.textContent='Looking good?';phP.textContent='This goes on your character’s head.';phC.hidden=false;phA.textContent='Use it';phB.textContent='Retake'}}
- phA.onclick=()=>{if(phA.textContent==='Use it'&&faceC){try{conn.send({t:'face',d:faceC.toDataURL('image/jpeg',.72)});faceSent=true}catch(e){}photoUI('off');stat('Photo sent! Watch the TV')}else{photoUI('off');shot=performance.now()+3000}};
- phB.onclick=()=>{if(phB.textContent==='Retake'){photoUI('off');shot=performance.now()+3000}else{faceSent=true;photoUI('off')}};
- const GT={fruit:'Fruit Slash',run:'Sprint Dash',beat:'Beat Punch'},MSG={title:'Waiting for the host…',menu:'You’re in! The host is choosing a game',qr:'You’re in! Waiting for more players',calib:'Step back until your whole body fits',intro:'Get ready',count:'Get ready…',play:'GO! Watch the TV',pause:'Paused',result:'Round over — check the TV',final:'Final results on the TV!'};
+ function photoUI(mode){ph.hidden=mode==='off';if(mode==='ask'){phT.textContent='내 캐릭터 사진';phP.textContent='내 얼굴이 TV 속 캐릭터에 들어가요. TV iPad로만 보내지고, 저장되지 않으며, 게임을 닫으면 사라져요.';phC.hidden=true;phA.textContent='사진 찍기';phB.textContent='사진 없이'}
+  if(mode==='preview'){phT.textContent='이 사진 괜찮아요?';phP.textContent='이 얼굴이 캐릭터 머리에 들어가요.';phC.hidden=false;phA.textContent='이걸로 할래요';phB.textContent='다시 찍기'}}
+ phA.onclick=()=>{if(phA.textContent==='이걸로 할래요'&&faceC){try{conn.send({t:'face',d:faceC.toDataURL('image/jpeg',.72)});faceSent=true}catch(e){}photoUI('off');stat('사진을 보냈어요! TV를 보세요')}else{photoUI('off');shot=performance.now()+3000}};
+ phB.onclick=()=>{if(phB.textContent==='다시 찍기'){photoUI('off');shot=performance.now()+3000}else{faceSent=true;photoUI('off')}};
+ const GT={fruit:'Fruit Slash',run:'Sprint Dash',beat:'Beat Punch'},MSG={title:'진행자를 기다리는 중…',menu:'참여 완료! 진행자가 게임을 고르는 중이에요',qr:'참여 완료! 다른 플레이어를 기다리는 중',calib:'온몸이 보일 때까지 뒤로 물러나요',intro:'준비하세요',count:'준비…',play:'시작! TV를 보세요',pause:'잠깐 멈춤',result:'이번 판 끝 — TV를 보세요',final:'최종 결과는 TV에서!'};
 
  /* Turbo Circuit: this phone becomes a controller (camera off while racing) */
  let jpadOn=false,jrk=0,jrph='',jsel={ty:0,co:0,rd:false},jselT=0,jhb=null,jhbN=0,jbits=0;const jptr=new Map(),jdr=$('#jdrive');
@@ -1210,9 +1210,9 @@ function runJoin(hid,key,fp){document.documentElement.classList.add('joinmode');
  function jsend(m){if(conn&&conn.open)try{conn.send(m)}catch(e){}}
  function padBeat(){jhbN++;if(jrk&&jrph==='drive')jsend({t:'pad',s:jbits});else if(jrk&&jrph==='pick'){if(jhbN%4===0)jsend({t:'car',ty:jsel.ty,co:jsel.co,rd:jsel.rd})}else if(jhbN%4===0)jsend({t:'hb'})}
  function paintPick(){const c=RCAR[jsel.ty];$('#jpsv').innerHTML=carSvg(jsel.ty,RCOL[jsel.co]);$('#jpn').textContent=c.n;$('#jpd').textContent=c.d;
-  const st=[['Speed',(c.v-44)/12],['Acceleration',(c.a-14)/9],['Handling',(c.t-1.6)/1.05]];$('#jpst').innerHTML=st.map(([k,v])=>`<span>${k}</span><i><u style="width:${Math.round(clamp(v,.08,1)*100)}%"></u></i>`).join('');
-  $('#jpc').innerHTML=RCOL.map((h,i)=>`<button type="button" data-co="${i}" style="background:${h}" aria-label="Colour ${i+1}" aria-pressed="${i===jsel.co}"></button>`).join('');
-  const b=$('#jpgo');b.classList.toggle('rd',jsel.rd);b.textContent=jsel.rd?'READY! ✓  (tap to change)':'READY!'}
+  const st=[['속도',(c.v-44)/12],['가속',(c.a-14)/9],['핸들링',(c.t-1.6)/1.05]];$('#jpst').innerHTML=st.map(([k,v])=>`<span>${k}</span><i><u style="width:${Math.round(clamp(v,.08,1)*100)}%"></u></i>`).join('');
+  $('#jpc').innerHTML=RCOL.map((h,i)=>`<button type="button" data-co="${i}" style="background:${h}" aria-label="색상 ${i+1}" aria-pressed="${i===jsel.co}"></button>`).join('');
+  const b=$('#jpgo');b.classList.toggle('rd',jsel.rd);b.textContent=jsel.rd?'READY! ✓  (누르면 다시 고르기)':'READY!'}
  function pickSend(){jselT=performance.now();paintPick();jsend({t:'car',ty:jsel.ty,co:jsel.co,rd:jsel.rd})}
  $('#jpl').onclick=()=>{if(jsel.rd)return;jsel.ty=(jsel.ty+6)%7;SFX.tick?.();pickSend()};$('#jpr').onclick=()=>{if(jsel.rd)return;jsel.ty=(jsel.ty+1)%7;SFX.tick?.();pickSend()};
  $('#jpc').addEventListener('click',e=>{const b=e.target.closest('[data-co]');if(!b||jsel.rd)return;jsel.co=Number(b.dataset.co)|0;pickSend()});
@@ -1222,35 +1222,35 @@ function runJoin(hid,key,fp){document.documentElement.classList.add('joinmode');
   if(r.k&&r.ph==='pick'&&(was!=='pick'))jsel={ty:r.ty,co:r.co,rd:!!r.rd};else if(r.k&&r.ph==='pick'&&performance.now()-jselT>800)jsel.rd=!!r.rd;
   jrk=r.k;jrph=r.ph;const col=PCOL[slot]||'#e8432f';
   $('#jpick').hidden=!(jrk&&jrph==='pick');$('#jdrive').hidden=!(jrk&&jrph==='drive');$('#jwatch').hidden=!!(jrk&&(jrph==='pick'||jrph==='drive'));
-  for(const id of['#jpb','#jdb']){$(id).textContent=`Car ${jrk} · ${PNAME[slot]||''}`;$(id).style.background=col}
+  for(const id of['#jpb','#jdb']){$(id).textContent=`${jrk}번 차 · ${PNAME[slot]||''}`;$(id).style.background=col}
   if(jrk&&jrph==='pick')paintPick();
-  if(jrk&&jrph==='drive'&&was!=='drive'){$('#jdp').textContent='Gas is automatic · steer with ◀ ▶';SFX.go?.()}
+  if(jrk&&jrph==='drive'&&was!=='drive'){$('#jdp').textContent='가속은 자동 · ◀ ▶로 방향 조절';SFX.go?.()}
   if(jrph!=='drive'){jptr.clear();padRecalc()}
-  $('#jwatch').textContent=jrph==='solo'?'The iPad player is racing — watch the TV!':jrph==='res'?'Race over — results are on the TV':'Two players are racing — watch the TV!'}
+  $('#jwatch').textContent=jrph==='solo'?'iPad 플레이어가 달리는 중 — TV를 보세요!':jrph==='res'?'레이스 끝 — 결과는 TV에서!':'두 명이 레이스 중 — TV를 보세요!'}
  function padRecalc(){let b=0;if(jrph==='drive')for(const [,q] of jptr){const el=document.elementFromPoint(q.x,q.y),bt=el&&el.closest&&el.closest('[data-b]');if(bt&&jdr.contains(bt))b|=Number(bt.dataset.b)}
   if(b!==jbits){const nw=b&~jbits;jbits=b;if(nw&&navigator.vibrate)try{navigator.vibrate(12)}catch(e){}$$('#jdrive [data-b]').forEach(e=>e.classList.toggle('on',!!(jbits&Number(e.dataset.b))));if(jrk&&jrph==='drive')jsend({t:'pad',s:jbits})}}
  jdr.addEventListener('pointerdown',e=>{e.preventDefault();try{jdr.setPointerCapture(e.pointerId)}catch(_){}jptr.set(e.pointerId,{x:e.clientX,y:e.clientY});padRecalc()});
  jdr.addEventListener('pointermove',e=>{if(!jptr.has(e.pointerId))return;e.preventDefault();jptr.set(e.pointerId,{x:e.clientX,y:e.clientY});padRecalc()});
  ['pointerup','pointercancel','lostpointercapture'].forEach(ev=>jdr.addEventListener(ev,e=>{jptr.delete(e.pointerId);padRecalc()}));
  $('#jpad').addEventListener('contextmenu',e=>e.preventDefault());$('#jpad').addEventListener('touchstart',e=>{if(e.target.closest('#jdrive'))e.preventDefault()},{passive:false});
- if(!MPOK()){stat('Joining works from the hosted game link (open it in Safari).');btn.hidden=true;return}
+ if(!MPOK()){stat('참여는 게임 링크(Safari)에서만 할 수 있어요.');btn.hidden=true;return}
  function size(){const d=Math.min(2,devicePixelRatio||1);jc.width=Math.round(innerWidth*d);jc.height=Math.round(innerHeight*d)}size();addEventListener('resize',size);
- function connect(){stat('Connecting to the TV iPad…');try{jpeer&&jpeer.destroy()}catch(e){}
+ function connect(){stat('TV iPad에 연결하는 중…');try{jpeer&&jpeer.destroy()}catch(e){}
   jpeer=new window.Peer({debug:0,config:{iceServers:ICE}});
   jpeer.on('open',()=>{conn=jpeer.connect(hid,{reliable:true,serialization:'json'});
    conn.on('open',()=>{const sdp=conn.peerConnection?.remoteDescription?.sdp||'',m=sdp.match(/a=fingerprint:sha-256 ([0-9A-Fa-f:]+)/),got=m?m[1].replace(/:/g,'').toLowerCase():'';
-    if(!safeEq(got,fp)){blocked=true;stat('Security check failed: this isn’t the TV iPad from the code. Not connected.');try{conn.close()}catch(e){}try{jpeer.destroy()}catch(e){}btn.hidden=true;return}
+    if(!safeEq(got,fp)){blocked=true;stat('보안 확인 실패: QR 코드의 TV iPad가 아니에요. 연결하지 않았어요.');try{conn.close()}catch(e){}try{jpeer.destroy()}catch(e){}btn.hidden=true;return}
     try{conn.send({t:'hi',k:key,v:2,dev})}catch(e){}});
    conn.on('data',m=>{if(!m||typeof m!=='object')return;
-    if(m.t==='ok'&&[1,2,3].includes(m.slot)){slot=m.slot;const b=$('#jbadge');b.textContent=`${PNAME[slot]} · Player ${slot+1}`;b.style.background=PCOL[slot];stat(MSG.menu);SFX.ready&&SFX.ready();if(!faceSent&&m.f===true)photoUI('ask')}
-    else if(m.t==='rs'){const I=(v,a,b)=>Number.isInteger(v)&&v>=a&&v<=b;if(jrk&&jrph==='drive'&&I(m.pl,1,8)&&I(m.lap,1,3)&&I(m.n,2,8))$('#jdp').textContent=m.fin?`Finished ${ordn(m.pl)}!`:`${ordn(m.pl)} of ${m.n} · Lap ${m.lap}/3`}
-    else if(m.t==='st'&&ST_OK.includes(m.c)){if(m.c==='race'){raceUI(m.r);return}if(jpadOn)leavePad();if(m.f===false)photoUI('off');const gt=Object.prototype.hasOwnProperty.call(GT,m.g)?GT[m.g]:'';stat(['intro','count'].includes(m.c)&&gt?`${gt} — get ready!`:MSG[m.c])}
-    else if(m.t==='full'){stat('This game already has 4 players.');}
-    else if(m.t==='bye'){slot=0;leavePad();stat('The host removed you from the game.');}});
-   conn.on('close',()=>{if(blocked)return;leavePad();stat(slot?'Disconnected. Tap to reconnect.':'Couldn’t join. Scan the newest code on the TV, then try again.');slot=0;btn.textContent='Reconnect';btn.hidden=false})});
-  jpeer.on('error',()=>{stat('Can’t reach the TV iPad. Make sure the game is open there, then tap to retry.');btn.textContent='Try again';btn.hidden=false})}
+    if(m.t==='ok'&&[1,2,3].includes(m.slot)){slot=m.slot;const b=$('#jbadge');b.textContent=`${PNAME[slot]} · ${slot+1}번 플레이어`;b.style.background=PCOL[slot];stat(MSG.menu);SFX.ready&&SFX.ready();if(!faceSent&&m.f===true)photoUI('ask')}
+    else if(m.t==='rs'){const I=(v,a,b)=>Number.isInteger(v)&&v>=a&&v<=b;if(jrk&&jrph==='drive'&&I(m.pl,1,8)&&I(m.lap,1,3)&&I(m.n,2,8))$('#jdp').textContent=m.fin?`${m.pl}등으로 완주!`:`${m.n}대 중 ${m.pl}등 · ${m.lap}/3 바퀴`}
+    else if(m.t==='st'&&ST_OK.includes(m.c)){if(m.c==='race'){raceUI(m.r);return}if(jpadOn)leavePad();if(m.f===false)photoUI('off');const gt=Object.prototype.hasOwnProperty.call(GT,m.g)?GT[m.g]:'';stat(['intro','count'].includes(m.c)&&gt?`${gt} — 준비하세요!`:MSG[m.c])}
+    else if(m.t==='full'){stat('이미 4명이 플레이 중이에요.');}
+    else if(m.t==='bye'){slot=0;leavePad();stat('진행자가 게임에서 내보냈어요.');}});
+   conn.on('close',()=>{if(blocked)return;leavePad();stat(slot?'연결이 끊겼어요. 눌러서 다시 연결하세요.':'참여하지 못했어요. TV의 최신 QR 코드를 다시 찍어 주세요.');slot=0;btn.textContent='다시 연결';btn.hidden=false})});
+  jpeer.on('error',()=>{stat('TV iPad에 연결할 수 없어요. 그쪽에 게임이 열려 있는지 확인하고 다시 눌러 주세요.');btn.textContent='다시 시도';btn.hidden=false})}
  btn.onclick=async()=>{btn.hidden=true;initAudio();
-  if(!jl){stat('Starting camera…');try{await openCam();stat('Loading motion engine…');jl=await loadPose()}catch(e){stopCam();stat('The camera is needed to play. Allow it for this site, then tap to retry.');btn.textContent='Try again';btn.hidden=false;return}}
+  if(!jl){stat('카메라 켜는 중…');try{await openCam();stat('동작 인식 준비 중…');jl=await loadPose()}catch(e){stopCam();stat('게임하려면 카메라가 필요해요. 이 사이트에 카메라를 허용하고 다시 눌러 주세요.');btn.textContent='다시 시도';btn.hidden=false;return}}
   else if(!stream){try{await openCam()}catch(e){}}
   try{navigator.wakeLock?.request('screen').catch(()=>{})}catch(e){}
   connect();if(!looping){looping=true;requestAnimationFrame(jloop)}};
@@ -1262,9 +1262,9 @@ function runJoin(hid,key,fp){document.documentElement.classList.add('joinmode');
   const col=slot?PCOL[slot]:'#ffffff',tp=q=>({x:ox+q.x*dw,y:oy+q.y*dh});
   if(pose){jg.strokeStyle=col;jg.lineWidth=Math.max(6,w*.012);jg.lineCap='round';for(const[a,b]of PIPJ){if(pose[a].v<.4||pose[b].v<.4)continue;const A=tp(pose[a]),B=tp(pose[b]);jg.beginPath();jg.moveTo(A.x,A.y);jg.lineTo(B.x,B.y);jg.stroke()}
    if(pose[0].v>.4){const n=tp(pose[0]);jg.fillStyle=col;jg.beginPath();jg.arc(n.x,n.y,Math.max(14,w*.03),0,TAU);jg.fill()}}
-  else{jg.fillStyle='rgba(0,0,0,.55)';jg.fillRect(0,h*.45,w,h*.1);jg.fillStyle='#fff';jg.font=`800 ${Math.round(Math.max(18,w*.035))}px Nunito,system-ui`;jg.textAlign='center';jg.textBaseline='middle';jg.fillText('Step back so your whole body fits',w/2,h*.5)}
+  else{jg.fillStyle='rgba(0,0,0,.55)';jg.fillRect(0,h*.45,w,h*.1);jg.fillStyle='#fff';jg.font=`800 ${Math.round(Math.max(18,w*.035))}px Nunito,system-ui`;jg.textAlign='center';jg.textBaseline='middle';jg.fillText('온몸이 보이도록 뒤로 물러나요',w/2,h*.5)}
   if(shot){const left=shot-performance.now();if(left>0){jg.fillStyle='rgba(0,0,0,.35)';jg.fillRect(0,0,w,h);jg.fillStyle='#fff';jg.font=`800 ${Math.round(w*.25)}px Baloo 2,system-ui`;jg.textAlign='center';jg.textBaseline='middle';jg.fillText(String(Math.ceil(left/1000)),w/2,h/2)}
-   else{shot=0;faceC=grabFace(pose,video);if(faceC){phC.getContext('2d').drawImage(faceC,0,0);photoUI('preview');noise(.08,.5,5000,1,'highpass')}else{photoUI('ask');phP.textContent='Couldn’t see your face. Look straight at the camera and try again.'}}}
+   else{shot=0;faceC=grabFace(pose,video);if(faceC){phC.getContext('2d').drawImage(faceC,0,0);photoUI('preview');noise(.08,.5,5000,1,'highpass')}else{photoUI('ask');phP.textContent='얼굴이 안 보였어요. 카메라를 똑바로 보고 다시 해 봐요.'}}}
   if(slot&&conn&&conn.open&&now-lastSend>33){lastSend=now;let l=null;if(pose){l=new Array(99);for(let i=0;i<33;i++){l[i*3]=Math.round(pose[i].x*1000)/1000;l[i*3+1]=Math.round(pose[i].y*1000)/1000;l[i*3+2]=Math.round(pose[i].v*100)/100}}
    try{conn.send({t:'p',a:Math.round(vw/vh*1000)/1000,l})}catch(e){}}}}
 
@@ -1272,13 +1272,13 @@ function runJoin(hid,key,fp){document.documentElement.classList.add('joinmode');
 function drawCalib(dt){const two=NP()>1;let all=true;const chips=[];
  for(const p of act()){const V=VP(p),zx=two?V.x+V.w/2:W/2,zw=two?V.w*.86:F.w*.5,y0=F.y+F.h*.08,zh=F.h*.88;const l=p.lm,good=p.seen&&l&&[11,12,23,24].every(k=>l[k].v>.55);
   if(good)p.ready+=dt;else p.ready=Math.max(0,p.ready-dt*2);if(!p.ok&&p.ready>1.2){p.ok=true;p.calY=p.ay;const R=refOf(p);p.noseRel=clamp((l[0].y-R.y)/R.sw,-3.6,-1.4);SFX.ready();}
-  if(p.ok&&p.i===0&&motion&&S.faces&&!p.face&&(p.snapN||0)<3){all=false;p.snap=(p.snap??2.95)-dt;const R=refOf(p);if(p.snap>0)txt(`Smile!  ${Math.ceil(p.snap)}`,R.x,R.y-R.sw*3.7,46,'#ffd23f',.16);
-   if(p.snap<=0){p.snap=null;p.snapN=(p.snapN||0)+1;const f=grabFace(P[0].raw,video);if(f){p.face=f;flashA=.75;flashC='#fff';noise(.08,.5,5000,1,'highpass');floatT(R.x,R.y-R.sw*3.7,'Got it!','#7ed957',46);renderLobby()}}}
+  if(p.ok&&p.i===0&&motion&&S.faces&&!p.face&&(p.snapN||0)<3){all=false;p.snap=(p.snap??2.95)-dt;const R=refOf(p);if(p.snap>0)txt(`웃어요!  ${Math.ceil(p.snap)}`,R.x,R.y-R.sw*3.7,46,'#ffd23f',.16);
+   if(p.snap<=0){p.snap=null;p.snapN=(p.snapN||0)+1;const f=grabFace(P[0].raw,video);if(f){p.face=f;flashA=.75;flashC='#fff';noise(.08,.5,5000,1,'highpass');floatT(R.x,R.y-R.sw*3.7,'찰칵!','#7ed957',46);renderLobby()}}}
   if(!p.ok)all=false;
   g.setLineDash([18,14]);g.lineWidth=6;g.strokeStyle=p.ok?'#7ed957':PCOL[p.i];g.beginPath();g.roundRect?g.roundRect(zx-zw/2,y0,zw,zh,30):g.rect(zx-zw/2,y0,zw,zh);g.stroke();g.setLineDash([]);
   if(p.ready>0&&!p.ok){g.lineWidth=12;g.strokeStyle='#ffd23f';g.beginPath();g.arc(zx,y0+zh*.5,50,-Math.PI/2,-Math.PI/2+TAU*clamp(p.ready/1.2));g.stroke()}
-  txt(p.ok?'Ready!':two?`${PNAME[p.i]} stands here`:'Stand here',zx,y0+zh-30,30,p.ok?'#7ed957':'#fff');
-  chips.push(`<span class="chip" style="background:${p.ok?'#1fa34a':PCOL[p.i]}">${PNAME[p.i]} · ${p.ok?'Ready!':good?'Hold still…':p.seen?'Step back a little':'Step into the frame'}</span>`)}
+  txt(p.ok?'준비 완료!':two?`${PNAME[p.i]} 자리`:'여기 서요',zx,y0+zh-30,30,p.ok?'#7ed957':'#fff');
+  chips.push(`<span class="chip" style="background:${p.ok?'#1fa34a':PCOL[p.i]}">${PNAME[p.i]} · ${p.ok?'준비 완료!':good?'가만히 있어요…':p.seen?'조금 뒤로':'화면 안으로 들어와요'}</span>`)}
  const h=chips.join('');if($('#chips').dataset.h!==h){$('#chips').innerHTML=h;$('#chips').dataset.h=h}
  if(all){p0t+=dt;if(p0t>.7){p0t=0;startIntro()}}else p0t=0}
 let p0t=0;
