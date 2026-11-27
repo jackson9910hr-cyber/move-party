@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko"><head><meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-mW8G9eQKBOd6lBEV/15AYCEuB4xj6i9Kt8Z0xplQnYE='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'none'; media-src 'none'; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-8DDq4xcK9WZ0gyUsoCZ7z5VdR83X9/adzRrkC22MwUw='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'none'; media-src 'none'; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <title>터보 서킷</title>
 <link rel="stylesheet" href="fonts.css">
@@ -763,7 +763,7 @@ const duo={on:false,o:null,P:[],pad:[0,0],padT:[0,0],cams:[new THREE.Perspective
   msg:[{t:'',c:'#fff',T:0,big:0},{t:'',c:'#fff',T:0,big:0}],done:[0,0],boost:[0,0],stuck:[0,0],wrong:[0,0],endT:0,firstFin:-1,sent:false,stT:0,hud:null,hx:null};
 function duoParent(){try{return window.parent.__mpRace||null;}catch(e){return null;}}
 function padIn(i){const c=duo.P[i];if(c&&performance.now()-duo.padT[i]>2500)return aiInput(c);
-  const s=duo.pad[i]|0,brake=!!(s&4);return{steer:((s&2)?1:0)-((s&1)?1:0),gas:!brake,brake,drift:!!(s&8),nitro:!!(s&16)};}
+  const s=duo.pad[i]|0,brake=!!(s&4),w=duo.pw&&duo.pw[i];return{steer:w!=null?Math.max(-1,Math.min(1,w/100)):((s&2)?1:0)-((s&1)?1:0),gas:!brake,brake,drift:!!(s&8),nitro:!!(s&16)};}
 function duoAC(){try{const a=duoParent()&&duoParent().audio();return a&&a.state!=='closed'?a:null;}catch(e){return null;}}
 function duoStopAudio(){if(eng){try{eng.g.gain.value=0;eng.o1.stop();eng.o2.stop();eng.g.disconnect();}catch(e){}eng=null;}AC=null;}
 function duoCheck(o){if(!o||typeof o!=='object')return null;const I=(v,a,b)=>Number.isInteger(v)&&v>=a&&v<=b;
@@ -860,7 +860,7 @@ function duoBoot(){duoHudCanvas();
   $('bQuit').onclick=()=>{const P=duoParent();if(P)try{P.quit();}catch(e){}};
   addEventListener('pagehide',duoStopAudio);
   const api={start(o){const v=duoCheck(o);if(!v)return false;duo.o=v;duoStart();return true;},
-    pad(i,s){if((i===0||i===1)&&Number.isInteger(s)&&s>=0&&s<=31){duo.pad[i]=s;duo.padT[i]=performance.now();}},
+    pad(i,s,w){if((i===0||i===1)&&Number.isInteger(s)&&s>=0&&s<=31){duo.pad[i]=s;duo.pw=duo.pw||[null,null];duo.pw[i]=Number.isInteger(w)&&w>=-100&&w<=100?w:null;duo.padT[i]=performance.now();}},
     stop(){duo.on=false;duoStopAudio();},
     pause(){if(state==='race'||state==='count')togglePause();},__w:window};
   const P=duoParent();if(P)try{P.ready(api);}catch(e){}}
