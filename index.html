@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-YaPAZC6Kl0C5CzxZP3lz498q+2mZ1QZMbLlC29DLkH0=' 'wasm-unsafe-eval'; connect-src 'self' https://storage.googleapis.com/mediapipe-models/pose_landmarker/ https://0.peerjs.com wss://0.peerjs.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; media-src 'self' blob: mediastream:; worker-src 'self' blob:; frame-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-kBtP8CeG+MUEbxpydotCRYBWFfYX8sjHbBU+Ea03k+g=' 'wasm-unsafe-eval'; connect-src 'self' https://storage.googleapis.com/mediapipe-models/pose_landmarker/ https://0.peerjs.com wss://0.peerjs.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; media-src 'self' blob: mediastream:; worker-src 'self' blob:; frame-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="robots" content="noindex,nofollow">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -406,7 +406,7 @@ function unlockAudio(){initAudio();if(!AC)return;if(AC.state!=='running')AC.resu
   const a=new Audio(URL.createObjectURL(new Blob([b],{type:'audio/wav'})));a.loop=true;a.setAttribute('playsinline','');a.play().catch(()=>{})}catch(e){}}
  if(!mus.song&&!JM)playSong(state==='title'||state==='menu'?'menu':(gname||'menu'))}
 ['pointerdown','touchend','keydown'].forEach(ev=>addEventListener(ev,unlockAudio,{capture:true,passive:true}));
-function applyVol(){if(!AC)return;musG.gain.value=S.music?.32:0;sfxG.gain.value=S.sfx?.9:0}
+function applyVol(){if(!AC)return;musG.gain.value=S.music?.4:0;sfxG.gain.value=S.sfx?.9:0}
 const mf=m=>440*2**((m-69)/12);
 function tone(f,d,type,v,at,slide,dest){if(!AC)return;const t=at??AC.currentTime,o=AC.createOscillator(),n=AC.createGain();o.type=type||'square';o.frequency.setValueAtTime(f,t);if(slide)o.frequency.exponentialRampToValueAtTime(Math.max(30,f*slide),t+d);n.gain.setValueAtTime(.0001,t);n.gain.exponentialRampToValueAtTime(v||.2,t+.008);n.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(n);n.connect(dest||sfxG);o.start(t);o.stop(t+d+.03)}
 function noise(d,v,f,q,type,fEnd,at,dest){if(!AC)return;const t=at??AC.currentTime,s=AC.createBufferSource(),fl=AC.createBiquadFilter(),n=AC.createGain();s.buffer=nbuf;fl.type=type||'bandpass';fl.frequency.setValueAtTime(f,t);if(fEnd)fl.frequency.exponentialRampToValueAtTime(fEnd,t+d);fl.Q.value=q||1;n.gain.setValueAtTime(v,t);n.gain.exponentialRampToValueAtTime(.0001,t+d);s.connect(fl);fl.connect(n);n.connect(dest||sfxG);s.start(t);s.stop(t+d+.02)}
@@ -421,6 +421,7 @@ const SFX={
  select(){tone(880,.07,'square',.12);tone(1320,.09,'square',.1,now0()+.05)},tick(){tone(1600,.03,'square',.05)},
  coin(){tone(988,.06,'square',.12);tone(1319,.22,'square',.12,now0()+.06)},
  fanfare(){[392,523,659,784,659,784,1047].forEach((f,i)=>tone(f,i===6?.7:.14,'square',.14,now0()+i*.12))},
+ cheer(){noise(1.6,.22,1400,.35,'bandpass',2600);noise(1.2,.12,3200,.5,'bandpass',1800,now0()+.15)},whistle(){tone(2200,.35,'sine',.18);tone(2350,.35,'sine',.08)},
  ready(){tone(784,.1,'square',.12);tone(1175,.18,'square',.12,now0()+.08)}
 };
 const SONGS={menu:{bpm:108,ch:[[60,64,67],[55,59,62],[57,60,64],[53,57,60]],lead:[72,0,76,0,79,0,76,74,72,0,0,0,74,0,72,0]},
@@ -440,12 +441,46 @@ const SONGS={menu:{bpm:108,ch:[[60,64,67],[55,59,62],[57,60,64],[53,57,60]],lead
  balloon:{bpm:124,ch:[[65,69,72],[62,65,69],[58,62,65],[60,64,67]],lead:[77,0,81,0,84,0,81,0,79,0,77,0,76,0,79,0]}};
 const mus={song:null,step:0,next:0,timer:null};
 function playSong(n){mus.song=SONGS[n]||SONGS.menu;mus.step=0;if(!AC)return;mus.next=AC.currentTime+.06;if(!mus.timer)mus.timer=setInterval(sched,25)}
-function sched(){if(!AC||!mus.song||document.hidden)return;const sp=60/mus.song.bpm/4;if(mus.next<AC.currentTime-.3)mus.next=AC.currentTime+.02;while(mus.next<AC.currentTime+.12){if(S.music)step(mus.step,mus.next);mus.next+=sp;mus.step=(mus.step+1)%64}}
-function step(st,t){const s=mus.song,b=st%16,ch=s.ch[Math.floor(st/16)%4];
- if(b%4===0){tone(150,.18,'sine',.5,t,.3,musG)}if(b===4||b===12)noise(.14,.28,1800,.8,'bandpass',0,t,musG);if(b%2===0)noise(.03,b%4===2?.12:.06,8000,1,'highpass',0,t,musG);
- if([0,3,6,8,11,14].includes(b))tone(mf(ch[0]-24),.16,'triangle',.3,t,0,musG);
- if(b%2===1)tone(mf(ch[(b>>1)%3]+12),.08,'square',.035,t,0,musG);
- const ld=s.lead[b];if(ld&&st>=16)tone(mf(ld),.16,'square',.05,t,0,musG)}
+function sched(){if(!AC||!mus.song||document.hidden)return;const sp=60/mus.song.bpm/4;if(mus.next<AC.currentTime-.3)mus.next=AC.currentTime+.02;while(mus.next<AC.currentTime+.12){if(S.music)step(mus.step,mus.next,sp);mus.next+=sp;mus.step=(mus.step+1)%128}}
+/* each game has its own groove: K kick, S snare, C clap, H hats (8/16/off), O open hat, P percussion, B bass, A chords, L lead wave */
+const STY={
+ pop:{K:[0,8,10],S:[4,12],H:'8',O:[14],B:[[0,0],[3,0],[6,12],[8,0],[11,7],[14,0]],A:'up8',L:'square'},
+ rock:{K:[0,3,8,10],S:[4,12],H:'8',O:[],B:'8th',A:'power',L:'sawtooth'},
+ disco:{K:[0,4,8,12],S:[4,12],H:'16',O:[2,6,10,14],B:'oct',A:'stab',L:'square'},
+ funk:{K:[0,7,10],S:[4,12],G:[9,15],H:'16',B:[[0,0],[3,12],[6,0],[7,10],[10,7],[13,12]],A:'stab',L:'triangle'},
+ latin:{K:[0,8],S:[12],H:'8',P:[0,3,6,10,12],B:[[0,0],[3,7],[6,0],[8,0],[11,7],[14,12]],A:'up16',L:'triangle'},
+ samba:{K:[0,6,8,14],S:[],H:'16',P:[2,5,7,10,13],B:[[0,0],[6,7],[8,0],[14,7]],A:'stab',L:'square',W:1},
+ reggae:{K:[8],S:[8],H:'8',O:[6,14],B:[[0,0],[3,0],[6,7],[10,5],[12,0]],A:'skank',L:'sine'},
+ chip:{K:[0,8],S:[4,12],H:'16',B:'oct16',A:'up16',L:'square'},
+ house:{K:[0,4,8,12],C:[4,12],H:'off',O:[2,6,10,14],B:'off',A:'stab',L:'sawtooth'},
+ edm:{K:[0,4,8,12],C:[4,12],H:'16',B:'off',A:'up16',L:'sawtooth'},
+ surf:{K:[0,8],S:[4,12],H:'8',B:'8th',A:'trem',L:'triangle'},
+ march:{K:[0,8],S:[4,12,14,15],H:'8',B:[[0,0],[4,7],[8,0],[12,7]],A:'up8',L:'square'}};
+const SSTY={menu:'pop',fruit:'chip',wall:'pop',run:'rock',beat:'funk',swim:'surf',blast:'rock',dance:'disco',leak:'latin',goal:'samba',hula:'reggae',ridge:'march',bump:'house',bomb:'edm',balloon:'pop'};
+for(const k in SONGS)SONGS[k].sty=SSTY[k]||'pop';
+function step(st,t0,sp){const s=mus.song,y=STY[s.sty||'pop'],b=st%16,bar=Math.floor(st/16)%8,ch=s.ch[bar%4],rt=ch[0],t=t0+(y.W&&b%2?sp*.18:0),G=musG,fill=bar===7&&b>=12,B2=bar>=4;sp=sp||.12;
+ if(st%64===0&&st>0)noise(1.4,.16,6500,.6,'highpass',0,t,G);
+ // drums
+ if(fill){tone(260-(b-12)*35,.14,'sine',.32,t,.5,G);noise(.08,.18,1500,.8,'bandpass',0,t,G)}
+ else{if(y.K.includes(b)){tone(150,.2,'sine',.55,t,.28,G);noise(.02,.12,3000,1,'highpass',0,t,G)}
+  if(y.S.includes(b)){noise(.16,.3,1800,.8,'bandpass',0,t,G);tone(200,.07,'triangle',.12,t,.6,G)}
+  if(y.C?.includes(b)){noise(.1,.28,1200,1.3,'bandpass',0,t,G);noise(.1,.22,1300,1.3,'bandpass',0,t+.012,G)}
+  if(y.G?.includes(b))noise(.05,.08,2000,.8,'bandpass',0,t,G)}
+ const hh=y.H==='16'?true:y.H==='off'?b%4===2:b%2===0;if(hh)noise(.03,b%4===2?.11:.055,8500,1,'highpass',0,t,G);
+ if(y.O?.includes(b))noise(.18,.08,7000,1,'highpass',0,t,G);
+ if(y.P?.includes(b))tone(b%2?1700:2300,.04,'sine',.13,t,0,G);
+ // bass
+ const bp=y.B;let bn=null;if(bp==='8th'){if(b%2===0)bn=0}else if(bp==='oct'){if(b%2===0)bn=(b%4===2)?12:0}else if(bp==='oct16'){bn=b%2?12:0}else if(bp==='off'){if(b%4===2)bn=0;else if(b===0)bn=0}else for(const[q,o]of bp)if(q===b)bn=o;
+ if(bn!=null)tone(mf(rt-24+bn),bp==='oct16'?.09:.17,'triangle',.32,t,0,G);
+ // chords
+ const A=y.A;if(A==='up8'){if(b%2===1)tone(mf(ch[(b>>1)%3]+12),.08,'square',.032,t,0,G)}
+ else if(A==='up16'){tone(mf(ch[b%3]+(B2?24:12)),.06,'square',.026,t,0,G)}
+ else if(A==='stab'){if([2,6,10,14].includes(b)||(B2&&b===7))for(const n of ch)tone(mf(n+12),.09,'square',.022,t,0,G)}
+ else if(A==='power'){if(b%4===0)for(const n of[rt,rt+7,rt+12])tone(mf(n),.22,'sawtooth',.03,t,0,G)}
+ else if(A==='skank'){if(b%4===2)for(const n of ch)tone(mf(n+12),.07,'square',.028,t,0,G)}
+ else if(A==='trem'){if(b%1===0)tone(mf(ch[b%2?1:0]+12),.05,'triangle',.05,t,0,G)}
+ // lead: A section as written, B section answers half a bar later and an octave up on the last two bars
+ if(st>=16){const ld=B2?s.lead[(b+8)%16]:s.lead[b];if(ld){const n=ld+(bar>=6?12:0)-(bar>=6&&ld>82?12:0),lv=y.L==='sawtooth'?.04:.06;tone(mf(n),.17,y.L,lv,t,0,G);tone(mf(n)*1.005,.17,y.L,lv*.4,t,0,G);tone(mf(n),.12,y.L,lv*.35,t+sp*3,0,G)}}}
 
 /* ---------- camera + pose (all processing stays on this device) ---------- */
 /* Privacy: frames go camera -> <video> -> pose model in this tab. No frame, image or landmark is ever sent, stored or recorded. */
@@ -500,7 +535,7 @@ const act=()=>P.filter(p=>p.on&&!p.pending),NP=()=>act().length;
 /* each player's area on the TV: whole field for one player, equal columns for several */
 function VP(p){const n=NP();if(n<=1)return F;const k=Math.max(0,act().indexOf(p)),cw=W/n;return{x:k*cw,y:0,w:cw,h:H}}
 /* each player's fixed spot: hip line and body size are set by the layout, not by where they stand */
-function refOf(p){const V=VP(p),multi=NP()>1;if(gname==='goal'&&['intro','count','play','pause','result'].includes(state)){const sw=Math.min(H*.072,V.w*.12);return{x:V.x+V.w/2,y:H-sw*2.55,sw}}if(gname==='blast'&&['intro','count','play','pause','result'].includes(state)){const sw=Math.min(H*.1,V.w*.17);return{x:V.x+V.w/2,y:H+sw*.35,sw}}const sw=multi?Math.min(V.h*.12,V.w*.15):F.h*.16;return{x:V.x+V.w/2,y:(multi?V.y+V.h:F.y+F.h)-sw*3.4,sw}}
+function refOf(p){const V=VP(p),multi=NP()>1;if(gname==='goal'&&['intro','count','play','pause','result'].includes(state)){const sw=Math.min(H*.072,V.w*.12);return{x:V.x+V.w/2,y:H-sw*2.55,sw}}if(gname==='ridge'&&['intro','count','play','pause','result'].includes(state)){const sw=Math.min(H*.075,V.w*.12);return{x:V.x+V.w/2,y:H-sw*2.9,sw}}if(gname==='blast'&&['intro','count','play','pause','result'].includes(state)){const sw=Math.min(H*.1,V.w*.17);return{x:V.x+V.w/2,y:H+sw*.35,sw}}const sw=multi?Math.min(V.h*.115,V.w*.15):F.h*.148;return{x:V.x+V.w/2,y:(multi?V.y+V.h:F.y+F.h)-sw*3.4,sw}}
 function mapN(V,a,x,y){const sc=V.h*.96,wv=a*sc;return{x:V.x+(V.w-wv)/2+x*wv,y:V.y+V.h*.02+y*sc}}
 const cxp=p=>(p[11].x+p[12].x)/2,szp=p=>Math.hypot(p[11].x-p[12].x,p[11].y-p[12].y);
 function updatePose(now){
@@ -744,7 +779,7 @@ G.run={title:'스프린트 대시',how:'제자리에서 팔을 힘차게 흔들�
    b.addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();if(state!=='play')return;b.classList.add('on');setTimeout(()=>b.classList.remove('on'),90);const r=this.r.find(q=>q.human&&q.pi===p.i);if(!r||r.fin)return;if(s===2)this.jump(r);else if(p.run.tap!==s){p.run.tap=s;this.step(r)}});gp.appendChild(b)});box.appendChild(gp)})},
  step(r){r.v=Math.min(this.c.vmax,r.v+.95);noise(.035,.07,900,1,'bandpass')},
  jump(r){if(r.air<=0){r.air=.62;r.v*=.94;SFX.toss()}},
- finish(r){r.fin=true;r.time=this.t;r.place=++this.places;if(!r.human)return;const p=P[r.pi];p.score=Math.round(this.c.dist/r.time*40)+([0,60,30,10][r.place]||0);
+ finish(r){r.fin=true;r.time=this.t;r.place=++this.places;if(!r.human)return;SFX.cheer();const p=P[r.pi];p.score=Math.round(this.c.dist/r.time*40)+([0,60,30,10][r.place]||0);
   floatT(r.sx||W/2,(r.sy||H*.5)-20,`${r.place}등!  ${r.time.toFixed(2)}초`,r.place===1?'#ffd23f':'#fff',58);say(`${r.n} ${r.place}등!`);r.place===1?SFX.perfect():SFX.good();noise(1.6,.18,1200,.5,'bandpass');burst(W/2,H*.3,['#ffd23f','#fff',r.c],40,H*.6,{gr:400,sq:true,r:7,life:1.5})},
  update(dt){this.t+=dt;const c=this.c,now=performance.now();
   for(const p of act()){const r=this.r.find(q=>q.human&&q.pi===p.i),inp=runInput(p,dt,now);if(r&&!r.fin){for(let k=0;k<inp.steps;k++)this.step(r);if(inp.jump)this.jump(r);
@@ -806,7 +841,7 @@ G.swim={title:'수영 대회',th:[150,230,300],
  zoneAt(d){return this.zones[clamp(Math.floor(d/this.c.zl),0,this.NZ-1)]},
  mult(r,k){return STROKES[k].m*(this.zoneAt(r.d)===k?1.35:1)},
  stroke(r,k){r.v=Math.min(4.2,r.v+STROKES[k].imp*(this.zoneAt(r.d)===k?1.35:1));r.style=k;r.sT=1.6;r.spl=.35;if(r.human){noise(.18,.12,900,.7,'bandpass',300);if(r.sx)burst(r.sx+30,r.sy,['#ffffff','#bfe9ff'],8,H*.15,{gr:300,r:4,life:.5})}},
- finish(r){r.fin=true;r.time=this.t;r.place=++this.places;if(!r.human)return;const p=P[r.pi];p.score=Math.round(this.c.dist/r.time*80)+([0,60,30,10][r.place]||0);
+ finish(r){r.fin=true;r.time=this.t;r.place=++this.places;if(!r.human)return;SFX.cheer();const p=P[r.pi];p.score=Math.round(this.c.dist/r.time*80)+([0,60,30,10][r.place]||0);
   floatT(W/2,H*.4,`${r.n} ${r.place}등!  ${r.time.toFixed(2)}초`,r.place===1?'#ffd23f':'#fff',54);r.place===1?SFX.perfect():SFX.good();noise(1.6,.18,1200,.5,'bandpass');say(r.place===1?`${r.n} 1등!`:`${r.n} ${r.place}등!`)},
  update(dt){this.t+=dt;const c=this.c,now=performance.now();this.ban=Math.max(0,this.ban-dt);
   for(const p of act()){const r=this.r.find(q=>q.human&&q.pi===p.i);if(!r||r.fin)continue;for(const k of swimInput(p,now))this.stroke(r,k)}
@@ -1041,7 +1076,7 @@ G.beat={title:'Beat Punch',how:'줄어드는 링이 과녁에 닿는 순간 펀�
   return N.sort((a,b)=>a.t-b.t)},
  clock(){return this.useAC?AC.currentTime:performance.now()/1000},
  now(){return this.started?this.clock()-this.t0:(this.paused??0)},
- onGo(){this.useAC=!!(AC&&AC.state==='running');this.lat=(this.useAC?(AC.outputLatency||AC.baseLatency||0):0)+(motion?.12:.03);const sp16=60/this.c.bpm/4,pt=this.paused??0;this.t0=this.clock()+.05-pt;this.started=true;this.paused=null;const k=Math.ceil(pt/sp16);mus.song={...SONGS.beat,bpm:this.c.bpm};mus.step=k%64;mus.next=this.t0+k*sp16},
+ onGo(){this.useAC=!!(AC&&AC.state==='running');this.lat=(this.useAC?(AC.outputLatency||AC.baseLatency||0):0)+(motion?.12:.03);const sp16=60/this.c.bpm/4,pt=this.paused??0;this.t0=this.clock()+.05-pt;this.started=true;this.paused=null;const k=Math.ceil(pt/sp16);mus.song={...SONGS.beat,bpm:this.c.bpm};mus.step=k%128;mus.next=this.t0+k*sp16},
  onPause(){if(this.started){this.paused=this.now();this.started=false;mus.song=null}},
  /* targets follow the body, smoothed once per frame; in 2P each player's targets stay in their own half */
  smoothZ(p,dt){const multi=NP()>1,V=VP(p);let a;if(motion){const R=refOf(p);a={x:R.x,y:R.y-R.sw*1.5,s:R.sw}}else a={x:V.x+V.w/2,y:F.y+F.h*.5,s:F.h*.13};
@@ -1214,7 +1249,7 @@ function endGame(){state='result';$('#hud').hidden=true;$('#runpads').hidden=tru
  const party=queue.length>1,stand=$('#rStand');stand.hidden=!party;if(party){const mx=Math.max(3,...act().map(p=>p.stars));stand.innerHTML=`<b>토너먼트 순위 · ${gi+1}/${queue.length} 라운드 후</b>`+act().map(p=>`<div class="sb"><span style="color:${PCOL[p.i]}">${two?PNAME[p.i]:'나'}</span><i><u style="width:0;background:${PCOL[p.i]}" data-w="${Math.round(Math.min(1,p.stars/(queue.length*(two?4:3)))*100)}"></u></i><span>${p.stars}★</span></div>`).join('');requestAnimationFrame(()=>requestAnimationFrame(()=>stand.querySelectorAll('u').forEach(u=>u.style.width=u.dataset.w+'%')))}
  say(two?(head.startsWith('It')?'무승부!':head.replace('wins!','이번 판 승리!')):head);
  const last=gi>=queue.length-1;$('#bNext').hidden=!party;$('#bNext').textContent=last?'시상대 보기':'다음 게임';$('#bAgain').hidden=party;
- show('result');SFX.fanfare();playSong('menu');for(let i=0;i<5;i++)burst(rnd(W*.2,W*.8),H*.3,['#ffd23f','#29b6f6','#ff7eb6','#7ed957','#fff'],30,H*.6,{gr:400,sq:true,r:7,life:2})}
+ show('result');SFX.fanfare();SFX.cheer();playSong('menu');for(let i=0;i<5;i++)burst(rnd(W*.2,W*.8),H*.3,['#ffd23f','#29b6f6','#ff7eb6','#7ed957','#fff'],30,H*.6,{gr:400,sq:true,r:7,life:2})}
 $('#bNext').onclick=()=>{SFX.select();if(gi<queue.length-1){gi++;startIntro()}else showFinal()};
 $('#bAgain').onclick=()=>{SFX.select();P.forEach(p=>{p.stars=0;p.total=0;p.hist=[]});startIntro()};
 $('#bMenu').onclick=$('#bFMenu').onclick=()=>{SFX.select();goMenu()};
@@ -1362,7 +1397,7 @@ function rrect(x,y,w,h,r){g.beginPath();g.roundRect?g.roundRect(x,y,w,h,r):g.rec
 function chip(x,y,t,col,size=18){g.font=`800 ${size}px "Baloo 2",system-ui,sans-serif`;const w=g.measureText(t).width+size*1.2;g.fillStyle=col;rrect(x-w/2,y-size*.85,w,size*1.7,size*.85);g.fill();txt(t,x,y+1,size,'#fff',.08)}
 function musicClock(o,songKey,bpm){/* beat-accurate clock tied to the music scheduler (same approach as Beat Punch) */
  o.clock=()=>o.useAC?AC.currentTime:performance.now()/1000;o.now=()=>o.started?o.clock()-o.t0:(o.paused??0);
- o.onGo=function(){this.useAC=!!(AC&&AC.state==='running');this.lat=(this.useAC?(AC.outputLatency||AC.baseLatency||0):0)+(motion?.12:.03);const sp16=60/bpm/4,pt=this.paused??0;this.t0=this.clock()+.05-pt;this.started=true;this.paused=null;const k=Math.ceil(pt/sp16);mus.song={...SONGS[songKey],bpm};mus.step=k%64;mus.next=this.t0+k*sp16};
+ o.onGo=function(){this.useAC=!!(AC&&AC.state==='running');this.lat=(this.useAC?(AC.outputLatency||AC.baseLatency||0):0)+(motion?.12:.03);const sp16=60/bpm/4,pt=this.paused??0;this.t0=this.clock()+.05-pt;this.started=true;this.paused=null;const k=Math.ceil(pt/sp16);mus.song={...SONGS[songKey],bpm};mus.step=k%128;mus.next=this.t0+k*sp16};
  o.onPause=function(){if(this.started){this.paused=this.now();this.started=false}}}
 
 /* ===================== DANCE PARTY (Just Dance style: copy the coach, pictos, gold moves) ===================== */
@@ -1502,7 +1537,7 @@ G.goal={title:'슈퍼 골키퍼',th:[120,220,320],
  pos(b){const q=clamp(b.t/b.fly),e=q*q*(.35+.65*q),x=lerp(b.sx,b.tx,e)+Math.sin(q*Math.PI)*b.curve*(1-q),y=lerp(b.sy,b.ty,e)-Math.sin(q*Math.PI)*H*.06,r=lerp(H*.012,refOf(P[b.pi]).sw*.42,e);return{x,y,r,q}},
  judge(b){const p=P[b.pi],st=this.st[b.pi],r=refOf(p).sw*.42,hs=p.hands.filter(h=>h.ok&&Math.hypot(h.x-b.tx,h.y-b.ty)<r*2.1+refOf(p).sw*.2);let kind=null;
   if(hs.length>=2)kind='CATCH!';else if(hs.length===1)kind='SAVE!';else{const B=bodyOf(p);if(B){const hd=Math.hypot(p.head.x-b.tx,p.head.y-b.ty)<p.head.r+r,bd=Math.abs(b.tx-B.sx)<B.sw*.6&&b.ty>B.sy&&b.ty<B.hy;if(hd||bd)kind='BLOCK!'}}
-  if(kind){const v=(kind==='CATCH!'?15:kind==='SAVE!'?10:6)*(b.gold?2:1)+Math.min(10,st.streak*2);p.score+=v;st.s++;st.streak++;SFX.perfect();burst(b.tx,b.ty,b.gold?['#ffd23f','#fff']:['#fff','#7ed957'],22,H*.35,{gr:200,r:6});floatT(b.tx,b.ty-r*1.5,`${kind} +${v}`,kind==='CATCH!'?'#ffd23f':'#7ed957',kind==='CATCH!'?46:40);if(st.streak>=3&&st.streak%3===0)floatT(refOf(p).x,refOf(p).y-refOf(p).sw*5.2,`${st.streak}연속 선방!`,'#ffd23f',40)}
+  if(kind){const v=(kind==='CATCH!'?15:kind==='SAVE!'?10:6)*(b.gold?2:1)+Math.min(10,st.streak*2);p.score+=v;st.s++;st.streak++;SFX.perfect();if(st.streak%3===0)SFX.cheer();burst(b.tx,b.ty,b.gold?['#ffd23f','#fff']:['#fff','#7ed957'],22,H*.35,{gr:200,r:6});floatT(b.tx,b.ty-r*1.5,`${kind} +${v}`,kind==='CATCH!'?'#ffd23f':'#7ed957',kind==='CATCH!'?46:40);if(st.streak>=3&&st.streak%3===0)floatT(refOf(p).x,refOf(p).y-refOf(p).sw*5.2,`${st.streak}연속 선방!`,'#ffd23f',40)}
   else{st.g++;st.streak=0;this.net[b.pi]=1;shake=8;SFX.oops?.();floatT(b.tx,b.ty,'GOAL!','#ff5252',48)}},
  draw(){const t=this.t,c=this.c;g.drawImage(bg('pitch'),0,0,W,H);
   // kickers on the penalty spot: name, number, wind-up warning, run-up and kick
@@ -1814,7 +1849,7 @@ function drawCalib(dt){const two=NP()>1;let all=true;const chips=[];
  if(all){p0t+=dt;if(p0t>.7){p0t=0;startIntro()}}else p0t=0}
 let p0t=0;
 function drawCount(dt){ct-=dt;const n=Math.ceil(ct);if(n!==lastN&&n>0){lastN=n;SFX.beep()}
- if(ct<=0){state='play';SFX.go();game.onGo?.();bcast();floatT(W/2,H*.45,'GO!','#ffd23f',Math.min(170,H*.24));return}
+ if(ct<=0){state='play';SFX.go();if(['run','swim','goal'].includes(gname))SFX.whistle();game.onGo?.();bcast();floatT(W/2,H*.45,'GO!','#ffd23f',Math.min(170,H*.24));return}
  const f=ct-Math.floor(ct);g.save();g.globalAlpha=clamp(f*2.2);txt(String(n),W/2,H*.45,Math.min(220,H*.3)*(1+(1-f)*.35),'#fff',.1);g.restore()}
 
 /* ---------- main loop ---------- */
