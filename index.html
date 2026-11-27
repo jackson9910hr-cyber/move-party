@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-BcnnkHkww7iAgOxTmF5S5XaiLIzo+oJ4lC00TE6l0b4=' 'wasm-unsafe-eval'; connect-src 'self' https://storage.googleapis.com/mediapipe-models/pose_landmarker/ https://0.peerjs.com wss://0.peerjs.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; media-src 'self' blob: mediastream:; worker-src 'self' blob:; frame-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-BrYKbTEraHFUI11qe0+IhF/CtosNZTH1GMHuYl1gnHw=' 'wasm-unsafe-eval'; connect-src 'self' https://storage.googleapis.com/mediapipe-models/pose_landmarker/ https://0.peerjs.com wss://0.peerjs.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; media-src 'self' blob: mediastream:; worker-src 'self' blob:; frame-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="robots" content="noindex,nofollow">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -562,18 +562,23 @@ function updatePose(now){
  const multi=NP()>1,V=VP(P[0]),a=vw/vh;
  applyPose(P[0],raw.map(q=>{if(multi){const m=mapN(V,a,q.x,q.y);return{x:m.x,y:m.y,v:q.v}}return{x:M.ox+q.x*vw*M.s,y:M.oy+q.y*vh*M.s,v:q.v}}),now)}
 /* body lock: the character never drifts sideways or changes size; arms, legs, crouch and jump still show */
+/* motion feel per game: sm/mx = how quickly the character follows (smooth ↔ snappy), lead = latency compensation for fast hands (s), reach = arm reach multiplier */
+/* rate = how fast the character glides to the newest camera pose (per second, every screen frame); fast games follow quicker, calm ones glide softer */
+const MOT={menu:{rate:8,reach:1},fruit:{rate:16,reach:1.15},beat:{rate:15,reach:1.1},goal:{rate:15,reach:1},blast:{rate:10,reach:1},leak:{rate:12,reach:1.1},run:{rate:13,reach:1},swim:{rate:13,reach:1},dance:{rate:11,reach:1},hula:{rate:9,reach:1},ridge:{rate:13,reach:1}};
+function motOf(){return ['count','play','pause'].includes(state)&&MOT[gname]||MOT.menu}
 function applyPose(p,pts,now){
  if(!pts||!(pts[11].v>.45&&pts[12].v>.45)){p.lostT+=1/30;if(p.lostT>.5){p.seen=false;p.lk=null;p.hands.forEach(h=>h.ok=false)}return}
  const dt=p.lkT?clamp((now-p.lkT)/1000,.005,.2):.033;p.lkT=now;
  const Sx=(pts[11].x+pts[12].x)/2,Sy=(pts[11].y+pts[12].y)/2,swr=Math.hypot(pts[11].x-pts[12].x,pts[11].y-pts[12].y),hv=pts[23].v>.4&&pts[24].v>.4;
  const Hx=hv?(pts[23].x+pts[24].x)/2:Sx+(p.lk?p.lk.hx||0:0),Hy=hv?(pts[23].y+pts[24].y)/2:Sy+(p.lk?p.lk.ts:swr*1.5),ts=Math.max(8,Math.hypot(Hx-Sx,Hy-Sy)),sz=Math.max(ts,swr*1.5),R=refOf(p);p.ref=R;
  if(hv&&p.lk)p.lk.hx=lerp(p.lk.hx||0,Hx-Sx,.2);if(!p.lk)p.lk={ts:sz,by:Hy,hx:0,cx:Hx,n:NP(),off:0};else{p.lk.ts=lerp(p.lk.ts,sz,1-Math.exp(-dt*1.6));p.lk.by=lerp(p.lk.by,Hy,1-Math.exp(-dt*.8));p.lk.cx=lerp(p.lk.cx??Hx,Hx,1-Math.exp(-dt*.3))}
- if(p.lk.n!==NP()){p.lk={ts:sz,by:Hy,hx:0,cx:Hx,n:NP(),off:0}}const k=R.sw*1.5/p.lk.ts;p.side=(Hx-p.lk.cx)*k/R.sw;const gx=gname==='goal'&&['count','play','pause'].includes(state),s0=R.sw*.9,lock=pts.map(q=>{let dx=(q.x-Hx)*k;if(gx&&Math.abs(dx)>s0)dx=Math.sign(dx)*(s0+(Math.abs(dx)-s0)*1.9);return{x:R.x+dx,y:R.y+(q.y-p.lk.by)*k,v:q.v}});
- p.lostT=0;p.seen=true;
- if(!p.lm)p.lm=lock;else for(let i=0;i<lock.length;i++){const a=p.lm[i],b=lock[i],d=Math.hypot(b.x-a.x,b.y-a.y),al=clamp(.35+d/(R.sw*.6),.35,.9);a.x=lerp(a.x,b.x,al);a.y=lerp(a.y,b.y,al);a.v=b.v}
- const l=p.lm,A=l[11],B=l[12];p.sw=R.sw;p.ax=(A.x+B.x)/2;p.ay=(A.y+B.y)/2;
+ if(p.lk.n!==NP()){p.lk={ts:sz,by:Hy,hx:0,cx:Hx,n:NP(),off:0}}const k=R.sw*1.5/p.lk.ts;p.side=(Hx-p.lk.cx)*k/R.sw;const M=motOf(),gx=gname==='goal'&&['count','play','pause'].includes(state),s0=R.sw*.9,lock=pts.map((q0,i)=>{let q=q0;if(M.reach!==1&&i>=13&&i<=22){const sh=pts[i%2?11:12];q={x:sh.x+(q0.x-sh.x)*M.reach,y:sh.y+(q0.y-sh.y)*M.reach,v:q0.v}}let dx=(q.x-Hx)*k;if(gx&&Math.abs(dx)>s0)dx=Math.sign(dx)*(s0+(Math.abs(dx)-s0)*1.9);return{x:R.x+dx,y:R.y+(q.y-p.lk.by)*k,v:q.v}});
+ p.lostT=0;p.seen=true;p.tg=lock;if(!p.lm){p.lm=lock.map(q=>({...q}));poseFrame(p,0,now)}}
+/* every screen frame: glide smoothly toward the latest camera pose (camera ≈30fps, screen 60fps → no stepping) */
+function smoothPlayers(dt,now){const M=motOf();for(const p of P){if(!p.seen||!p.tg||!p.lm)continue;const R=refOf(p),T=p.tg;for(let i=0;i<T.length;i++){const a=p.lm[i],b=T[i],d=Math.hypot(b.x-a.x,b.y-a.y),rt=M.rate*(1+Math.min(1.5,d/(R.sw*1.2))),al=1-Math.exp(-dt*rt);a.x+=(b.x-a.x)*al;a.y+=(b.y-a.y)*al;a.v=b.v}poseFrame(p,dt,now)}}
+function poseFrame(p,dt0,now){const R=refOf(p),l=p.lm,A=l[11],B=l[12];p.sw=R.sw;p.ax=(A.x+B.x)/2;p.ay=(A.y+B.y)/2;
  p.head.x=l[0].x;p.head.y=l[0].y-p.sw*.12;p.head.r=p.sw*.46;
- [[15,19],[16,20]].forEach(([w,ix],k)=>{const h=p.hands[k],a=l[w],b=l[ix],nx=b.x+(b.x-a.x)*.4,ny=b.y+(b.y-a.y)*.4,ok=a.v>.35,dt=Math.max(.008,(now-h.t)/1000);
+ [[15,19],[16,20]].forEach(([w,ix],k)=>{const h=p.hands[k],a=l[w],b=l[ix],ok=a.v>.35,dt=Math.max(.008,(now-h.t)/1000);let nx=b.x+(b.x-a.x)*.4,ny=b.y+(b.y-a.y)*.4;
   if(h.ok&&ok)h.sp=lerp(h.sp,Math.hypot(nx-h.x,ny-h.y)/dt,.6);else{h.sp=0;h.gx=nx;h.gy=ny}
   h.x=nx;h.y=ny;h.ok=ok;h.t=now;h.trail.push({x:nx,y:ny,t:now});while(h.trail.length&&now-h.trail[0].t>170)h.trail.shift()})}
 /* touch fallback: each finger is a hand; in 2P the screen halves belong to each player */
@@ -1900,7 +1905,7 @@ function drawCount(dt){ct-=dt;const n=Math.ceil(ct);if(n!==lastN&&n>0){lastN=n;S
 /* ---------- main loop ---------- */
 let last=performance.now();const MENUISH=['title','menu','intro','pause','result','final','calib','qr','hphoto','rlob','rres'];
 function loop(now){const dt=Math.min(.05,(now-last)/1000);last=now;
- try{camWD(now,motion&&camWanted&&!!landmarker&&state!=='race'&&S.cat!=='pad');if(state==='race'){remoteWatch();raceTick(dt);if(RACE.ph==='pick'||RACE.ph==='res'){g.drawImage(bg('party'),0,0,W,H);ambientConf(dt,.5);drawFx()}requestAnimationFrame(loop);return}updatePose(now);remoteWatch();if(state==='menu'&&(lobbyT+=dt)>.5){lobbyT=0;renderLobby()}updField();g=g0;g.setTransform(DPR,0,0,DPR,0,0);g.globalAlpha=1;g.setLineDash([]);g.save();if(shake>0)g.translate(rnd(-shake,shake),rnd(-shake,shake));
+ try{camWD(now,motion&&camWanted&&!!landmarker&&state!=='race'&&S.cat!=='pad');if(state==='race'){remoteWatch();raceTick(dt);if(RACE.ph==='pick'||RACE.ph==='res'){g.drawImage(bg('party'),0,0,W,H);ambientConf(dt,.5);drawFx()}requestAnimationFrame(loop);return}updatePose(now);remoteWatch();smoothPlayers(dt,now);if(state==='menu'&&(lobbyT+=dt)>.5){lobbyT=0;renderLobby()}updField();g=g0;g.setTransform(DPR,0,0,DPR,0,0);g.globalAlpha=1;g.setLineDash([]);g.save();if(shake>0)g.translate(rnd(-shake,shake),rnd(-shake,shake));
   if(state==='title'||state==='menu'||state==='qr'){g.drawImage(bg('party'),0,0,W,H);ambientConf(dt,.5)}
    else if(state==='hphoto'){g.drawImage(bg('party'),0,0,W,H);ambientConf(dt,.5);hpLoop(dt)}
   else if(state==='calib'){g.drawImage(bg('studio'),0,0,W,H);drawCalib(dt);drawPlayers(1)}
