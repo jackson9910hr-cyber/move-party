@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-Z34iAxMaivLgceCHbWsERjzfujkw815tknZNJTHI7r8=' 'wasm-unsafe-eval'; connect-src 'self' https://storage.googleapis.com/mediapipe-models/pose_landmarker/ https://0.peerjs.com wss://0.peerjs.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; media-src 'self' blob: mediastream:; worker-src 'self' blob:; frame-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-Pg92CXonC4POe7Ls/08app4QUSSjYl0VxSeA+WwqQoU=' 'wasm-unsafe-eval'; connect-src 'self' https://storage.googleapis.com/mediapipe-models/pose_landmarker/ https://0.peerjs.com wss://0.peerjs.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; media-src 'self' blob: mediastream:; worker-src 'self' blob:; frame-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="robots" content="noindex,nofollow">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -510,9 +510,9 @@ function openCam(){if(opening)return opening;stopCam();opening=(async()=>{try{co
 
 /* narrower view: the room edges (other people) are cut away before the pose model sees the frame */
 let nativeZ=1;const cc=document.createElement('canvas'),ccx=cc.getContext('2d');
-async function applyZoom(){nativeZ=1;const tr=stream?.getVideoTracks?.()[0];if(!tr||JM)return;try{const cap=tr.getCapabilities?.();if(cap?.zoom&&cap.zoom.max>=1.05){const z=clamp(S.camZ,cap.zoom.min||1,cap.zoom.max);await tr.applyConstraints({advanced:[{zoom:z}]});nativeZ=z}}catch(e){nativeZ=1}}
+async function applyZoom(){nativeZ=1;const tr=stream?.getVideoTracks?.()[0];if(!tr||JM)return;try{const cap=tr.getCapabilities?.();if(cap?.zoom&&tr.getSettings?.().zoom>(cap.zoom.min||1))await tr.applyConstraints({advanced:[{zoom:cap.zoom.min||1}]})}catch(e){}}
 function camZoom(){return JM?1:Math.max(1,S.camZ/nativeZ)}
-function camSrc(){const vw=video.videoWidth,vh=video.videoHeight,z=camZoom();if(!vw||z<=1.01)return video;const cw=Math.round(vw/z),ch=Math.round(vh/z);if(cc.width!==cw||cc.height!==ch){cc.width=cw;cc.height=ch}
+function camSrc(){const vw=video.videoWidth,vh=video.videoHeight,z=camZoom();if(!vw||z<=1.01)return video;const cw=Math.round(vw/z),ch=vh;if(cc.width!==cw||cc.height!==ch){cc.width=cw;cc.height=ch}
  ccx.drawImage(video,(vw-cw)/2,(vh-ch)/2,cw,ch,0,0,cw,ch);cc.videoWidth=cw;cc.videoHeight=ch;cc.readyState=4;return cc}
 function camView(){return camZoom()>1.01&&cc.videoWidth?cc:video}
 /* the camera must never freeze: restart a paused video, a muted/ended track, or a stalled stream */
@@ -703,8 +703,8 @@ function grabFace(raw,vid){const vw=vid.videoWidth,vh=vid.videoHeight;if(!raw||!
  const c=document.createElement('canvas');c.width=c.height=112;const x=c.getContext('2d');x.translate(112,0);x.scale(-1,1);x.drawImage(vid,cx-size/2,cy-size/2,size,size,0,0,112,112);return c}
 function drawPIP(){const live=!!(stream&&video.videoWidth);if(pipC.hidden!==!live)pipC.hidden=!live;if(!live)return;const vw=video.videoWidth,vh=video.videoHeight,w=Math.round(Math.min(W*.13,180,H*.26)),h=Math.round(w*vh/vw),x=0,y=0;
  if(pipC.width!==w*2||pipC.height!==h*2){pipC.width=w*2;pipC.height=h*2;pipC.style.width=w+'px';pipC.style.height=h+'px'}const g=pg;g.setTransform(2,0,0,2,0,0);g.clearRect(0,0,w,h);const rr=(a,b,c,d,r)=>{g.beginPath();g.roundRect?g.roundRect(a,b,c,d,r):g.rect(a,b,c,d)};
- g.save();rr(x,y,w,h,12);g.clip();g.translate(x+w,y);g.scale(-1,1);g.drawImage(camView(),0,0,w,h);g.restore();
- if(motion){g.save();rr(x,y,w,h,12);g.clip();const toP=q=>({x:x+q.x*w,y:y+q.y*h});
+ g.save();rr(x,y,w,h,12);g.clip();g.translate(x+w,y);g.scale(-1,1);g.drawImage(video,0,0,w,h);g.restore();{const z=camZoom(),o=(1-1/z)/2;if(o>0.005){g.fillStyle='rgba(0,0,0,.62)';g.fillRect(x,y,w*o,h);g.fillRect(x+w*(1-o),y,w*o,h);g.strokeStyle='#ffd23f';g.lineWidth=2;g.strokeRect(x+w*o,y+1,w*(1-2*o),h-2)}}
+ if(motion){g.save();rr(x,y,w,h,12);g.clip();const zz=camZoom(),oo=(1-1/zz)/2,toP=q=>({x:x+(oo+q.x/zz)*w,y:y+q.y*h});
   for(let p of[P[0]]){if(!p.raw)continue;p={i:0,lm:p.raw};g.strokeStyle=PCOL[p.i];g.lineWidth=2.5;g.lineCap='round';for(const[a,b]of PIPJ){if(p.lm[a].v<.4||p.lm[b].v<.4)continue;const A=toP(p.lm[a]),B=toP(p.lm[b]);g.beginPath();g.moveTo(A.x,A.y);g.lineTo(B.x,B.y);g.stroke()}
    if(p.lm[0].v>.4){const n=toP(p.lm[0]);g.fillStyle=PCOL[p.i];g.beginPath();g.arc(n.x,n.y,4,0,TAU);g.fill()}}g.restore()}
  g.strokeStyle='#fff';g.lineWidth=3;rr(x+1.5,y+1.5,w-3,h-3,11);g.stroke();
@@ -1172,8 +1172,8 @@ function syncMenu(){const pad=S.cat==='pad';let vis=0;$$('.games .game').forEach
  const hb=$('#bHostPad');if(hb){const n=phonesIn();hb.hidden=false;hb.disabled=!n;hb.textContent=!n?'📱 메인 기기 플레이어: 참여 (폰이 없으면 항상 참여)':S.hostPad?`📱 메인 기기도 참여: 켬 → 총 ${n+1}명${pad?' (화면 스틱으로 조작)':''}`:`📱 메인 기기도 참여: 끔 → 폰 ${n}명만 (메인 기기는 TV 화면만)`;hb.setAttribute('aria-pressed',String(hostOn()))}const cn=$('#catNote');if(cn)cn.textContent=pad?'카메라 없이 폰으로 조작해요 · 폰마다 1명 · 빈자리는 컴퓨터가 채워요':'카메라로 몸을 움직여요 · 메뉴는 한 손을 들어 가리키면 선택돼요';const lc=$('#lvCap');if(lc)lc.textContent=`Level ${S.lv} · ${LVNAME(S.lv)}${S.lv<=3?' — 아이도 쉽게':S.lv>=9?' — 진짜 어려워요!':''}`;$$('[data-k]').forEach(gp=>{const k=gp.dataset.k;gp.querySelectorAll('[data-v]').forEach(b=>b.setAttribute('aria-pressed',String(String(S[k])===b.dataset.v)))});$('#tMus').setAttribute('aria-pressed',String(S.music));$('#tFace').setAttribute('aria-pressed',String(S.faces));$('#tSfx').setAttribute('aria-pressed',String(S.sfx))}
 $$('[data-k]').forEach(gp=>gp.addEventListener('click',e=>{const b=e.target.closest('[data-v]');if(!b)return;const k=gp.dataset.k,v=b.dataset.v;S[k]=k==='players'||k==='lv'?Number(v):v;if(k==='lv'){S.level=tierOf(S.lv);LVC.clear()}if(k==='cat')setCat(v);;store.set('set',S);syncMenu();SFX.select()}));
 $('#tMus').onclick=()=>{S.music=!S.music;applyVol();store.set('set',S);syncMenu();SFX.select()};
-const ZL=[1,1.5,2,2.6],ZN={1:'넓게',1.5:'보통',2:'좁게',2.6:'아주 좁게'};function syncZoom(){const b=$('#tZoom');if(b){b.textContent='📷 '+ZN[S.camZ];b.setAttribute('aria-pressed',S.camZ>1?'true':'false')}}
-$('#tZoom').onclick=()=>{const hi0=S.camZ>1.5;S.camZ=ZL[(ZL.indexOf(S.camZ)+1)%ZL.length];store.set('set',S);syncZoom();if(stream&&hi0!==(S.camZ>1.5)){stopCam();openCam().catch(()=>{})}else applyZoom();SFX.select();toast(`카메라 범위: ${ZN[S.camZ]} — ${S.camZ===1?'넓게 다 보여요':'가운데 사람만 보이게 좁혔어요'}`,3500)};
+const ZL=[1,1.5,2,2.6],ZN={1:'넓게',1.5:'보통',2:'좁게',2.6:'아주 좁게'};/* 보통 = 가운데 2/3 폭, 좁게 = 1/2 폭, 아주 좁게 = 약 2/5 폭 (높이는 그대로) */function syncZoom(){const b=$('#tZoom');if(b){b.textContent='📷 '+ZN[S.camZ];b.setAttribute('aria-pressed',S.camZ>1?'true':'false')}}
+$('#tZoom').onclick=()=>{const hi0=S.camZ>1.5;S.camZ=ZL[(ZL.indexOf(S.camZ)+1)%ZL.length];store.set('set',S);syncZoom();if(stream&&hi0!==(S.camZ>1.5)){stopCam();openCam().catch(()=>{})}else applyZoom();SFX.select();toast(`카메라 범위: ${ZN[S.camZ]} — ${S.camZ===1?'넓게 다 보여요':'가운데 폭만 인식해요 · 양옆 사람은 무시해요'}`,3500)};
 $('#tFace').onclick=()=>{S.faces=!S.faces;P.forEach(p=>p.face=null);bcast();store.set('set',S);syncMenu();SFX.select();toast(S.faces?'얼굴 사진 켬: 플레이어가 들어오면 사진을 찍어요.':'얼굴 사진 끔: 만화 얼굴을 쓰고 사진은 찍지 않아요.',4500)};
 $('#tSfx').onclick=()=>{S.sfx=!S.sfx;applyVol();store.set('set',S);syncMenu();SFX.select()};
 $('#bStart').onclick=$('#title').onclick=e=>{if(state!=='title')return;e.stopPropagation();enterFs();initAudio();if(AC&&AC.state==='suspended')AC.resume();SFX.select();playSong('menu');try{navigator.wakeLock?.request('screen').catch(()=>{})}catch(e){}
@@ -1184,10 +1184,10 @@ function hpBodyGo(){hpStage='body';hpOk=0;$('#hpv').hidden=false;$('#hpf').hidde
 function hpFinish(){hpStage='';hpDone=true;$('#hpBody').hidden=true;goMenu();renderLobby()}
 function hpReset(){hpShot=null;$('#hpv').hidden=false;$('#hpf').hidden=true;$('#hpRes').hidden=true;$('#hpBody').hidden=true;$('#hpBtns').hidden=false;$('#hpTake').disabled=hpStage!=='live'}
 function hpLoop(dt){const c=$('#hpv'),x=c.getContext('2d');if(c.hidden)return;x.fillStyle='#1d2633';x.fillRect(0,0,480,360);if(!(stream&&video.videoWidth))return;
- const cv2=camView(),vw=cv2.videoWidth,vh=cv2.videoHeight,s=Math.max(480/vw,360/vh);x.save();x.translate(480,0);x.scale(-1,1);x.drawImage(cv2,(480-vw*s)/2,(360-vh*s)/2,vw*s,vh*s);x.restore();
+ const cv2=camView(),vw=cv2.videoWidth,vh=cv2.videoHeight,s=Math.min(480/vw,360/vh);x.save();x.translate(480,0);x.scale(-1,1);x.drawImage(cv2,(480-vw*s)/2,(360-vh*s)/2,vw*s,vh*s);x.restore();
  const rw=P[0].raw,ok=!!(rw&&rw[0].v>.6);x.strokeStyle=ok?'#7ed957':'#fff';x.lineWidth=4;x.setLineDash([10,8]);x.beginPath();x.ellipse(240,150,72,92,0,0,TAU);x.stroke();x.setLineDash([]);
  if(hpStage==='body'){const R0=P[0].raw,okB=!!(R0&&R0[0].v>.5&&R0[11].v>.5&&R0[12].v>.5&&R0[23].v>.45&&R0[24].v>.45);if(R0){x.save();x.translate(480,0);x.scale(-1,1);x.restore();x.strokeStyle=okB?'#7ed957':'#ffd23f';x.lineWidth=5;x.lineCap='round';
-   const vw2=camView().videoWidth||1,vh2=camView().videoHeight||1,s2=Math.max(480/vw2,360/vh2),px=q=>(480-vw2*s2)/2+q.x*vw2*s2,py=q=>(360-vh2*s2)/2+q.y*vh2*s2;for(const[a2,b2]of PIPJ){const A=R0[a2],B2=R0[b2];if(A.v<.4||B2.v<.4)continue;x.beginPath();x.moveTo(px(A),py(A));x.lineTo(px(B2),py(B2));x.stroke()}}
+   const vw2=camView().videoWidth||1,vh2=camView().videoHeight||1,s2=Math.min(480/vw2,360/vh2),px=q=>(480-vw2*s2)/2+q.x*vw2*s2,py=q=>(360-vh2*s2)/2+q.y*vh2*s2;for(const[a2,b2]of PIPJ){const A=R0[a2],B2=R0[b2];if(A.v<.4||B2.v<.4)continue;x.beginPath();x.moveTo(px(A),py(A));x.lineTo(px(B2),py(B2));x.stroke()}}
   hpOk=okB?hpOk+dt:Math.max(0,hpOk-dt*2);const pc=clamp(hpOk/1.5);x.fillStyle='rgba(0,0,0,.45)';x.fillRect(40,326,400,18);x.fillStyle=okB?'#7ed957':'#ffd23f';x.fillRect(40,326,400*pc,18);
   const m=okB?`인식 중… ${Math.round(pc*100)}% 그대로 있어요!`:'한 걸음 뒤로 가서 머리부터 무릎까지 보이게 서요';if($('#hpMsg').textContent!==m)$('#hpMsg').textContent=m;
   if(pc>=1){SFX.ready();toast('인식 완료! 이제 게임을 골라요 · 한 손을 들어 가리키면 선택돼요',4000);hpFinish()}return}
