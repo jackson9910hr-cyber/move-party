@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-eUDIR3cHtGn76FRyBhcvRCKyPCNrjwtTXMLwbql+AZE=' 'wasm-unsafe-eval'; connect-src 'self' https://storage.googleapis.com/mediapipe-models/pose_landmarker/ https://0.peerjs.com wss://0.peerjs.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; media-src 'self' blob: mediastream:; worker-src 'self' blob:; frame-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-4RKSh0ReaHKfXWrvqBx0+EqnOujThvKUohSB4p9hYiw=' 'wasm-unsafe-eval'; connect-src 'self' https://storage.googleapis.com/mediapipe-models/pose_landmarker/ https://0.peerjs.com wss://0.peerjs.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; media-src 'self' blob: mediastream:; worker-src 'self' blob:; frame-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="robots" content="noindex,nofollow">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -370,12 +370,12 @@ const cv=$('#cv'),video=$('#vid');let g=cv.getContext('2d');const g0=g;try{Objec
 const TAU=Math.PI*2,rnd=(a,b)=>a+Math.random()*(b-a),clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v)),lerp=(a,b,t)=>a+(b-a)*t;
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 const store={get(k,d){try{const v=localStorage.getItem('mp_'+k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem('mp_'+k,JSON.stringify(v))}catch(e){}}};
-const DEF={mode:'party',cat:'cam',hostPad:true,level:'kids',lv:2,music:true,sfx:true,faces:true,camZ:1.3};
+const DEF={mode:'party',cat:'cam',hostPad:true,level:'kids',lv:2,music:true,sfx:true,faces:true,camZ:1.5};
 const saved=store.get('set',{}),S={...DEF};
 for(const k in DEF)if(saved&&typeof saved[k]===typeof DEF[k])S[k]=saved[k];
 if(!['party','fruit','run','swim','beat','blast'].includes(S.mode))S.mode='party';if(!['kids','family','pro'].includes(S.level))S.level='family';
 S.cat='cam';if(['race','bump','bomb'].includes(S.mode))S.mode='party';
-S.lv=2;S.level='kids';if(![1,1.3,1.6].includes(S.camZ))S.camZ=1.3; /* every visit starts at an easy, kid-friendly level 2 */
+S.lv=2;S.level='kids';if(![1,1.5,2,2.6].includes(S.camZ))S.camZ=S.camZ>1.4?2:1.5; /* every visit starts at an easy, kid-friendly level 2 */
 const tierOf=v=>v<=3?'kids':v<=7?'family':'pro';S.level=tierOf(S.lv);
 const LVNAME=v=>v<=3?'쉬움':v<=6?'보통':v<=8?'어려움':'매우 어려움';
 /* difficulty 1..10 from the three tuned anchors: Kids = 2, Family = 5, Pro = 8; 9–10 push past Pro (extra steep) */
@@ -493,7 +493,7 @@ function step(st,t0,sp){const s=mus.song,y=STY[s.sty||'pop'],b=st%16,bar=Math.fl
 let camHold=false,landmarker=null,motion=false,camReady=false,stream=null,lastVT=-1,camWanted=false,opening=null,curPoses=2;
 const MP='./mp',MODEL_LOCAL='./mp/pose_landmarker_lite.task';
 const MODEL_REMOTE='https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task';
-function openCam(){if(opening)return opening;stopCam();opening=(async()=>{try{const s=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user',width:{ideal:640},height:{ideal:360},frameRate:{ideal:30,max:30}},audio:false});
+function openCam(){if(opening)return opening;stopCam();opening=(async()=>{try{const s=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user',width:{ideal:!JM&&S.camZ>1.5?1280:640},height:{ideal:!JM&&S.camZ>1.5?720:360},frameRate:{ideal:30,max:30}},audio:false});
  if(document.hidden||camHold||(!JM&&(state==='race'||S.cat==='pad'))){s.getTracks().forEach(t=>t.stop());return}stream=s;video.srcObject=s;await video.play();$('#camBadge').hidden=false;wd.t=performance.now();wd.vt=-1;applyZoom()}finally{opening=null}})();return opening}
 
 /* narrower view: the room edges (other people) are cut away before the pose model sees the frame */
@@ -1152,8 +1152,8 @@ function syncMenu(){const pad=S.cat==='pad';let vis=0;$$('.games .game').forEach
  const hb=$('#bHostPad');if(hb){const n=phonesIn();hb.hidden=false;hb.disabled=!n;hb.textContent=!n?'📱 메인 기기 플레이어: 참여 (폰이 없으면 항상 참여)':S.hostPad?`📱 메인 기기도 참여: 켬 → 총 ${n+1}명${pad?' (화면 스틱으로 조작)':''}`:`📱 메인 기기도 참여: 끔 → 폰 ${n}명만 (메인 기기는 TV 화면만)`;hb.setAttribute('aria-pressed',String(hostOn()))}const cn=$('#catNote');if(cn)cn.textContent=pad?'카메라 없이 폰으로 조작해요 · 폰마다 1명 · 빈자리는 컴퓨터가 채워요':'카메라로 몸을 움직여요 · 메뉴는 한 손을 들어 가리키면 선택돼요';const lc=$('#lvCap');if(lc)lc.textContent=`Level ${S.lv} · ${LVNAME(S.lv)}${S.lv<=3?' — 아이도 쉽게':S.lv>=9?' — 진짜 어려워요!':''}`;$$('[data-k]').forEach(gp=>{const k=gp.dataset.k;gp.querySelectorAll('[data-v]').forEach(b=>b.setAttribute('aria-pressed',String(String(S[k])===b.dataset.v)))});$('#tMus').setAttribute('aria-pressed',String(S.music));$('#tFace').setAttribute('aria-pressed',String(S.faces));$('#tSfx').setAttribute('aria-pressed',String(S.sfx))}
 $$('[data-k]').forEach(gp=>gp.addEventListener('click',e=>{const b=e.target.closest('[data-v]');if(!b)return;const k=gp.dataset.k,v=b.dataset.v;S[k]=k==='players'||k==='lv'?Number(v):v;if(k==='lv'){S.level=tierOf(S.lv);LVC.clear()}if(k==='cat')setCat(v);;store.set('set',S);syncMenu();SFX.select()}));
 $('#tMus').onclick=()=>{S.music=!S.music;applyVol();store.set('set',S);syncMenu();SFX.select()};
-const ZN={1:'넓게',1.3:'보통',1.6:'좁게'};function syncZoom(){const b=$('#tZoom');if(b){b.textContent='📷 '+ZN[S.camZ];b.setAttribute('aria-pressed',S.camZ>1?'true':'false')}}
-$('#tZoom').onclick=()=>{S.camZ=S.camZ===1?1.3:S.camZ===1.3?1.6:1;store.set('set',S);syncZoom();applyZoom();SFX.select();toast(`카메라 범위: ${ZN[S.camZ]} — ${S.camZ===1?'넓게 다 보여요':'가운데 사람만 보이게 좁혔어요'}`,3500)};
+const ZL=[1,1.5,2,2.6],ZN={1:'넓게',1.5:'보통',2:'좁게',2.6:'아주 좁게'};function syncZoom(){const b=$('#tZoom');if(b){b.textContent='📷 '+ZN[S.camZ];b.setAttribute('aria-pressed',S.camZ>1?'true':'false')}}
+$('#tZoom').onclick=()=>{const hi0=S.camZ>1.5;S.camZ=ZL[(ZL.indexOf(S.camZ)+1)%ZL.length];store.set('set',S);syncZoom();if(stream&&hi0!==(S.camZ>1.5)){stopCam();openCam().catch(()=>{})}else applyZoom();SFX.select();toast(`카메라 범위: ${ZN[S.camZ]} — ${S.camZ===1?'넓게 다 보여요':'가운데 사람만 보이게 좁혔어요'}`,3500)};
 $('#tFace').onclick=()=>{S.faces=!S.faces;P.forEach(p=>p.face=null);bcast();store.set('set',S);syncMenu();SFX.select();toast(S.faces?'얼굴 사진 켬: 플레이어가 들어오면 사진을 찍어요.':'얼굴 사진 끔: 만화 얼굴을 쓰고 사진은 찍지 않아요.',4500)};
 $('#tSfx').onclick=()=>{S.sfx=!S.sfx;applyVol();store.set('set',S);syncMenu();SFX.select()};
 $('#bStart').onclick=$('#title').onclick=e=>{if(state!=='title')return;e.stopPropagation();enterFs();initAudio();if(AC&&AC.state==='suspended')AC.resume();SFX.select();playSong('menu');try{navigator.wakeLock?.request('screen').catch(()=>{})}catch(e){}
