@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-nd7d2zvXcLcRsxNrXS/I7hZvIsJuWW9KfVE6QyKJLS8=' 'wasm-unsafe-eval'; connect-src 'self' https://storage.googleapis.com/mediapipe-models/pose_landmarker/ https://0.peerjs.com wss://0.peerjs.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; media-src 'self' blob: mediastream:; worker-src 'self' blob:; frame-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-JqFD1VjkZRgcGFn2+nkg34yXryvhBz5U2r88wcBK0nk=' 'wasm-unsafe-eval'; connect-src 'self' https://storage.googleapis.com/mediapipe-models/pose_landmarker/ https://0.peerjs.com wss://0.peerjs.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; media-src 'self' blob: mediastream:; worker-src 'self' blob:; frame-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="robots" content="noindex,nofollow">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -246,7 +246,8 @@ button:focus-visible{outline:4px solid var(--sky);outline-offset:3px}
     <div class="lbl">난이도</div>
     <div class="opts lv10" data-k="lv"><button class="db opt" type="button" data-v="1" style="--h:117">1</button><button class="db opt" type="button" data-v="2" style="--h:104">2</button><button class="db opt" type="button" data-v="3" style="--h:91">3</button><button class="db opt" type="button" data-v="4" style="--h:78">4</button><button class="db opt" type="button" data-v="5" style="--h:65">5</button><button class="db opt" type="button" data-v="6" style="--h:52">6</button><button class="db opt" type="button" data-v="7" style="--h:39">7</button><button class="db opt" type="button" data-v="8" style="--h:26">8</button><button class="db opt" type="button" data-v="9" style="--h:13">9</button><button class="db opt" type="button" data-v="10" style="--h:0">10</button></div><div class="lvcap" id="lvCap"></div>
     <div class="lbl">옵션</div>
-    <div class="opts four"><button id="tMus" class="db opt" type="button">음악</button><button id="tSfx" class="db opt" type="button">효과음</button><button id="tFace" class="db opt" type="button">얼굴 사진</button><button id="tZoom" class="db opt" type="button">📷 보통</button></div>
+    <button id="bUpd" class="db btn" type="button" hidden style="width:100%;margin:6px 0;background:#ffd23f;color:#3a2a00;font-weight:900">✨ 새 버전이 있어요 · 눌러서 업데이트</button>
+<div class="opts four"><button id="tMus" class="db opt" type="button">음악</button><button id="tSfx" class="db opt" type="button">효과음</button><button id="tFace" class="db opt" type="button">얼굴 사진</button><button id="tZoom" class="db opt" type="button">📷 보통</button></div>
    </div>
    <div>
     <div class="lbl">게임</div>
@@ -1174,6 +1175,7 @@ function syncMenu(){const pad=S.cat==='pad';let vis=0;$$('.games .game').forEach
 $$('[data-k]').forEach(gp=>gp.addEventListener('click',e=>{const b=e.target.closest('[data-v]');if(!b)return;const k=gp.dataset.k,v=b.dataset.v;S[k]=k==='players'||k==='lv'?Number(v):v;if(k==='lv'){S.level=tierOf(S.lv);LVC.clear()}if(k==='cat')setCat(v);;store.set('set',S);syncMenu();SFX.select()}));
 $('#tMus').onclick=()=>{S.music=!S.music;applyVol();store.set('set',S);syncMenu();SFX.select()};
 const ZL=[1,1.5,2,2.6],ZN={1:'넓게',1.5:'보통',2:'좁게',2.6:'아주 좁게'};/* 보통 = 가운데 2/3 폭, 좁게 = 1/2 폭, 아주 좁게 = 약 2/5 폭 (높이는 그대로) */function syncZoom(){const b=$('#tZoom');if(b){b.textContent='📷 '+ZN[S.camZ];b.setAttribute('aria-pressed',S.camZ>1?'true':'false')}}
+$('#bUpd').onclick=()=>{location.reload()};{const v=document.createElement('div');v.id='verTxt';v.textContent='버전 '+BUILD;v.style.cssText='position:fixed;left:calc(10px + env(safe-area-inset-left));bottom:4px;font:600 10px system-ui;color:rgba(255,255,255,.55);z-index:3;pointer-events:none';$('#menu').appendChild(v)}
 function cycleZoom(){$('#tZoom').onclick()}
 ['pointerdown','touchstart','mousedown'].forEach(ev=>pipC.addEventListener(ev,e=>{e.stopPropagation()},{passive:true}));pipC.addEventListener('click',e=>{e.stopPropagation();e.preventDefault();cycleZoom()});
 $('#tZoom').onclick=()=>{const hi0=S.camZ>1.5;S.camZ=ZL[(ZL.indexOf(S.camZ)+1)%ZL.length];store.set('set',S);syncZoom();if(stream&&hi0!==(S.camZ>1.5)){stopCam();openCam().catch(()=>{})}else applyZoom();SFX.select();toast(`카메라 범위: ${ZN[S.camZ]} — ${S.camZ===1?'넓게 다 보여요':'가운데 폭만 인식해요 · 양옆 사람은 무시해요'}`,3500)};
@@ -1202,7 +1204,9 @@ $('#hpNo').onclick=()=>{SFX.select();P[0].snapN=3;if(motion&&stream)hpBodyGo();e
 $('#hpSkip').onclick=()=>{SFX.select();hpFinish()};
 $('#hpRetake').onclick=()=>{SFX.select();hpStage='live';hpReset()};
 $('#hpUse').onclick=()=>{if(!hpShot)return;SFX.ready();P[0].face=hpShot;hpBodyGo()};
-function goMenu(){if(typeof closeRace==='function')closeRace();RACE.ph='';if(motion&&camWanted&&!stream&&!document.hidden)openCam().catch(()=>{});state='menu';P.forEach(p=>{if(p.gone)dropP(p);p.pending=false});renderLobby();show('menu');$('#hud').hidden=true;$('#runpads').hidden=true;playSong('menu');syncMenu()}
+const BUILD='1128.2100';let updT=0,updShown=false;
+async function checkUpdate(){if(JM||updShown||location.protocol==='file:'||BUILD.startsWith('%%'))return;const n=Date.now();if(n-updT<120000)return;updT=n;try{const t=await (await fetch('./index.html?v='+n,{cache:'no-store'})).text(),m=t.match(/const BUILD='([^']+)'/);if(m&&m[1]!==BUILD&&state==='menu'){updShown=true;const b=$('#bUpd');b.hidden=false}}catch(e){}}
+function goMenu(){setTimeout(checkUpdate,1500);if(typeof closeRace==='function')closeRace();RACE.ph='';if(motion&&camWanted&&!stream&&!document.hidden)openCam().catch(()=>{});state='menu';P.forEach(p=>{if(p.gone)dropP(p);p.pending=false});renderLobby();show('menu');$('#hud').hidden=true;$('#runpads').hidden=true;playSong('menu');syncMenu()}
 $('#bGo').onclick=()=>{if(S.mode==='race'){SFX.select();raceGo();return}if(G[S.mode]?.pad){if(!padPlayers().length){applyHost();renderLobby();syncMenu();toast('연결된 폰이 없어서 이 기기 화면으로 조작해요 (왼쪽 스틱 · 오른쪽 A/B). 폰을 더 연결하면 함께 할 수 있어요.',6500)}P.forEach(p=>{if(p.gone)dropP(p)});queue=[S.mode];gi=0;P.forEach(p=>{p.stars=0;p.total=0;p.hist=[]});SFX.select();startIntro();return}if(!camReady&&hostOn())return;applyHost();P.forEach(p=>{if(p.gone)dropP(p)});queue=S.mode==='party'?['fruit','run','swim','beat','blast','dance','leak','goal','hula','ridge','fly'].sort(()=>Math.random()-.5).slice(0,5):[S.mode];gi=0;P.forEach(p=>{p.stars=0;p.total=0;p.hist=[]});SFX.select();
  const need=act().filter(p=>!p.cal);if(motion&&need.length){state='calib';show('calib');need.forEach(p=>{p.ready=0;p.ok=false;p.calY=null;p.snap=null;p.snapN=0});act().filter(p=>p.cal).forEach(p=>{p.ok=true})}else startIntro()};
 $('#bSkip').onclick=()=>{SFX.select();P.forEach(p=>{if(p.seen&&p.calY==null){p.calY=p.ay;if(p.lm){const R=refOf(p);p.noseRel=clamp((p.lm[0].y-R.y)/R.sw,-3.6,-1.4)}}});startIntro()};
