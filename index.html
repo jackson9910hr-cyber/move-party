@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-JqFD1VjkZRgcGFn2+nkg34yXryvhBz5U2r88wcBK0nk=' 'wasm-unsafe-eval'; connect-src 'self' https://storage.googleapis.com/mediapipe-models/pose_landmarker/ https://0.peerjs.com wss://0.peerjs.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; media-src 'self' blob: mediastream:; worker-src 'self' blob:; frame-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-rGf3oq09x77Bs6M5M3uAgGct9zis9O2OoBKj60Di2Qg=' 'wasm-unsafe-eval'; connect-src 'self' https://storage.googleapis.com/mediapipe-models/pose_landmarker/ https://0.peerjs.com wss://0.peerjs.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; media-src 'self' blob: mediastream:; worker-src 'self' blob:; frame-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="robots" content="noindex,nofollow">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -366,6 +366,7 @@ button:focus-visible{outline:4px solid var(--sky);outline-offset:3px}
 
 <script src="lib/peerjs.min.js"></script><script src="lib/qrcode.js"></script>
 <script type="module">
+const BUILD='1128.2100';let updT=0,updShown=false;
 {
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const cv=$('#cv'),video=$('#vid');let g=cv.getContext('2d');const g0=g;try{Object.defineProperty(g0,'shadowBlur',{get(){return 0},set(){}})}catch(e){}
@@ -1204,7 +1205,6 @@ $('#hpNo').onclick=()=>{SFX.select();P[0].snapN=3;if(motion&&stream)hpBodyGo();e
 $('#hpSkip').onclick=()=>{SFX.select();hpFinish()};
 $('#hpRetake').onclick=()=>{SFX.select();hpStage='live';hpReset()};
 $('#hpUse').onclick=()=>{if(!hpShot)return;SFX.ready();P[0].face=hpShot;hpBodyGo()};
-const BUILD='1128.2100';let updT=0,updShown=false;
 async function checkUpdate(){if(JM||updShown||location.protocol==='file:'||BUILD.startsWith('%%'))return;const n=Date.now();if(n-updT<120000)return;updT=n;try{const t=await (await fetch('./index.html?v='+n,{cache:'no-store'})).text(),m=t.match(/const BUILD='([^']+)'/);if(m&&m[1]!==BUILD&&state==='menu'){updShown=true;const b=$('#bUpd');b.hidden=false}}catch(e){}}
 function goMenu(){setTimeout(checkUpdate,1500);if(typeof closeRace==='function')closeRace();RACE.ph='';if(motion&&camWanted&&!stream&&!document.hidden)openCam().catch(()=>{});state='menu';P.forEach(p=>{if(p.gone)dropP(p);p.pending=false});renderLobby();show('menu');$('#hud').hidden=true;$('#runpads').hidden=true;playSong('menu');syncMenu()}
 $('#bGo').onclick=()=>{if(S.mode==='race'){SFX.select();raceGo();return}if(G[S.mode]?.pad){if(!padPlayers().length){applyHost();renderLobby();syncMenu();toast('연결된 폰이 없어서 이 기기 화면으로 조작해요 (왼쪽 스틱 · 오른쪽 A/B). 폰을 더 연결하면 함께 할 수 있어요.',6500)}P.forEach(p=>{if(p.gone)dropP(p)});queue=[S.mode];gi=0;P.forEach(p=>{p.stars=0;p.total=0;p.hist=[]});SFX.select();startIntro();return}if(!camReady&&hostOn())return;applyHost();P.forEach(p=>{if(p.gone)dropP(p)});queue=S.mode==='party'?['fruit','run','swim','beat','blast','dance','leak','goal','hula','ridge','fly'].sort(()=>Math.random()-.5).slice(0,5):[S.mode];gi=0;P.forEach(p=>{p.stars=0;p.total=0;p.hist=[]});SFX.select();
