@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-rGf3oq09x77Bs6M5M3uAgGct9zis9O2OoBKj60Di2Qg=' 'wasm-unsafe-eval'; connect-src 'self' https://storage.googleapis.com/mediapipe-models/pose_landmarker/ https://0.peerjs.com wss://0.peerjs.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; media-src 'self' blob: mediastream:; worker-src 'self' blob:; frame-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-mJItAkuO5G6VmecWXTIrTIUilO9BvufKVcpxTFyQ6Hg=' 'wasm-unsafe-eval'; connect-src 'self' https://storage.googleapis.com/mediapipe-models/pose_landmarker/ https://0.peerjs.com wss://0.peerjs.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; media-src 'self' blob: mediastream:; worker-src 'self' blob:; frame-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="robots" content="noindex,nofollow">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -116,6 +116,7 @@ button:focus-visible{outline:4px solid var(--sky);outline-offset:3px}
 #gname{font:800 15px var(--fb);color:#fff;text-shadow:0 2px 4px rgba(0,0,0,.6)}
 #clock{font:800 clamp(38px,6vw,62px)/1 var(--fh);color:#fff;background:rgba(0,0,0,.45);border-radius:22px;padding:4px 22px;min-width:110px;font-variant-numeric:tabular-nums;white-space:nowrap}
 #clock.hot{color:var(--lem);animation:pulse .5s infinite}
+#bSwap{position:absolute;left:calc(84px + env(safe-area-inset-left));bottom:calc(14px + env(safe-area-inset-bottom));pointer-events:auto;width:58px;height:58px;border-radius:18px;border:0;background:rgba(0,0,0,.5);color:#fff;font:900 26px system-ui;z-index:6}
 #bPause{position:absolute;left:calc(14px + env(safe-area-inset-left));bottom:calc(14px + env(safe-area-inset-bottom));pointer-events:auto;width:58px;height:58px;border-radius:18px;border:0;background:rgba(0,0,0,.5);color:#fff;font:800 20px var(--fh);cursor:pointer}
 #lost{position:absolute;top:calc(96px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);background:var(--lem);color:var(--ink);font:800 18px var(--fb);border-radius:99px;padding:8px 20px;white-space:nowrap}
 #runpads{position:absolute;left:calc(84px + env(safe-area-inset-left));right:calc(14px + env(safe-area-inset-right));bottom:calc(12px + env(safe-area-inset-bottom));display:flex;justify-content:space-between;pointer-events:none}
@@ -320,7 +321,7 @@ button:focus-visible{outline:4px solid var(--sky);outline-offset:3px}
   <div class="mid"><div id="gname"></div><div id="clock">0</div></div>
   <div id="lost" hidden></div>
   <div id="runpads" hidden></div>
-  <button id="bPause" type="button" aria-label="Pause">II</button>
+  <button id="bPause" type="button" aria-label="Pause">II</button><button id="bSwap" type="button" aria-label="자리 바꾸기" hidden>⇄</button>
 </div>
 
 <section id="pause" class="scr dim" hidden>
@@ -366,7 +367,7 @@ button:focus-visible{outline:4px solid var(--sky);outline-offset:3px}
 
 <script src="lib/peerjs.min.js"></script><script src="lib/qrcode.js"></script>
 <script type="module">
-const BUILD='1128.2100';let updT=0,updShown=false;
+const BUILD='1128.2111';let updT=0,updShown=false;
 {
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const cv=$('#cv'),video=$('#vid');let g=cv.getContext('2d');const g0=g;try{Object.defineProperty(g0,'shadowBlur',{get(){return 0},set(){}})}catch(e){}
@@ -513,7 +514,7 @@ function openCam(){if(opening)return opening;stopCam();opening=(async()=>{try{co
 /* narrower view: the room edges (other people) are cut away before the pose model sees the frame */
 let nativeZ=1;const cc=document.createElement('canvas'),ccx=cc.getContext('2d');
 async function applyZoom(){nativeZ=1;const tr=stream?.getVideoTracks?.()[0];if(!tr||JM)return;try{const cap=tr.getCapabilities?.();if(cap?.zoom&&tr.getSettings?.().zoom>(cap.zoom.min||1))await tr.applyConstraints({advanced:[{zoom:cap.zoom.min||1}]})}catch(e){}}
-function camZoom(){return JM?1:Math.max(1,S.camZ/nativeZ)}
+function camZoom(){return Math.max(1,(S.camZ||1)/nativeZ)}
 function camSrc(){const vw=video.videoWidth,vh=video.videoHeight,z=camZoom();if(!vw||z<=1.01)return video;const cw=Math.round(vw/z),ch=vh;if(cc.width!==cw||cc.height!==ch){cc.width=cw;cc.height=ch}
  ccx.drawImage(video,(vw-cw)/2,(vh-ch)/2,cw,ch,0,0,cw,ch);cc.videoWidth=cw;cc.videoHeight=ch;cc.readyState=4;return cc}
 function camView(){return camZoom()>1.01&&cc.videoWidth?cc:video}
@@ -553,7 +554,9 @@ const mkH=()=>({x:-999,y:-999,gx:-999,gy:-999,sp:0,ok:false,t:0,trail:[]});
 const P=[0,1,2,3].map(i=>({i,on:i===0,pending:false,gone:false,conn:null,last:0,raw:null,lm:null,seen:false,lostT:9,sw:0,ax:0,ay:0,calY:null,hands:[mkH(),mkH()],head:{x:-999,y:-999,r:0},score:0,stars:0,total:0,match:0,hist:[],ready:0,ok:false}));
 const act=()=>P.filter(p=>p.on&&!p.pending),NP=()=>act().length;
 /* each player's area on the TV: whole field for one player, equal columns for several */
-function VP(p){const n=NP();if(n<=1)return F;const k=Math.max(0,act().indexOf(p)),cw=W/n;return{x:k*cw,y:0,w:cw,h:H}}
+let laneRot=0;function lanes(){const a=act(),n=a.length;if(n<2)return a;const r=((laneRot%n)+n)%n;return a.map((_,k)=>a[(k+r)%n])}
+function VP(p){const n=NP();if(n<=1)return F;const k=Math.max(0,lanes().indexOf(p)),cw=W/n;return{x:k*cw,y:0,w:cw,h:H}}
+function swapLanes(){if(act().length<2)return;laneRot++;for(const p of P)if(p.lk)p.lk.n=-1;buildHud();renderLobby?.();SFX.select();const L=lanes();toast('자리 바꾸기: '+L.map(p=>PNAME[p.i]).join(' · ')+' (왼쪽부터)',2500)}
 /* each player's fixed spot: hip line and body size are set by the layout, not by where they stand */
 function refOf(p){const V=VP(p),multi=NP()>1;if(gname==='goal'&&['intro','count','play','pause','result'].includes(state)){const sw=Math.min(H*.072,V.w*.12);return{x:V.x+V.w/2,y:H-sw*2.55,sw}}if(gname==='ridge'&&['intro','count','play','pause','result'].includes(state)){const sw=Math.min(H*.075,V.w*.12);return{x:V.x+V.w/2,y:H-sw*2.9,sw}}if(gname==='blast'&&['intro','count','play','pause','result'].includes(state)){const sw=Math.min(H*.1,V.w*.17);return{x:V.x+V.w/2,y:H+sw*.35,sw}}const sw=multi?Math.min(V.h*.115,V.w*.15):F.h*.148;return{x:V.x+V.w/2,y:(multi?V.y+V.h:F.y+F.h)-sw*3.4,sw}}
 function mapN(V,a,x,y){const sc=V.h*.96,wv=a*sc;return{x:V.x+(V.w-wv)/2+x*wv,y:V.y+V.h*.02+y*sc}}
@@ -695,6 +698,11 @@ function drawHandPtr(x,y,col,on){const s=Math.max(.8,Math.min(1.3,H/700))*(on?1.
  const P2=new Path2D('M0 0 C-5 0 -8 4 -8 9 L-8 38 C-12 34 -20 33 -24 38 C-27 42 -25 47 -21 51 L-6 70 C-1 77 6 80 15 80 L30 80 C42 80 50 71 50 59 L50 36 C50 31 46 28 42 28 C38 28 35 31 35 35 L35 31 C35 26 31 23 27 23 C23 23 20 26 20 30 L20 27 C20 22 16 19 12 19 C10 19 9 20 8 21 L8 9 C8 4 5 0 0 0 Z');
  g.shadowColor='rgba(0,0,0,.35)';g.fillStyle='rgba(0,0,0,.28)';g.translate(3,5);g.fill(P2);g.translate(-3,-5);g.fillStyle='#fff';g.fill(P2);g.strokeStyle=col;g.lineWidth=5;g.stroke(P2);
  g.strokeStyle=col+'88';g.lineWidth=2.5;g.beginPath();g.moveTo(8,30);g.lineTo(8,46);g.moveTo(20,32);g.lineTo(20,46);g.moveTo(35,36);g.lineTo(35,48);g.stroke();g.restore()}
+/* motion view box for each phone player (pose only, no video is ever sent) */
+function drawPhoneViews(){if(NP()<2)return;for(const p of act()){if(p.i===0||!p.rawN||!p.seen)continue;const V=VP(p),w=Math.round(Math.min(W*.13,180,H*.26)),h=Math.round(w*.75),left=V.x<W/2,x=left?V.x+150:V.x+V.w-w-14,y=H-h-44,l=p.rawN,a=p.rawA||1;
+ g.save();g.globalAlpha=.92;g.fillStyle='#16202c';rrect(x,y,w,h,12);g.fill();g.strokeStyle=PCOL[p.i];g.lineWidth=3;g.stroke();g.beginPath();rrect(x,y,w,h,12);g.clip();
+ const bw=Math.min(w,h*a),bh=bw/a,ox=x+(w-bw)/2,oy=y+(h-bh)/2,P2=i=>({x:ox+l[i*3]*bw,y:oy+l[i*3+1]*bh,v:l[i*3+2]});g.strokeStyle=PCOL[p.i];g.lineWidth=3;g.lineCap='round';for(const[i,j]of PIPJ){const A=P2(i),B=P2(j);if(A.v<.4||B.v<.4)continue;g.beginPath();g.moveTo(A.x,A.y);g.lineTo(B.x,B.y);g.stroke()}const hd=P2(0);if(hd.v>.4){g.fillStyle=PCOL[p.i];g.beginPath();g.arc(hd.x,hd.y,w*.05,0,TAU);g.fill()}
+ g.restore();chip(x+w/2,y+h-9,`${PNAME[p.i]} 폰 카메라 · 동작만`,PCOL[p.i],10)}}
 function drawCursors(){if(!motion)return;const p=menuOwner();if(!p)return;const h=ptrHand(p);if(!h){if(['menu','qr'].includes(state)){const R=refOf(p);chip(R.x,Math.min(H-30,R.y+R.sw*.4),`${PNAME[p.i]}: 한 손을 들어 가리켜요`,PCOL[p.i],15)}return}
  if(dw.el&&dw.p===p){g.strokeStyle='rgba(0,0,0,.35)';g.lineWidth=8;g.beginPath();g.arc(h.x,h.y,24,0,TAU);g.stroke();g.strokeStyle='#ffd23f';g.lineWidth=6;g.beginPath();g.arc(h.x,h.y,24,-Math.PI/2,-Math.PI/2+TAU*clamp(dw.t/1.1));g.stroke()}drawHandPtr(h.x,h.y,PCOL[p.i],dw.el&&dw.p===p)}
 /* small live camera window, bottom-right: shows how the camera sees the room, with tracked joints */
@@ -703,7 +711,7 @@ const pipC=$('#pip'),pg=pipC.getContext('2d');
 function grabFace(raw,vid){const vw=vid.videoWidth,vh=vid.videoHeight;if(!raw||!vw||raw[0].v<.6||(raw[7].v<.3&&raw[8].v<.3))return null;
  const n=raw[0],ed=Math.hypot((raw[7].x-raw[8].x)*vw,(raw[7].y-raw[8].y)*vh),sh=Math.hypot((raw[11].x-raw[12].x)*vw,(raw[11].y-raw[12].y)*vh),size=Math.max(ed*2.2,sh*.6,48),cx=(1-n.x)*vw,cy=n.y*vh-size*.1;
  const c=document.createElement('canvas');c.width=c.height=112;const x=c.getContext('2d');x.translate(112,0);x.scale(-1,1);x.drawImage(vid,cx-size/2,cy-size/2,size,size,0,0,112,112);return c}
-function drawPIP(){const live=!!(stream&&video.videoWidth);if(pipC.hidden!==!live)pipC.hidden=!live;if(!live)return;const vw=video.videoWidth,vh=video.videoHeight,w=Math.round(Math.min(W*.13,180,H*.26)),h=Math.round(w*vh/vw),x=0,y=0;
+function drawPIP(){const live=!!(stream&&video.videoWidth);if(pipC.hidden!==!live)pipC.hidden=!live;if(!live)return;{const gm=['intro','count','play','pause','result'].includes(state),left=NP()>1&&P[0].on&&VP(P[0]).x<W/2&&gm,k=left?'L':'R';if(pipC._side!==k){pipC._side=k;pipC.style.left=left?'calc(84px + 66px + env(safe-area-inset-left))':'auto';pipC.style.right=left?'auto':'calc(14px + env(safe-area-inset-right))'}}const vw=video.videoWidth,vh=video.videoHeight,w=Math.round(Math.min(W*.13,180,H*.26)),h=Math.round(w*vh/vw),x=0,y=0;
  if(pipC.width!==w*2||pipC.height!==h*2){pipC.width=w*2;pipC.height=h*2;pipC.style.width=w+'px';pipC.style.height=h+'px'}const g=pg;g.setTransform(2,0,0,2,0,0);g.clearRect(0,0,w,h);const rr=(a,b,c,d,r)=>{g.beginPath();g.roundRect?g.roundRect(a,b,c,d,r):g.rect(a,b,c,d)};
  g.save();rr(x,y,w,h,12);g.clip();g.translate(x+w,y);g.scale(-1,1);g.drawImage(video,0,0,w,h);g.restore();{const z=camZoom(),o=(1-1/z)/2;if(o>0.005){g.fillStyle='rgba(0,0,0,.62)';g.fillRect(x,y,w*o,h);g.fillRect(x+w*(1-o),y,w*o,h);g.strokeStyle='#ffd23f';g.lineWidth=2;g.strokeRect(x+w*o,y+1,w*(1-2*o),h-2)}
   const lb=`📷 ${ZN[S.camZ]} · 눌러서 변경`;g.font='800 10px system-ui';const lw=g.measureText(lb).width+10;g.fillStyle='rgba(0,0,0,.6)';g.beginPath();g.roundRect?g.roundRect(x+w/2-lw/2,y+h-17,lw,14,7):g.rect(x+w/2-lw/2,y+h-17,lw,14);g.fill();g.fillStyle='#fff';g.textAlign='center';g.textBaseline='middle';g.fillText(lb,x+w/2,y+h-10)}
@@ -1177,9 +1185,10 @@ $$('[data-k]').forEach(gp=>gp.addEventListener('click',e=>{const b=e.target.clos
 $('#tMus').onclick=()=>{S.music=!S.music;applyVol();store.set('set',S);syncMenu();SFX.select()};
 const ZL=[1,1.5,2,2.6],ZN={1:'넓게',1.5:'보통',2:'좁게',2.6:'아주 좁게'};/* 보통 = 가운데 2/3 폭, 좁게 = 1/2 폭, 아주 좁게 = 약 2/5 폭 (높이는 그대로) */function syncZoom(){const b=$('#tZoom');if(b){b.textContent='📷 '+ZN[S.camZ];b.setAttribute('aria-pressed',S.camZ>1?'true':'false')}}
 $('#bUpd').onclick=()=>{location.reload()};{const v=document.createElement('div');v.id='verTxt';v.textContent='버전 '+BUILD;v.style.cssText='position:fixed;left:calc(10px + env(safe-area-inset-left));bottom:4px;font:600 10px system-ui;color:rgba(255,255,255,.55);z-index:3;pointer-events:none';$('#menu').appendChild(v)}
+$('#bSwap').onclick=e=>{e.stopPropagation();swapLanes()};
 function cycleZoom(){$('#tZoom').onclick()}
 ['pointerdown','touchstart','mousedown'].forEach(ev=>pipC.addEventListener(ev,e=>{e.stopPropagation()},{passive:true}));pipC.addEventListener('click',e=>{e.stopPropagation();e.preventDefault();cycleZoom()});
-$('#tZoom').onclick=()=>{const hi0=S.camZ>1.5;S.camZ=ZL[(ZL.indexOf(S.camZ)+1)%ZL.length];store.set('set',S);syncZoom();if(stream&&hi0!==(S.camZ>1.5)){stopCam();openCam().catch(()=>{})}else applyZoom();SFX.select();toast(`카메라 범위: ${ZN[S.camZ]} — ${S.camZ===1?'넓게 다 보여요':'가운데 폭만 인식해요 · 양옆 사람은 무시해요'}`,3500)};
+$('#tZoom').onclick=()=>{const hi0=S.camZ>1.5;S.camZ=ZL[(ZL.indexOf(S.camZ)+1)%ZL.length];store.set('set',S);syncZoom();if(!JM&&stream&&hi0!==(S.camZ>1.5)){stopCam();openCam().catch(()=>{})}else applyZoom();SFX.select();toast(`카메라 범위: ${ZN[S.camZ]} — ${S.camZ===1?'넓게 다 보여요':'가운데 폭만 인식해요 · 양옆 사람은 무시해요'}`,3500)};
 $('#tFace').onclick=()=>{S.faces=!S.faces;P.forEach(p=>p.face=null);bcast();store.set('set',S);syncMenu();SFX.select();toast(S.faces?'얼굴 사진 켬: 플레이어가 들어오면 사진을 찍어요.':'얼굴 사진 끔: 만화 얼굴을 쓰고 사진은 찍지 않아요.',4500)};
 $('#tSfx').onclick=()=>{S.sfx=!S.sfx;applyVol();store.set('set',S);syncMenu();SFX.select()};
 $('#bStart').onclick=$('#title').onclick=e=>{if(state!=='title')return;e.stopPropagation();enterFs();initAudio();if(AC&&AC.state==='suspended')AC.resume();SFX.select();playSong('menu');try{navigator.wakeLock?.request('screen').catch(()=>{})}catch(e){}
@@ -1272,7 +1281,8 @@ function audioKick(){preRender();if(!AC){return}if(AC.state!=='running')AC.resum
 setInterval(()=>{if(AC&&!document.hidden&&AC.state!=='running')AC.resume().catch(()=>{})},1000);
 $('#bReady').onclick=()=>{if(AC&&AC.state!=='running')AC.resume().catch(()=>{});SFX.select();startCount()};
 function startCount(){state='count';ct=3.999;lastN=4;show(null);$('#hud').hidden=false;$('#gname').textContent=game.title;buildHud();setHud();bcast()}
-function buildHud(){const ps=act(),many=ps.length>2;['scL','scR'].forEach((id,side)=>{const el=$('#'+id);el.classList.toggle('many',many);el.innerHTML=ps.filter((p,k)=>k%2===side).map(p=>`<div class="sc"><i style="background:${PCOL[p.i]}">P${p.i+1}</i><b id="sc${p.i}">0</b></div>`).join('')});for(const k in hudC)delete hudC[k]}
+function swapVis(){const b=$('#bSwap');if(b){const v=act().length<2;if(b.hidden!==v)b.hidden=v}}
+function buildHud(){swapVis();const ps=lanes(),many=ps.length>2;['scL','scR'].forEach((id,side)=>{const el=$('#'+id);el.classList.toggle('many',many);el.innerHTML=ps.filter((p,k)=>k%2===side).map(p=>`<div class="sc"><i style="background:${PCOL[p.i]}">P${p.i+1}</i><b id="sc${p.i}">0</b></div>`).join('')});for(const k in hudC)delete hudC[k]}
 const hudC={};const setT=(id,v)=>{v=String(v);if(hudC[id]!==v){hudC[id]=v;$('#'+id).textContent=v}};
 function setHud(){for(const p of act())if($('#sc'+p.i))setT('sc'+p.i,game.sc?game.sc(p.i):p.score);const c=game.hud();const ck=$('#clock');setT('clock',c);const hot=typeof c==='number'&&c<=5&&state==='play';ck.classList.toggle('hot',hot);if(hot&&c!==lastClock){SFX.tick();lastClock=c}
  const lost=motion&&state==='play'&&!game?.pad?act().filter(p=>!p.seen):[];const lt=$('#lost');lt.hidden=!lost.length;if(lost.length)lt.textContent=lost.map(p=>PNAME[p.i]).join(' & ')+': 화면 안으로 돌아와요'}
@@ -1368,10 +1378,10 @@ function takeFace(p,u){const now=performance.now();if(!S.faces||now-(p.faceT||0)
  if((p.faceN||0)>=3)return;p.faceN=(p.faceN||0)+1;const cn=p.conn,im=new Image();im.onload=()=>{if(!p.on||p.conn!==cn||!S.faces||im.naturalWidth>640||im.naturalHeight>640||!im.naturalWidth)return;const c=document.createElement('canvas');c.width=c.height=112;c.getContext('2d').drawImage(im,0,0,112,112);p.face=c;renderLobby()};im.src=u}
 function ingest(p,d){const now=performance.now();if(now-p.last<12)return;
  if(d.l===null){p.last=now;applyPose(p,null,now);return}
- const l=d.l,a=+d.a;if(!Array.isArray(l)||l.length!==99||!(a>.3&&a<3.5))return;
+ const l=d.l,a=+d.a;if(!Array.isArray(l)||l.length!==99||!(a>.15&&a<3.5))return;
  const V=VP(p),pts=new Array(33);
  for(let i=0;i<33;i++){const x=+l[i*3],y=+l[i*3+1],v=+l[i*3+2];if(!Number.isFinite(x)||!Number.isFinite(y)||!Number.isFinite(v))return;const m=mapN(V,a,clamp(x,-.5,1.5),clamp(y,-.5,1.5));pts[i]={x:m.x,y:m.y,v:clamp(v)}}
- p.last=now;applyPose(p,pts,now)}
+ p.last=now;p.rawN=l;p.rawA=a;applyPose(p,pts,now)}
 function remoteWatch(){const now=performance.now();for(const p of P){if(!p.i||!p.on)continue;if(p.seen&&now-p.last>900){p.seen=false;p.hands.forEach(h=>h.ok=false)}if(!p.gone&&now-p.last>8000){if(p.conn){try{p.conn.close()}catch(e){}}dropP(p,true)}}}
 const ST_OK=['title','menu','qr','calib','intro','count','play','pause','result','final','race'];
 function bcast(){const m={t:'st',c:state,g:G[gname]?gname:'',f:!!S.faces};for(const p of P)if(p.conn&&p.conn.open){let x=m;if(state==='race'){const j=RACE.k.indexOf(p.i),rc=j>=0&&RACE.ph!=='solo'&&!p.pending;x={...m,r:{k:rc?j+1:0,ph:RACE.ph,rd:rc?!!RACE.sel[j].rd:false,ty:rc?RACE.sel[j].ty:0,co:rc?RACE.sel[j].co:0}}}else if(S.cat==='pad')x={...m,j:{on:1,play:['intro','count','play','pause'].includes(state)&&!!G[gname]?.pad?1:0}};try{p.conn.send(x)}catch(e){}}}
@@ -1964,18 +1974,21 @@ function runJoin(hid,key,fp){document.documentElement.classList.add('joinmode');
   try{navigator.wakeLock?.request('screen').catch(()=>{})}catch(e){}
   connect();if(!looping){looping=true;requestAnimationFrame(jloop)}};
  document.addEventListener('visibilitychange',()=>{if(document.hidden){jptr.clear();padRecalc()}if(!document.hidden&&jl&&!stream&&!jpadOn)openCam().catch(()=>{})});
+ let jzT=0;jc.addEventListener('click',()=>{if(jpadOn)return;const L=[1,1.5,2,2.6];S.camZ=L[(L.indexOf(S.camZ)+1)%L.length];try{store.set('set',S)}catch(e){}jzT=performance.now()+1500;try{navigator.vibrate?.(10)}catch(e){}});
  function jloop(now){requestAnimationFrame(jloop);if(jpadOn)return;const w=jc.width,h=jc.height;jg.fillStyle='#111';jg.fillRect(0,0,w,h);
   if(!stream||!video.videoWidth)return;const vw=video.videoWidth,vh=video.videoHeight,sc=Math.max(w/vw,h/vh),dw=vw*sc,dh=vh*sc,ox=(w-dw)/2,oy=(h-dh)/2;
   jg.save();jg.translate(w,0);jg.scale(-1,1);jg.drawImage(video,w-ox-dw,oy,dw,dh);jg.restore();
-  camWD(now,!!jl&&!jpadOn);if(jl&&video.currentTime!==lastV){lastV=video.currentTime;try{const r=jl.detectForVideo(video,detTs(now)),ls=(r.landmarks||[]).map(l=>l.map(q=>({x:1-q.x,y:q.y,v:q.visibility??1})));pose=ls.length?ls.reduce((a,b)=>szp(a)>szp(b)?a:b):null;jErr=0}catch(e){pose=null;if(++jErr>45&&!reloading){jErr=0;reloading=true;loadPose().then(n=>{jl=n}).catch(()=>{}).finally(()=>{reloading=false})}}}
-  const col=slot?PCOL[slot]:'#ffffff',tp=q=>({x:ox+q.x*dw,y:oy+q.y*dh});
+  camWD(now,!!jl&&!jpadOn);const zz=camZoom(),oo=(1-1/zz)/2;if(oo>.005){jg.fillStyle='rgba(0,0,0,.6)';jg.fillRect(ox,oy,dw*oo,dh);jg.fillRect(ox+dw*(1-oo),oy,dw*oo,dh);jg.strokeStyle='#ffd23f';jg.lineWidth=Math.max(3,w*.006);jg.strokeRect(ox+dw*oo,oy,dw*(1-2*oo),dh)}
+  if(jl&&video.currentTime!==lastV){lastV=video.currentTime;try{const r=jl.detectForVideo(camSrc(),detTs(now)),ls=(r.landmarks||[]).map(l=>l.map(q=>({x:1-q.x,y:q.y,v:q.visibility??1})));pose=ls.length?ls.reduce((a,b)=>szp(a)>szp(b)?a:b):null;jErr=0}catch(e){pose=null;if(++jErr>45&&!reloading){jErr=0;reloading=true;loadPose().then(n=>{jl=n}).catch(()=>{}).finally(()=>{reloading=false})}}}
+  const col=slot?PCOL[slot]:'#ffffff',tp=q=>({x:ox+(oo+q.x/zz)*dw,y:oy+q.y*dh});
   if(pose){jg.strokeStyle=col;jg.lineWidth=Math.max(6,w*.012);jg.lineCap='round';for(const[a,b]of PIPJ){if(pose[a].v<.4||pose[b].v<.4)continue;const A=tp(pose[a]),B=tp(pose[b]);jg.beginPath();jg.moveTo(A.x,A.y);jg.lineTo(B.x,B.y);jg.stroke()}
    if(pose[0].v>.4){const n=tp(pose[0]);jg.fillStyle=col;jg.beginPath();jg.arc(n.x,n.y,Math.max(14,w*.03),0,TAU);jg.fill()}}
   else{jg.fillStyle='rgba(0,0,0,.55)';jg.fillRect(0,h*.45,w,h*.1);jg.fillStyle='#fff';jg.font=`800 ${Math.round(Math.max(18,w*.035))}px Nunito,system-ui`;jg.textAlign='center';jg.textBaseline='middle';jg.fillText('온몸이 보이도록 뒤로 물러나요',w/2,h*.5)}
   if(shot){const left=shot-performance.now();if(left>0){jg.fillStyle='rgba(0,0,0,.35)';jg.fillRect(0,0,w,h);jg.fillStyle='#fff';jg.font=`800 ${Math.round(w*.25)}px Baloo 2,system-ui`;jg.textAlign='center';jg.textBaseline='middle';jg.fillText(String(Math.ceil(left/1000)),w/2,h/2)}
-   else{shot=0;faceC=grabFace(pose,video);if(faceC){phC.getContext('2d').drawImage(faceC,0,0);photoUI('preview');noise(.08,.5,5000,1,'highpass')}else{photoUI('ask');phP.textContent='얼굴이 안 보였어요. 카메라를 똑바로 보고 다시 해 봐요.'}}}
+   else{shot=0;faceC=grabFace(pose,camView());if(faceC){phC.getContext('2d').drawImage(faceC,0,0);photoUI('preview');noise(.08,.5,5000,1,'highpass')}else{photoUI('ask');phP.textContent='얼굴이 안 보였어요. 카메라를 똑바로 보고 다시 해 봐요.'}}}
   if(slot&&conn&&conn.open&&now-lastSend>33){lastSend=now;let l=null;if(pose){l=new Array(99);for(let i=0;i<33;i++){l[i*3]=Math.round(pose[i].x*1000)/1000;l[i*3+1]=Math.round(pose[i].y*1000)/1000;l[i*3+2]=Math.round(pose[i].v*100)/100}}
-   try{conn.send({t:'p',a:Math.round(vw/vh*1000)/1000,l})}catch(e){}}}}
+   const sv=camView();try{conn.send({t:'p',a:Math.round((sv.videoWidth||vw)/(sv.videoHeight||vh)*1000)/1000,l})}catch(e){}}
+  {const lb=`📷 ${({1:'넓게',1.5:'보통',2:'좁게',2.6:'아주 좁게'})[S.camZ]||'보통'} · 화면을 누르면 폭 변경`,fs=Math.round(Math.max(14,w*.028));jg.font=`800 ${fs}px system-ui`;const lw=jg.measureText(lb).width+fs*1.4,by=h-fs*7;jg.fillStyle=jzT>performance.now()?'rgba(255,210,63,.95)':'rgba(0,0,0,.55)';jg.beginPath();jg.roundRect?jg.roundRect(w/2-lw/2,by,lw,fs*1.9,fs):jg.rect(w/2-lw/2,by,lw,fs*1.9);jg.fill();jg.fillStyle=jzT>performance.now()?'#3a2a00':'#fff';jg.textAlign='center';jg.textBaseline='middle';jg.fillText(lb,w/2,by+fs*.95)}}}
 
 /* calibration: wait until each player's shoulders + hips are visible */
 function drawCalib(dt){const two=NP()>1;let all=true;const chips=[];
@@ -2005,7 +2018,7 @@ function loop(now){const dt=Math.min(.05,(now-last)/1000);last=now;
   else if(state==='final'){drawFinal(dt);ambientConf(dt,1)}
   else if(game){if(state==='play'){game.update(dt);if(game.done)endGame()}game.draw();if(game.pad&&P[0].on&&['count','play'].includes(state))drawHostPad();if(state==='count')drawCount(dt);if(state==='result')ambientConf(dt,.3)}
   updFx(state==='pause'?0:dt);drawFx();drawWipe(dt);if(flashA>0){g.globalAlpha=flashA;g.fillStyle=flashC;g.fillRect(-20,-20,W+40,H+40);g.globalAlpha=1}g.restore();
-  drawPIP();ovDraw();if(MENUISH.includes(state))dwell(dt);
+  drawPIP();if(['count','play','pause'].includes(state))drawPhoneViews();ovDraw();if(MENUISH.includes(state))dwell(dt);
   if(state==='play'||state==='count')setHud();
   if(state==='intro'){introT+=dt;drawDemo(dt);if(readT>0){readT-=dt;const b=$('#bReady'),tx=readT>0?`설명을 읽어요… ${Math.ceil(readT)}`:'준비 완료!';if(b.textContent!==tx)b.textContent=tx;if(readT<=0)b.disabled=false}if(introT>50)startCount()}
  }catch(err){console.error(err);g=g0;try{g.restore()}catch(e){}g.setTransform(DPR,0,0,DPR,0,0)}
